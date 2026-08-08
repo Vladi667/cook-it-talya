@@ -274,13 +274,23 @@ function close(a: number, b: number): boolean {
   return Math.abs(a - b) <= EPS * Math.max(1, Math.abs(a), Math.abs(b));
 }
 
-/** ~3 significant digits: what a student writes after rounding by hand. */
-const ROUND_TOL = 1e-3;
+/**
+ * Forgives hand-rounding without ever forgiving a different answer.
+ *
+ * A purely relative tolerance is wrong here: 1e-3 of 1024 is more than 1, so
+ * 1025 would pass for 1024. Rounding only needs forgiving when the true value
+ * does not terminate, and in that case the gap a student introduces is
+ * absolute (two or three decimal places), not proportional.
+ */
+const DECIMAL_SLACK = 5e-3;
 
 function closeLoose(a: number, b: number): boolean {
   if (a === b) return true;
   if (!Number.isFinite(a) || !Number.isFinite(b)) return false;
-  return Math.abs(a - b) <= ROUND_TOL * Math.max(1, Math.abs(a), Math.abs(b));
+  const diff = Math.abs(a - b);
+  // "5.83" for 5.830951... — but never 1025 for 1024.
+  if (diff <= DECIMAL_SLACK) return true;
+  return diff <= 1e-6 * Math.max(1, Math.abs(a), Math.abs(b));
 }
 
 /** True when two expressions are equal as functions. */

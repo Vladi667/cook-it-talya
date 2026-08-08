@@ -29,14 +29,20 @@ calls, and costs nothing to run.
 
 ## Templates
 
-| id | topic |
-| --- | --- |
-| `triangle-bisector` | angle bisector length via the bisector theorem |
-| `triangle-from-lines` | vertices from two perpendicular bisectors + circumscribed circle |
-| `function-investigation` | domain, extrema, asymptotes, tangent (`ln` / rational / root families) |
-| `area-between-curves` | bounded area with a split point where the boundary changes |
-| `reverse-integral` | recover a constant from a definite integral |
-| `limits` | 8 families needing simplification before substitution |
+Ten types, covering both papers.
+
+| id | topic | what it drills |
+| --- | --- | --- |
+| `triangle-bisector` | analytic geometry | angle bisector length via the bisector theorem |
+| `triangle-from-lines` | analytic geometry | vertices from two perpendicular bisectors + circumscribed circle |
+| `circle-tangent` | analytic geometry | completing the square, tangent at a point, tangent length |
+| `function-investigation` | calculus | domain, extrema, asymptotes, tangent (`ln` / rational / root families) |
+| `area-between-curves` | calculus | bounded area with a split point where the boundary changes |
+| `reverse-integral` | calculus | recover a constant from a definite integral |
+| `optimization` | calculus | extremal problems (open box, largest inscribed rectangle) |
+| `limits` | calculus | 8 families needing simplification before substitution |
+| `sequences` | algebra | arithmetic and geometric, including sums to infinity |
+| `growth-decay` | algebra | exponential models inverted with logarithms |
 
 ## Answer checking
 
@@ -52,7 +58,8 @@ validate against the same expected answer.
   `x^2+y^2-4x+2y-20=0` matches `(x-2)^2+(y+1)^2=25`
 - domains parsed into canonical interval unions, so `x>0, x≠2` matches
   `(0,2)∪(2,∞)`
-- constants accept hand-rounded decimals (~3 significant digits)
+- constants accept hand-rounded decimals, but never a neighbouring integer:
+  `3.33` passes for `10/3`, `1025` never passes for `1024`
 
 ## The teaching layer
 
@@ -74,7 +81,7 @@ of learning here is not the worked example — it is the *pattern*.
 Every solution step carries a `move` index into its recipe, so when the worked
 solution is revealed each line is labelled *“Move 3 · name the upper and lower
 boundary”*. The concrete instance and the general method are always shown
-together. `/patterns` is the study view of all six.
+together. `/patterns` is the study view of all ten.
 
 Ochre is used for pattern content and for nothing else, so the colour itself
 comes to mean “this is the transferable part”.
@@ -139,7 +146,7 @@ export at the bottom of that file. No auth in v1.
 npm test
 ```
 
-105 tests. Every template is generated 100 times and each sample is verified
+178 tests. Every template is generated 100 times and each sample is verified
 *independently* of its own algebra — numeric integration for areas and
 integrals, numeric limits for limits, central differences for derivatives, and
 direct geometric checks (is `D` on `BC`? does `AD` bisect the angle? do all

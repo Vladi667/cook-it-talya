@@ -2,27 +2,7 @@
 
 import { useMemo } from "react";
 import { InlineMath, BlockMath } from "react-katex";
-
-type Segment =
-  | { kind: "text"; value: string }
-  | { kind: "inline"; value: string }
-  | { kind: "block"; value: string };
-
-const PATTERN = /\$\$([\s\S]+?)\$\$|\$([^$]+?)\$/g;
-
-export function splitMath(text: string): Segment[] {
-  const out: Segment[] = [];
-  let last = 0;
-  for (const m of text.matchAll(PATTERN)) {
-    const start = m.index ?? 0;
-    if (start > last) out.push({ kind: "text", value: text.slice(last, start) });
-    if (m[1] !== undefined) out.push({ kind: "block", value: m[1].trim() });
-    else if (m[2] !== undefined) out.push({ kind: "inline", value: m[2].trim() });
-    last = start + m[0].length;
-  }
-  if (last < text.length) out.push({ kind: "text", value: text.slice(last) });
-  return out;
-}
+import { splitMath } from "@/lib/mathText";
 
 /** Renders **bold** runs inside a plain-text segment. */
 function emphasise(text: string) {

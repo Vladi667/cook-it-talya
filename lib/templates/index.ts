@@ -3,19 +3,27 @@ import { makeRng } from "../rng";
 import { PATTERNS } from "../patterns";
 import { triangleBisector } from "./triangle-bisector";
 import { triangleFromLines } from "./triangle-from-lines";
+import { circleTangent } from "./circle-tangent";
 import { functionInvestigation } from "./function-investigation";
 import { areaBetweenCurves } from "./area-between-curves";
 import { reverseIntegral } from "./reverse-integral";
+import { optimization } from "./optimization";
 import { limits } from "./limits";
+import { sequences } from "./sequences";
+import { growthDecay } from "./growth-decay";
 
 /** Order here is the order shown on the Progress and Patterns screens. */
 const DEFS: TemplateDef[] = [
   triangleBisector,
   triangleFromLines,
+  circleTangent,
   functionInvestigation,
   areaBetweenCurves,
   reverseIntegral,
+  optimization,
   limits,
+  sequences,
+  growthDecay,
 ];
 
 /** Each template carries its transferable method alongside its generator. */

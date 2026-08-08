@@ -15,15 +15,19 @@ export type Text = Record<Lang, string>;
 export const TEMPLATE_IDS = [
   "triangle-bisector",
   "triangle-from-lines",
+  "circle-tangent",
   "function-investigation",
   "area-between-curves",
   "reverse-integral",
+  "optimization",
   "limits",
+  "sequences",
+  "growth-decay",
 ] as const;
 
 export type TemplateId = (typeof TEMPLATE_IDS)[number];
 
-export type Topic = "analytic-geometry" | "calculus";
+export type Topic = "analytic-geometry" | "calculus" | "algebra";
 
 /**
  * How an answer field is compared. Never string equality — see lib/checker.ts.

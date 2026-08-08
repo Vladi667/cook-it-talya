@@ -66,6 +66,17 @@ describe("symbolic equivalence, never string comparison", () => {
     expect(ok("6/sqrt(2)", "3*sqrt(2)")).toBe(true);
   });
 
+  it("accepts hand-rounded decimals but never a different number", () => {
+    // Rounding is forgiven where the true value does not terminate...
+    expect(checkAnswer("5.831", "sqrt(34)", "number").correct).toBe(true);
+    expect(checkAnswer("5.217", "7*sqrt(5)/3", "number").correct).toBe(true);
+    expect(checkAnswer("3.33", "10/3", "number").correct).toBe(true);
+    // ...but a neighbouring integer is a different answer at any magnitude.
+    expect(checkAnswer("1025", "1024", "number").correct).toBe(false);
+    expect(checkAnswer("1024", "1024", "number").correct).toBe(true);
+    expect(checkAnswer("7", "6", "number").correct).toBe(false);
+  });
+
   it("flags sign slips and factor-of-two slips", () => {
     expect(checkAnswer("-6", "6", "number").hint).toBe("sign");
     expect(checkAnswer("12", "6", "number").hint).toBe("factor2");

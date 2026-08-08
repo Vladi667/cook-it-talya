@@ -156,6 +156,90 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
     ],
   },
 
+  "circle-tangent": {
+    method: {
+      en: "Complete the square, then let the radius do the work",
+      he: "השלימו לריבוע, ואז תנו לרדיוס לעבוד",
+    },
+    signature: [
+      {
+        en: "A circle written as $x^2+y^2+Dx+Ey+F=0$ — the **general form**",
+        he: "מעגל הכתוב בצורה $x^2+y^2+Dx+Ey+F=0$ — ה**צורה הכללית**",
+      },
+      {
+        en: "A tangent is mentioned, or a point outside the circle",
+        he: "מוזכר משיק, או נקודה מחוץ למעגל",
+      },
+    ],
+    recipe: [
+      {
+        move: {
+          en: "Complete the square on $x$ and on $y$",
+          he: "השלימו לריבוע ב-$x$ וב-$y$",
+        },
+        detail: {
+          en: "Half the coefficient, square it, add to both sides. You end at $\\left(x-p\\right)^2+\\left(y-q\\right)^2=R^2$ — centre $(p,q)$, radius $R$. Nothing else can start until this is done.",
+          he: "חצי מהמקדם, בריבוע, מוסיפים לשני האגפים. מגיעים ל-$\\left(x-p\\right)^2+\\left(y-q\\right)^2=R^2$ — מרכז $(p,q)$, רדיוס $R$. שום דבר אחר לא מתחיל לפני כן.",
+        },
+      },
+      {
+        move: {
+          en: "Confirm the point sits on the circle",
+          he: "ודאו שהנקודה על המעגל",
+        },
+        detail: {
+          en: "Substitute it. If it satisfies the equation it is a point of tangency; if it does not, it is an external point and you are being asked for a length instead.",
+          he: "הציבו אותה. אם היא מקיימת את המשוואה זו נקודת השקה; אם לא, זו נקודה חיצונית ומבקשים מכם אורך.",
+        },
+      },
+      {
+        move: {
+          en: "The radius **is** the normal to the tangent",
+          he: "הרדיוס **הוא** הנורמל למשיק",
+        },
+        detail: {
+          en: "A tangent meets the radius at a right angle, so $\\vec{OA}=(u,v)$ gives the tangent's coefficients directly: $ux+vy=c$. No slopes, no quadratics.",
+          he: "המשיק פוגש את הרדיוס בזווית ישרה, ולכן $\\vec{OA}=(u,v)$ נותן ישירות את מקדמי המשיק: $ux+vy=c$. בלי שיפועים ובלי משוואות ריבועיות.",
+        },
+      },
+      {
+        move: { en: "Fix the constant through the point", he: "קבעו את הקבוע דרך הנקודה" },
+        detail: {
+          en: "Substitute the point of tangency to get $c$. One substitution, done.",
+          he: "הציבו את נקודת ההשקה כדי לקבל את $c$. הצבה אחת, וזהו.",
+        },
+      },
+      {
+        move: {
+          en: "Tangent length by Pythagoras",
+          he: "אורך המשיק לפי פיתגורס",
+        },
+        detail: {
+          en: "The external point, the centre and the point of contact form a right angle **at the contact point**, so $PT=\\sqrt{PO^2-R^2}$.",
+          he: "הנקודה החיצונית, המרכז ונקודת ההשקה יוצרים זווית ישרה **בנקודת ההשקה**, ולכן $PT=\\sqrt{PO^2-R^2}$.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "Every circle fact in this question descends from one property: the tangent is perpendicular to the radius at the point of contact. That single right angle gives you the tangent's direction for free, and it is also the right angle in the triangle you use for the tangent length. Students who reach for slopes and discriminants are solving a much harder problem than the one in front of them.",
+      he: "כל עובדה על המעגל בשאלה הזו נובעת מתכונה אחת: המשיק מאונך לרדיוס בנקודת ההשקה. הזווית הישרה הבודדת הזו נותנת בחינם את כיוון המשיק, והיא גם הזווית הישרה במשולש שמשמש לחישוב אורך המשיק. מי שפונה לשיפועים ולדיסקרימיננטות פותר בעיה קשה בהרבה מזו שלפניו.",
+    },
+    speedTip: {
+      en: "Never find the tangent by substituting a line into the circle and forcing the discriminant to zero — that is a quadratic in the slope and it fails outright for a vertical tangent. The normal-vector form $u\\left(x-p\\right)+v\\left(y-q\\right)=R^2$ is one line and never breaks.",
+      he: "לעולם אל תמצאו את המשיק על ידי הצבת ישר במעגל ואילוץ הדיסקרימיננטה לאפס — זו משוואה ריבועית בשיפוע והיא נכשלת לגמרי במשיק אנכי. הצורה עם וקטור הנורמל $u\\left(x-p\\right)+v\\left(y-q\\right)=R^2$ היא שורה אחת ואף פעם לא נשברת.",
+    },
+    watchOut: [
+      {
+        en: "The centre is $\\left(-\\frac{D}{2},-\\frac{E}{2}\\right)$ — the signs flip.",
+        he: "המרכז הוא $\\left(-\\frac{D}{2},-\\frac{E}{2}\\right)$ — הסימנים מתהפכים.",
+      },
+      {
+        en: "Completing the square leaves $R^2$, not $R$. Take the root.",
+        he: "השלמה לריבוע משאירה $R^2$ ולא $R$. הוציאו שורש.",
+      },
+    ],
+  },
+
   "function-investigation": {
     method: {
       en: "Domain, simplify, differentiate, read the signs",
@@ -380,6 +464,90 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
     ],
   },
 
+  optimization: {
+    method: {
+      en: "One variable, one function, then differentiate",
+      he: "משתנה אחד, פונקציה אחת, ואז גזירה",
+    },
+    signature: [
+      {
+        en: "The words **largest**, **smallest**, **maximum** or **minimum** attached to a shape or a cost",
+        he: "המילים **הגדול ביותר**, **הקטן ביותר**, **מרבי** או **מזערי** לצד צורה או עלות",
+      },
+      {
+        en: "A constraint tying two quantities together — a fixed perimeter, a fixed sheet, a curve the point must sit on",
+        he: "אילוץ הקושר שני גדלים — היקף קבוע, גיליון נתון, או עקום שהנקודה חייבת להיות עליו",
+      },
+    ],
+    recipe: [
+      {
+        move: {
+          en: "Name the variable and write its domain",
+          he: "בחרו משתנה ורשמו את תחומו",
+        },
+        detail: {
+          en: "Choose the length that everything else can be measured against, and immediately write the inequality it must satisfy. The domain is where half the marks hide.",
+          he: "בחרו את האורך שדרכו אפשר למדוד את כל השאר, ורשמו מיד את אי-השוויון שעליו לקיים. בתחום ההגדרה מסתתרת מחצית מהנקודות.",
+        },
+      },
+      {
+        move: {
+          en: "Use the constraint to reach **one** variable",
+          he: "השתמשו באילוץ כדי להגיע ל**משתנה אחד**",
+        },
+        detail: {
+          en: "The constraint exists precisely so you can eliminate the second unknown. Substitute it in until the quantity is a function of your variable alone.",
+          he: "האילוץ קיים בדיוק כדי לאפשר לסלק את הנעלם השני. הציבו אותו עד שהגודל הופך לפונקציה של המשתנה שלכם בלבד.",
+        },
+      },
+      {
+        move: { en: "Differentiate and solve $=0$", he: "גזרו ופתרו $=0$" },
+        detail: {
+          en: "Factor rather than expand where you can — the factored derivative shows both roots at once, and usually one of them is the degenerate case.",
+          he: "העדיפו פירוק לגורמים על פני פתיחת סוגריים — הנגזרת המפורקת מראה את שני השורשים בבת אחת, ובדרך כלל אחד מהם הוא המקרה המנוון.",
+        },
+      },
+      {
+        move: {
+          en: "Reject the roots outside the domain, confirm the rest",
+          he: "פסלו שורשים מחוץ לתחום, ואשרו את השאר",
+        },
+        detail: {
+          en: "A root sitting at the edge of the domain usually gives zero area or zero volume. Confirm the survivor with the sign of $f'$ or with $f''$.",
+          he: "שורש היושב על קצה התחום נותן בדרך כלל שטח או נפח אפס. אשרו את הנותר לפי סימן $f'$ או לפי $f''$.",
+        },
+      },
+      {
+        move: {
+          en: "Answer the question that was actually asked",
+          he: "ענו על השאלה שבאמת נשאלה",
+        },
+        detail: {
+          en: "You solved for $x$; the question probably wanted the area, the volume, or both dimensions. Substitute back. Marks are routinely lost on this last line.",
+          he: "פתרתם עבור $x$; השאלה כנראה ביקשה שטח, נפח, או את שתי המידות. הציבו בחזרה. בשורה האחרונה הזו נאבדות נקודות בקביעות.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "An extremum of a smooth quantity on an interval is either at a point where the derivative vanishes or at an endpoint — there is nowhere else for it to be. So the whole method is: reduce to one variable so a derivative exists at all, find where it is zero, and check the ends. The modelling is the hard part; the calculus is three lines.",
+      he: "ערך קיצון של גודל חלק בקטע נמצא או בנקודה שבה הנגזרת מתאפסת או בקצה — אין מקום אחר. לכן כל השיטה היא: לצמצם למשתנה אחד כדי שבכלל תהיה נגזרת, למצוא היכן היא מתאפסת, ולבדוק את הקצוות. המידול הוא החלק הקשה; החדו״א הוא שלוש שורות.",
+    },
+    speedTip: {
+      en: "When the quantity is a product like $x\\left(a-2x\\right)^2$, differentiate **without expanding**: the product rule leaves a common factor, and the factored form $\\left(a-2x\\right)\\left(a-6x\\right)$ hands you both roots instantly. Expanding first turns a ten-second job into a quadratic-formula job.",
+      he: "כאשר הגודל הוא מכפלה כמו $x\\left(a-2x\\right)^2$, גזרו **בלי לפתוח סוגריים**: כלל המכפלה משאיר גורם משותף, והצורה המפורקת $\\left(a-2x\\right)\\left(a-6x\\right)$ נותנת מיד את שני השורשים. פתיחת סוגריים הופכת עבודה של עשר שניות לעבודה עם נוסחת השורשים.",
+    },
+    watchOut: [
+      {
+        en: "A rectangle symmetric about the $y$-axis has width $2x$, not $x$.",
+        he: "למלבן הסימטרי ביחס לציר ה-$y$ יש רוחב $2x$, לא $x$.",
+      },
+      {
+        en: "Reject the root that makes a length zero — it is the minimum.",
+        he: "פסלו את השורש שמאפס אורך — הוא המינימום.",
+      },
+    ],
+  },
+
   limits: {
     method: {
       en: "Substitute, name the form, simplify, then substitute again",
@@ -450,6 +618,139 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       {
         en: "L'Hopital differentiates numerator and denominator **separately** — it is not the quotient rule.",
         he: "לופיטל גוזר מונה ומכנה **בנפרד** — זה אינו כלל המנה.",
+      },
+    ],
+  },
+
+  sequences: {
+    method: {
+      en: "Count the steps, then walk back to the first term",
+      he: "ספרו את הצעדים, ואז חזרו אל האיבר הראשון",
+    },
+    signature: [
+      {
+        en: "Two terms are given by their **index**, like $a_3$ and $a_7$",
+        he: "שני איברים נתונים לפי ה**מקום** שלהם, כמו $a_3$ ו-$a_7$",
+      },
+      {
+        en: "A sum of the first $n$ terms, or a sum to infinity, is requested",
+        he: "נדרש סכום $n$ האיברים הראשונים, או סכום עד אינסוף",
+      },
+    ],
+    recipe: [
+      {
+        move: {
+          en: "Difference or ratio? Decide first",
+          he: "הפרש או מנה? החליטו קודם",
+        },
+        detail: {
+          en: "Subtract the given terms; divide them. Whichever gives something clean tells you the type, and the type fixes every formula you will use.",
+          he: "חסרו את האיברים הנתונים; חלקו אותם. מה שנותן תוצאה נקייה מגלה את הסוג, והסוג קובע את כל הנוסחאות.",
+        },
+      },
+      {
+        move: { en: "Count the **steps**, not the terms", he: "ספרו **צעדים**, לא איברים" },
+        detail: {
+          en: "From $a_m$ to $a_n$ there are $n-m$ steps. So $a_n-a_m=(n-m)d$, or $\\frac{a_n}{a_m}=q^{\\,n-m}$. This off-by-one is the most expensive mistake in the topic.",
+          he: "מ-$a_m$ ל-$a_n$ יש $n-m$ צעדים. לכן $a_n-a_m=(n-m)d$, או $\\frac{a_n}{a_m}=q^{\\,n-m}$. הסטייה של אחד כאן היא הטעות היקרה ביותר בנושא.",
+        },
+      },
+      {
+        move: { en: "Walk back to $a_1$", he: "חזרו אל $a_1$" },
+        detail: {
+          en: "$a_1=a_m-(m-1)d$, or $a_1=\\frac{a_m}{q^{\\,m-1}}$. Again $m-1$ steps, not $m$. Every sum formula is written in terms of $a_1$, so this is not optional.",
+          he: "$a_1=a_m-(m-1)d$, או $a_1=\\frac{a_m}{q^{\\,m-1}}$. שוב $m-1$ צעדים ולא $m$. כל נוסחת סכום כתובה במונחי $a_1$, ולכן זה אינו שלב אופציונלי.",
+        },
+      },
+      {
+        move: { en: "Apply the matching sum formula", he: "הפעילו את נוסחת הסכום המתאימה" },
+        detail: {
+          en: "$S_n=\\frac{n}{2}\\left[2a_1+(n-1)d\\right]$, or $S_n=\\frac{a_1\\left(q^n-1\\right)}{q-1}$, or $S_\\infty=\\frac{a_1}{1-q}$ — the last one **only** if $|q|<1$.",
+          he: "$S_n=\\frac{n}{2}\\left[2a_1+(n-1)d\\right]$, או $S_n=\\frac{a_1\\left(q^n-1\\right)}{q-1}$, או $S_\\infty=\\frac{a_1}{1-q}$ — האחרונה **רק** אם $|q|<1$.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "A sequence of this kind is completely determined by two numbers: where it starts and how it moves. Two given terms are two equations, which is exactly enough to pin both down. Once you see the whole topic as “find the two parameters, then quote a formula”, there is nothing left to memorise beyond the formulas themselves.",
+      he: "סדרה מסוג זה נקבעת לחלוטין על ידי שני מספרים: היכן היא מתחילה וכיצד היא מתקדמת. שני איברים נתונים הם שתי משוואות, וזה בדיוק מספיק כדי לקבע את שניהם. ברגע שרואים את כל הנושא כ״מצא את שני הפרמטרים, ואז צטט נוסחה״, לא נשאר מה לשנן מעבר לנוסחאות עצמן.",
+    },
+    speedTip: {
+      en: "Do not build a system of two equations in $a_1$ and $d$ and solve it — subtracting the two given terms eliminates $a_1$ in one line and hands you $d$ immediately. The same trick divides out $a_1$ in the geometric case.",
+      he: "אל תבנו מערכת של שתי משוואות ב-$a_1$ וב-$d$ ותפתרו אותה — חיסור שני האיברים הנתונים מסלק את $a_1$ בשורה אחת ונותן מיד את $d$. אותו טריק מצמצם את $a_1$ במקרה ההנדסי.",
+    },
+    watchOut: [
+      {
+        en: "$a_n=a_1+(n-1)d$ — the coefficient is $n-1$, never $n$.",
+        he: "$a_n=a_1+(n-1)d$ — המקדם הוא $n-1$, לעולם לא $n$.",
+      },
+      {
+        en: "$S_\\infty$ exists only when $|q|<1$. Check before quoting it.",
+        he: "$S_\\infty$ קיים רק כאשר $|q|<1$. בדקו לפני שמצטטים.",
+      },
+    ],
+  },
+
+  "growth-decay": {
+    method: {
+      en: "Two readings fix the model; logarithms invert it",
+      he: "שתי מדידות קובעות את המודל; לוגריתמים הופכים אותו",
+    },
+    signature: [
+      {
+        en: "A quantity described as growing or decaying by a **fixed percentage or factor** per unit time",
+        he: "גודל המתואר כגדל או דועך ב**אחוז או מקדם קבוע** ליחידת זמן",
+      },
+      {
+        en: "Words like half-life, doubling time, or “after how long will it reach…”",
+        he: "מונחים כמו זמן מחצית חיים, זמן הכפלה, או ״כעבור כמה זמן יגיע ל…״",
+      },
+    ],
+    recipe: [
+      {
+        move: { en: "Write $N(t)=N_0q^{\\,t}$", he: "רשמו $N(t)=N_0q^{\\,t}$" },
+        detail: {
+          en: "Substituting $t=0$ gives $N(0)=N_0$, so the initial reading is $N_0$ with no work at all. Read it straight off the question.",
+          he: "הצבת $t=0$ נותנת $N(0)=N_0$, ולכן המדידה ההתחלתית היא $N_0$ ללא כל חישוב. קראו אותה ישירות מהשאלה.",
+        },
+      },
+      {
+        move: { en: "Use a second reading to find $q$", he: "השתמשו במדידה שנייה למציאת $q$" },
+        detail: {
+          en: "One more data point gives $q^{\\,t}=\\frac{N_1}{N_0}$. Take the $t$-th root — stopping at $q^{\\,t}$ is the classic half-answer.",
+          he: "נקודת מידע נוספת נותנת $q^{\\,t}=\\frac{N_1}{N_0}$. הוציאו שורש מסדר $t$ — עצירה ב-$q^{\\,t}$ היא חצי-התשובה הקלאסית.",
+        },
+      },
+      {
+        move: { en: "Invert with logarithms", he: "הפכו בעזרת לוגריתמים" },
+        detail: {
+          en: "To find a time, isolate the power and take $\\ln$ of both sides: $t=\\frac{\\ln\\left(M/N_0\\right)}{\\ln q}$. Any base works, as long as you use the same one twice.",
+          he: "כדי למצוא זמן, בודדו את החזקה וקחו $\\ln$ משני האגפים: $t=\\frac{\\ln\\left(M/N_0\\right)}{\\ln q}$. כל בסיס מתאים, כל עוד משתמשים באותו בסיס פעמיים.",
+        },
+      },
+      {
+        move: { en: "Sanity-check the direction and the units", he: "בדקו את הכיוון ואת היחידות" },
+        detail: {
+          en: "Growth means $q>1$ and decay means $q<1$; a decay answer with $q>1$ is wrong before you check anything else. Then confirm the time is in the units the question used.",
+          he: "גדילה פירושה $q>1$ ודעיכה $q<1$; תשובת דעיכה עם $q>1$ שגויה עוד לפני בדיקה נוספת. לאחר מכן ודאו שהזמן ביחידות שבהן השתמשה השאלה.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "Exponential change means the quantity is multiplied by the same factor in every equal interval — that is the whole definition, and it is why only two readings are ever needed. The logarithm is simply the operation that undoes “raise to the power $t$”, which is why it appears the moment the unknown moves into the exponent.",
+      he: "שינוי מעריכי פירושו שהגודל מוכפל באותו מקדם בכל מרווח שווה — זו כל ההגדרה, ולכן די תמיד בשתי מדידות. הלוגריתם הוא פשוט הפעולה ההופכית ל״העלאה בחזקת $t$״, ולכן הוא מופיע ברגע שהנעלם עובר למעריך.",
+    },
+    speedTip: {
+      en: "Before reaching for a calculator, check whether the target is a whole power of $q$. If $\\frac{M}{N_0}=q^{\\,k}$ the logarithms cancel outright and $t=k$ — exact, instant, and no rounding to lose marks on.",
+      he: "לפני שפונים למחשבון, בדקו אם היעד הוא חזקה שלמה של $q$. אם $\\frac{M}{N_0}=q^{\\,k}$ הלוגריתמים מצטמצמים לגמרי ומתקבל $t=k$ — מדויק, מיידי, וללא עיגול שיעלה בנקודות.",
+    },
+    watchOut: [
+      {
+        en: "$\\ln\\frac{A}{B}=\\ln A-\\ln B$, which is **not** $\\frac{\\ln A}{\\ln B}$.",
+        he: "$\\ln\\frac{A}{B}=\\ln A-\\ln B$, וזה **אינו** $\\frac{\\ln A}{\\ln B}$.",
+      },
+      {
+        en: "A drop of $20\\%$ means $q=0.8$, not $q=0.2$.",
+        he: "ירידה של $20\\%$ פירושה $q=0.8$, לא $q=0.2$.",
       },
     ],
   },
