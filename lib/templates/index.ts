@@ -1,5 +1,6 @@
-import type { Problem, Template, TemplateId } from "../types";
+import type { Problem, Template, TemplateDef, TemplateId } from "../types";
 import { makeRng } from "../rng";
+import { PATTERNS } from "../patterns";
 import { triangleBisector } from "./triangle-bisector";
 import { triangleFromLines } from "./triangle-from-lines";
 import { functionInvestigation } from "./function-investigation";
@@ -7,8 +8,8 @@ import { areaBetweenCurves } from "./area-between-curves";
 import { reverseIntegral } from "./reverse-integral";
 import { limits } from "./limits";
 
-/** Order here is the order shown on the Progress screen. */
-export const TEMPLATE_LIST: Template[] = [
+/** Order here is the order shown on the Progress and Patterns screens. */
+const DEFS: TemplateDef[] = [
   triangleBisector,
   triangleFromLines,
   functionInvestigation,
@@ -16,6 +17,12 @@ export const TEMPLATE_LIST: Template[] = [
   reverseIntegral,
   limits,
 ];
+
+/** Each template carries its transferable method alongside its generator. */
+export const TEMPLATE_LIST: Template[] = DEFS.map((def) => ({
+  ...def,
+  pattern: PATTERNS[def.id],
+}));
 
 export const TEMPLATES = Object.fromEntries(
   TEMPLATE_LIST.map((t) => [t.id, t]),

@@ -11,12 +11,14 @@ import { Sketch } from "./Sketch";
 export function TopicLine({ problem, lang }: { problem: Problem; lang: Lang }) {
   const template = TEMPLATES[problem.templateId];
   return (
-    <div className="flex items-center gap-2 text-[0.72rem] tracking-wider text-faint uppercase">
-      <span>{tx(template.name, lang)}</span>
-      <span aria-hidden>·</span>
-      <span aria-label="difficulty">
-        {"•".repeat(problem.difficulty)}
-        <span className="text-line">{"•".repeat(3 - problem.difficulty)}</span>
+    <div className="plate flex items-center gap-2 text-faint">
+      <span className="text-muted">{tx(template.name, lang)}</span>
+      <span aria-hidden className="text-rule">
+        ·
+      </span>
+      <span aria-label={`difficulty ${problem.difficulty} of 3`}>
+        <span className="text-accent">{"●".repeat(problem.difficulty)}</span>
+        <span className="text-rule">{"●".repeat(3 - problem.difficulty)}</span>
       </span>
     </div>
   );

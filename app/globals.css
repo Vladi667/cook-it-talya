@@ -1,53 +1,125 @@
 @import "tailwindcss";
 
+/*
+ * "The mathematician's notebook" — warm ivory stock, hairline rules, plate
+ * numbers in mono, graph-paper texture. One oxidised teal for action and
+ * correctness; one burnt ochre reserved EXCLUSIVELY for pattern teaching, so
+ * the eye learns that ochre means "this is the transferable part".
+ */
 @theme {
-  --color-paper: #fbf9f5;
-  --color-raised: #ffffff;
-  --color-ink: #191813;
-  --color-muted: #6f6a60;
-  --color-faint: #96908a;
-  --color-line: #e6e0d6;
-  --color-accent: #1c6b55;
-  --color-accent-ink: #124a3b;
-  --color-accent-soft: #e9f1ee;
-  --color-wrong: #a8402c;
-  --color-wrong-soft: #f8ece9;
+  --color-paper: #f6f2e9;
+  --color-raised: #fffcf5;
+  --color-sunken: #ede7da;
+  --color-ink: #17150f;
+  --color-muted: #6a6355;
+  --color-faint: #98917f;
+  --color-rule: #ded5c2;
 
-  --font-serif: var(--font-question), Georgia, "Times New Roman", serif;
+  --color-accent: #0e5c50;
+  --color-accent-soft: #e2ede9;
+
+  --color-pattern: #a35c22;
+  --color-pattern-soft: #f6ebdd;
+
+  --color-wrong: #92392b;
+  --color-wrong-soft: #f8eae6;
+
+  --font-serif: var(--font-question), "Iowan Old Style", Georgia, serif;
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plate), ui-monospace, "SF Mono", monospace;
 }
 
-html,
-body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  font-feature-settings: "cv05" 1;
+  font-synthesis-weight: none;
 }
 
-/* Math is the primary content: give it room and a comfortable size. */
+/* Paper grain: a single inline turbulence, fixed so it never scrolls. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- graph paper ------------------------------------------------------ */
+
+.graph {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-accent) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 9%, transparent) 1px, transparent 1px);
+  background-size: 19px 19px;
+}
+
+.graph-ochre {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-pattern) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-pattern) 10%, transparent) 1px, transparent 1px);
+  background-size: 19px 19px;
+}
+
+/* ---- editorial furniture ---------------------------------------------- */
+
+/* A hairline with a small square terminal, like a printed rule. */
+.rule-cap {
+  position: relative;
+  border-top: 1px solid var(--color-rule);
+}
+.rule-cap::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: -2.5px;
+  width: 4px;
+  height: 4px;
+  background: var(--color-ink);
+}
+
+.plate {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ---- math ------------------------------------------------------------- */
+
 .katex {
-  font-size: 1.12em;
+  font-size: 1.1em;
 }
 
 .katex-display {
-  margin: 1.15rem 0;
+  margin: 1.2rem 0;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-bottom: 2px;
+  padding-bottom: 3px;
 }
 
 .katex-display > .katex {
-  font-size: 1.3em;
+  font-size: 1.28em;
 }
 
 @media (max-width: 640px) {
   .katex-display > .katex {
-    font-size: 1.12em;
+    font-size: 1.08em;
+  }
+  .katex {
+    font-size: 1.04em;
   }
 }
 
@@ -57,19 +129,16 @@ body {
   unicode-bidi: isolate;
 }
 
-/* Numeric answers read better with lining figures. */
-input[inputmode="text"] {
-  font-variant-numeric: tabular-nums;
+::selection {
+  background: var(--color-pattern-soft);
 }
 
-::selection {
-  background: var(--color-accent-soft);
-}
+/* ---- motion ----------------------------------------------------------- */
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -77,12 +146,59 @@ input[inputmode="text"] {
   }
 }
 
-.rise {
-  animation: rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+@keyframes stamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.995);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-/* Thin, unobtrusive scrollbars for the overflowing math lines. */
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.rise {
+  animation: rise 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stamp {
+  animation: stamp 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered page-load reveal. */
+.stagger > * {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.02s; }
+.stagger > *:nth-child(2) { animation-delay: 0.09s; }
+.stagger > *:nth-child(3) { animation-delay: 0.16s; }
+.stagger > *:nth-child(4) { animation-delay: 0.23s; }
+.stagger > *:nth-child(5) { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-line) transparent;
+  scrollbar-color: var(--color-rule) transparent;
 }

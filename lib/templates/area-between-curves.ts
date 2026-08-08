@@ -1,4 +1,4 @@
-import type { Figure, Problem, Rng, Template } from "../types";
+import type { Figure, Problem, Rng, TemplateDef } from "../types";
 import { sample } from "../rng";
 import { fracLatex, fracPlain, signed } from "./util";
 
@@ -60,7 +60,7 @@ function round(v: number): number {
   return Math.round(v * 1000) / 1000;
 }
 
-export const areaBetweenCurves: Template = {
+export const areaBetweenCurves: TemplateDef = {
   id: "area-between-curves",
   topic: "calculus",
   name: {
@@ -196,6 +196,7 @@ export const areaBetweenCurves: Template = {
         ],
         steps: [
           {
+            move: 1,
             title: { en: "Intersection", he: "נקודת חיתוך" },
             body: {
               en: `Set $${curveLatex}=x ${signed(-p)}$ and square: $${j * j}x = \\left(x ${signed(-p)}\\right)^2$, i.e. $x^2 - ${2 * p + j * j}x + ${p * p}=0$, whose relevant root is $x=${xi}$. So the curve and the line meet at $(${xi},\\ ${yi})$. The line meets the $x$-axis at $x=${p}$.`,
@@ -203,6 +204,7 @@ export const areaBetweenCurves: Template = {
             },
           },
           {
+            move: 2,
             title: { en: "Split the region", he: "פיצול התחום" },
             body: {
               en: `The upper boundary is the curve throughout. The lower boundary is the $x$-axis on $[0,${p}]$ and the line on $[${p},${xi}]$ — so the area is a sum of two integrals.`,
@@ -210,6 +212,7 @@ export const areaBetweenCurves: Template = {
             },
           },
           {
+            move: 3,
             title: { en: "Integrate", he: "אינטגרציה" },
             body: {
               en: `$$S=\\int_{0}^{${p}}${curveLatex}\\,dx+\\int_{${p}}^{${xi}}\\left[${curveLatex}-\\left(x ${signed(-p)}\\right)\\right]dx,$$ using $\\int ${curveLatex}\\,dx = \\frac{2${j === 1 ? "" : j}}{3}x^{3/2}$.`,
@@ -217,6 +220,7 @@ export const areaBetweenCurves: Template = {
             },
           },
           {
+            move: 3,
             title: { en: "Sum", he: "סכימה" },
             body: {
               en: `The $x^{3/2}$ terms at $x=${p}$ cancel between the two integrals, and what is left is rational: $$S=${areaLatex}.$$`,
@@ -347,6 +351,7 @@ export const areaBetweenCurves: Template = {
       ],
       steps: [
         {
+          move: 1,
           title: { en: "Intersection", he: "נקודת חיתוך" },
           body: {
             en: `$${f1}=${f2}$ gives $x=${a}-x$, so $x=${xi}$ and $y=${yi}$: the curves meet at $(${xi},\\ ${yi})$. The first curve starts at the origin, the second reaches the $x$-axis at $x=${a}$.`,
@@ -354,6 +359,7 @@ export const areaBetweenCurves: Template = {
           },
         },
         {
+          move: 2,
           title: { en: "Split the region", he: "פיצול התחום" },
           body: {
             en: `The upper boundary changes at $x=${xi}$: it is $${f1}$ before, and $${f2}$ after. The lower boundary is the $x$-axis throughout.`,
@@ -361,6 +367,7 @@ export const areaBetweenCurves: Template = {
           },
         },
         {
+          move: 3,
           title: { en: "Integrate", he: "אינטגרציה" },
           body: {
             en: `$$S=\\int_{0}^{${xi}}${f1}\\,dx+\\int_{${xi}}^{${a}}${f2}\\,dx = ${fracLatex(areaNum, 6)} + ${fracLatex(areaNum, 6)} = ${areaLatex}.$$ The two halves are equal by the symmetry about $x=${xi}$.`,

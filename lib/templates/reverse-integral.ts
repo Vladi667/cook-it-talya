@@ -1,4 +1,4 @@
-import type { Problem, Rng, Template } from "../types";
+import type { Problem, Rng, TemplateDef } from "../types";
 import { sample } from "../rng";
 import { fracLatex, signed, signedTerm } from "./util";
 
@@ -42,7 +42,7 @@ function valueLatex(ratNum: number, R: number, q: number): string {
   return `${fracLatex(ratNum, 2)} ${R < 0 ? "-" : "+"} ${lnPart}`;
 }
 
-export const reverseIntegral: Template = {
+export const reverseIntegral: TemplateDef = {
   id: "reverse-integral",
   topic: "calculus",
   name: {
@@ -133,6 +133,7 @@ export const reverseIntegral: Template = {
       ],
       steps: [
         {
+          move: 0,
           title: { en: "Polynomial long division", he: "חילוק פולינומים" },
           body: {
             en: `The numerator has the higher degree, so divide: $$${integrand} = ${quotient} + \\frac{${remainder}}{x+${k}}.$$`,
@@ -140,6 +141,7 @@ export const reverseIntegral: Template = {
           },
         },
         {
+          move: 1,
           title: { en: "Antiderivative", he: "פונקציה קדומה" },
           body: {
             en: `$$F(x)=\\frac{x^2}{2}${signedTerm(m - k, "x")} + \\left(${remainder}\\right)\\ln(x+${k}).$$ The logarithm is legitimate here because $x+${k}>0$ on $[${c},${d}]$.`,
@@ -147,6 +149,7 @@ export const reverseIntegral: Template = {
           },
         },
         {
+          move: 2,
           title: { en: "Evaluate the bounds", he: "הצבת הגבולות" },
           body: {
             en: `$$F(${d})-F(${c}) = ${fracLatex(ratNum, 2)} + \\left(${remainder}\\right)\\ln\\frac{${d + k}}{${c + k}} = ${fracLatex(ratNum, 2)} + \\left(${remainder}\\right)\\ln ${q}.$$`,
@@ -154,6 +157,7 @@ export const reverseIntegral: Template = {
           },
         },
         {
+          move: 3,
           title: { en: "Solve for $b$", he: "פתרון עבור $b$" },
           body: {
             en: `Set that equal to $${V}$. The rational parts already agree, so $${remainder} = ${R}$, giving $$b = ${b}.$$`,

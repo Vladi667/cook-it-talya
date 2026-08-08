@@ -54,6 +54,44 @@ validate against the same expected answer.
   `(0,2)∪(2,∞)`
 - constants accept hand-rounded decimals (~3 significant digits)
 
+## The teaching layer
+
+The app is built on one claim: **Bagrut questions are rehearsed forms, not
+puzzles.** A student who recognises the form and runs a memorised recipe
+finishes in a third of the time of one who re-derives everything. So the unit
+of learning here is not the worked example — it is the *pattern*.
+
+`lib/patterns.ts` gives each template:
+
+- **signature** — the cues that identify the type in about five seconds
+- **recipe** — the fixed sequence of moves; only the numbers change
+- **why it works** — the reason the recipe is valid, not just that it is
+- **speed tip** — the shortcut that saves real exam minutes (integrate in $y$
+  instead of $x$; never find the bisector's equation; skip the quotient rule
+  after a long division)
+- **watch out** — what to check before writing the final line
+
+Every solution step carries a `move` index into its recipe, so when the worked
+solution is revealed each line is labelled *“Move 3 · name the upper and lower
+boundary”*. The concrete instance and the general method are always shown
+together. `/patterns` is the study view of all six.
+
+Ochre is used for pattern content and for nothing else, so the colour itself
+comes to mean “this is the transferable part”.
+
+## Getting it wrong is the lesson
+
+A first wrong answer is a teaching moment, not a verdict:
+
+1. The answer is graded and the mistake is **named** (see below).
+2. Where the diagnosis maps onto a recipe move, that move is named too.
+3. **Try again** — nothing is written to your progress until you either
+   succeed or ask for the solution.
+4. Solving on the second attempt records at 65% credit, so mastery reflects
+   the help you needed.
+
+Only when you give up does the worked solution appear.
+
 ## “Why was I wrong?”
 
 Deterministic, instant, offline (`lib/diagnose.ts`). Rules are tried
@@ -87,7 +125,9 @@ no template ever drops out of the rotation.
 ## Stack
 
 Next.js 15 (App Router) · TypeScript strict · Tailwind v4 · KaTeX ·
-nerdamer (Algebra + Calculus + Solve) · Zustand · Vitest.
+nerdamer (Algebra + Calculus + Solve) · Zustand · Vitest. Type is Frank Ruhl
+Libre, IBM Plex Sans Hebrew and IBM Plex Mono — all three carry Latin and
+Hebrew, so the page does not change character when you switch language.
 
 Persistence is `localStorage` behind the `StorageAdapter` interface in
 `lib/storage.ts`; swapping in Supabase means writing one class and changing the
@@ -99,7 +139,7 @@ export at the bottom of that file. No auth in v1.
 npm test
 ```
 
-86 tests. Every template is generated 100 times and each sample is verified
+105 tests. Every template is generated 100 times and each sample is verified
 *independently* of its own algebra — numeric integration for areas and
 integrals, numeric limits for limits, central differences for derivatives, and
 direct geometric checks (is `D` on `BC`? does `AD` bisect the angle? do all

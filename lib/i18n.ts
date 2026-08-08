@@ -6,8 +6,28 @@ export const UI = {
   tagline: { en: "Bagrut trainer · 5 units", he: "מתרגל בגרות · 5 יחידות" },
 
   practice: { en: "Practice", he: "תרגול" },
+  patterns: { en: "Patterns", he: "תבניות" },
   exam: { en: "Exam", he: "מבחן" },
   progress: { en: "Progress", he: "התקדמות" },
+
+  thePattern: { en: "The pattern", he: "התבנית" },
+  patternsTitle: { en: "Patterns", he: "תבניות" },
+  patternsIntro: {
+    en: "Bagrut questions are rehearsed forms, not puzzles. Six patterns cover the whole paper: learn to recognise each one in five seconds, run its recipe, and the exam becomes bookkeeping.",
+    he: "שאלות הבגרות הן תבניות מתורגלות, לא חידות. שש תבניות מכסות את כל השאלון: למדו לזהות כל אחת בחמש שניות, הריצו את השיטה, והמבחן הופך לניהול רישום.",
+  },
+  howToSpot: { en: "How to spot it", he: "איך לזהות" },
+  theMethod: { en: "The method", he: "השיטה" },
+  whyItWorks: { en: "Why it works", he: "למה זה עובד" },
+  speedTip: { en: "The faster route", he: "הדרך המהירה" },
+  watchOut: { en: "Before you write the answer", he: "לפני שכותבים את התשובה" },
+  move: { en: "Move", he: "מהלך" },
+  studyPattern: { en: "Study this pattern", he: "ללמוד את התבנית" },
+  openPattern: { en: "Open the pattern", he: "פתחו את התבנית" },
+  patternRecall: {
+    en: "Same six moves, every time. Only the numbers change.",
+    he: "אותם שישה מהלכים, בכל פעם. רק המספרים משתנים.",
+  },
 
   yourAnswer: { en: "Your answer", he: "התשובה שלך" },
   check: { en: "Check answer", he: "בדיקת תשובה" },
@@ -24,6 +44,17 @@ export const UI = {
   readAs: { en: "Read as", he: "נקרא כ" },
   expected: { en: "Expected", he: "התשובה הנכונה" },
 
+  tryAgain: { en: "Try again", he: "נסו שוב" },
+  secondChance: {
+    en: "Read what went wrong, then answer again. Nothing is recorded until you stop.",
+    he: "קראו מה השתבש, ואז ענו שוב. שום דבר לא נרשם עד שתפסיקו.",
+  },
+  attemptN: { en: "Attempt", he: "ניסיון" },
+  revealSolution: { en: "Show me the solution", he: "הראו לי את הפתרון" },
+  gotItAlone: {
+    en: "Second attempt — worked it out yourself.",
+    he: "ניסיון שני — פתרתם בעצמכם.",
+  },
   solution: { en: "Solution", he: "פתרון" },
   showStep: { en: "Show next step", he: "הצג את השלב הבא" },
   showAllSteps: { en: "Show all steps", he: "הצג את כל השלבים" },

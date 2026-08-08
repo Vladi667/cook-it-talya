@@ -60,7 +60,7 @@ export function AnswerInput({
       ? "border-accent"
       : status === "incorrect"
         ? "border-wrong"
-        : "border-line focus-within:border-accent";
+        : "border-rule focus-within:border-accent";
 
   return (
     <div>
@@ -76,7 +76,7 @@ export function AnswerInput({
       >
         {field.label && (
           <span
-            className="math-ltr flex items-center border-e border-line/70 bg-paper px-3 font-serif text-[0.95rem] text-muted"
+            className="math-ltr flex items-center border-e border-rule/70 bg-paper px-3 font-serif text-[0.95rem] text-muted"
             aria-hidden
           >
             {field.label}
@@ -115,7 +115,7 @@ export function AnswerInput({
               type="button"
               tabIndex={-1}
               onClick={() => insert(tool)}
-              className="math-ltr shrink-0 rounded-lg border border-line bg-raised px-2.5 py-1.5 font-serif text-[0.85rem] text-muted transition-colors hover:border-accent hover:text-accent active:bg-accent-soft"
+              className="math-ltr shrink-0 rounded-lg border border-rule bg-raised px-2.5 py-1.5 font-serif text-[0.85rem] text-muted transition-colors hover:border-accent hover:text-accent active:bg-accent-soft"
             >
               {tool.label}
             </button>

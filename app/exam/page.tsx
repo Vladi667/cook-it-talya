@@ -126,7 +126,7 @@ export default function ExamPage() {
 
   return (
     <div className="space-y-7">
-      <div className="flex items-center justify-between gap-4 border-b border-line pb-3">
+      <div className="flex items-center justify-between gap-4 border-b border-rule pb-3">
         <span className="text-[0.78rem] text-muted">
           {t("question", lang)} {exam.index + 1} {t("of", lang)}{" "}
           {exam.questions.length} · {answered} {t("answered", lang)}
@@ -153,7 +153,7 @@ export default function ExamPage() {
                   ? "border-accent bg-accent text-white"
                   : done
                     ? "border-accent/40 bg-accent-soft text-accent"
-                    : "border-line text-muted hover:border-accent"
+                    : "border-rule text-muted hover:border-accent"
               }`}
             >
               {i + 1}
@@ -177,12 +177,12 @@ export default function ExamPage() {
         }
       />
 
-      <div className="flex flex-wrap items-center gap-3 border-t border-line pt-5">
+      <div className="flex flex-wrap items-center gap-3 border-t border-rule pt-5">
         <button
           type="button"
           disabled={exam.index === 0}
           onClick={() => gotoExamQuestion(exam.index - 1)}
-          className="rounded-full border border-line px-4 py-2 text-[0.85rem] text-muted disabled:opacity-40"
+          className="rounded-full border border-rule px-4 py-2 text-[0.85rem] text-muted disabled:opacity-40"
         >
           ← {t("prev", lang)}
         </button>
@@ -190,7 +190,7 @@ export default function ExamPage() {
           type="button"
           disabled={exam.index === exam.questions.length - 1}
           onClick={() => gotoExamQuestion(exam.index + 1)}
-          className="rounded-full border border-line px-4 py-2 text-[0.85rem] text-muted disabled:opacity-40"
+          className="rounded-full border border-rule px-4 py-2 text-[0.85rem] text-muted disabled:opacity-40"
         >
           {t("next", lang)} →
         </button>
@@ -320,7 +320,7 @@ function ExamResults({
         <h2 className="mb-3 text-[0.72rem] tracking-wider text-faint uppercase">
           {t("breakdown", lang)}
         </h2>
-        <ul className="divide-y divide-line border-y border-line">
+        <ul className="divide-y divide-rule border-y border-rule">
           {graded.map((g, i) => (
             <li
               key={i}
@@ -367,7 +367,7 @@ function ExamResults({
                 lang={lang}
               />
             )}
-            <div className="border-t border-line pt-5">
+            <div className="border-t border-rule pt-5">
               <StepReveal
                 steps={g.problem.steps}
                 lang={lang}

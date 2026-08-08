@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Frank_Ruhl_Libre, Heebo } from "next/font/google";
+import {
+  Frank_Ruhl_Libre,
+  IBM_Plex_Mono,
+  IBM_Plex_Sans_Hebrew,
+} from "next/font/google";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import { Header } from "@/components/Header";
@@ -13,10 +17,18 @@ const question = Frank_Ruhl_Libre({
   display: "swap",
 });
 
-const ui = Heebo({
+const ui = IBM_Plex_Sans_Hebrew({
   subsets: ["latin", "hebrew"],
   weight: ["400", "500", "600"],
   variable: "--font-ui",
+  display: "swap",
+});
+
+/** Plate numbers, labels and metadata — the printed-monograph voice. */
+const plate = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plate",
   display: "swap",
 });
 
@@ -27,7 +39,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbf9f5",
+  themeColor: "#f6f2e9",
   width: "device-width",
   initialScale: 1,
 };
@@ -38,11 +50,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="ltr" className={`${question.variable} ${ui.variable}`}>
+    <html
+      lang="en"
+      dir="ltr"
+      className={`${question.variable} ${ui.variable} ${plate.variable}`}
+    >
       <body className="min-h-dvh antialiased">
         <Hydrate />
         <Header />
-        <main className="mx-auto max-w-3xl px-5 pt-8 pb-24 sm:px-8">
+        <main className="mx-auto w-full max-w-[46rem] px-5 pt-9 pb-28 sm:px-8">
           {children}
         </main>
       </body>

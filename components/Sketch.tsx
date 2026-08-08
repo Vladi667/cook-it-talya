@@ -19,7 +19,7 @@ export function Sketch({ figure }: { figure: Figure }) {
     pts.map(([x, y]) => `${sx(x).toFixed(1)},${sy(y).toFixed(1)}`).join(" ");
 
   return (
-    <figure className="math-ltr my-5 overflow-x-auto">
+    <figure className="graph math-ltr my-6 overflow-x-auto rounded-xl border border-rule/70 bg-raised p-2">
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="h-auto w-full max-w-[420px]"
@@ -41,7 +41,7 @@ export function Sketch({ figure }: { figure: Figure }) {
           y1={sy(0)}
           x2={W - PAD.r + 6}
           y2={sy(0)}
-          stroke="var(--color-muted)"
+          stroke="var(--color-faint)"
           strokeWidth="1"
         />
         <line
@@ -49,7 +49,7 @@ export function Sketch({ figure }: { figure: Figure }) {
           y1={H - PAD.b}
           x2={sx(0)}
           y2={PAD.t - 6}
-          stroke="var(--color-muted)"
+          stroke="var(--color-faint)"
           strokeWidth="1"
         />
         <text x={W - PAD.r + 8} y={sy(0) + 4} fontSize="11" fill="var(--color-faint)">
@@ -84,7 +84,7 @@ export function Sketch({ figure }: { figure: Figure }) {
                 x={sx(mark.x) + 7}
                 y={sy(mark.y) - 7}
                 fontSize="11"
-                fill="var(--color-muted)"
+                fill="var(--color-faint)"
               >
                 {mark.label}
               </text>

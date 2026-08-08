@@ -3,7 +3,7 @@ import type {
   Problem,
   Rng,
   SolutionStep,
-  Template,
+  TemplateDef,
   Text,
   Verification,
 } from "../types";
@@ -83,6 +83,7 @@ function familyLog(rng: Rng): Built | null {
 
   const steps: SolutionStep[] = [
     {
+      move: 0,
       title: { en: "Domain", he: "תחום הגדרה" },
       body: {
         en: `$\\ln x$ requires $x>0$, and that already excludes $x=0$ in the denominator. So the domain is $x>0$.`,
@@ -90,6 +91,7 @@ function familyLog(rng: Rng): Built | null {
       },
     },
     {
+      move: 2,
       title: { en: "Derivative", he: "נגזרת" },
       body: {
         en: `Quotient rule: $$f'(x)=\\frac{${a}\\cdot\\frac{1}{x}\\cdot x^{${k}} - ${coef(a, "\\ln x")}\\cdot ${k}x^{${k - 1}}}{x^{${2 * k}}}=\\frac{${coef(a, "")}\\left(1-${k === 1 ? "" : k}\\ln x\\right)}{x^{${k + 1}}}.$$`,
@@ -97,6 +99,7 @@ function familyLog(rng: Rng): Built | null {
       },
     },
     {
+      move: 2,
       title: { en: "Extremum", he: "נקודת קיצון" },
       body: {
         en: `$f'(x)=0$ when $${k === 1 ? "" : k}\\ln x = 1$, i.e. $x=${xcLatex}$. The denominator $x^{${k + 1}}$ is positive on the domain, so $f'$ changes sign exactly as $1-${k === 1 ? "" : k}\\ln x$ does: ${isMax ? "positive then negative — a maximum" : "negative then positive — a minimum"}. The point is $$\\left(${xcLatex},\\ ${ycLatex}\\right).$$`,
@@ -104,6 +107,7 @@ function familyLog(rng: Rng): Built | null {
       },
     },
     {
+      move: 3,
       title: { en: "Asymptotes", he: "אסימפטוטות" },
       body: {
         en: `As $x\\to0^{+}$, $\\ln x\\to-\\infty$ and $x^{${k}}\\to0^{+}$, so $f(x)\\to${a > 0 ? "-" : "+"}\\infty$: the line $x=0$ is a vertical asymptote. As $x\\to\\infty$ the power beats the logarithm, so $f(x)\\to0$ and $y=0$ is a horizontal asymptote. There is no oblique asymptote.`,
@@ -111,6 +115,7 @@ function familyLog(rng: Rng): Built | null {
       },
     },
     {
+      move: 4,
       title: { en: "Tangent at $x=1$", he: "משיק ב-$x=1$" },
       body: {
         en: `$f(1)=0$ because $\\ln 1 = 0$, and $f'(1)=${a}$. Point-slope: $y-0=${a}(x-1)$, so $$${tangentLatex}.$$`,
@@ -216,6 +221,7 @@ function familyRational(rng: Rng): Built | null {
 
   const steps: SolutionStep[] = [
     {
+      move: 0,
       title: { en: "Domain", he: "תחום הגדרה" },
       body: {
         en: `The denominator vanishes at $x=${-p}$, so the domain is all $x\\neq ${-p}$.`,
@@ -223,6 +229,7 @@ function familyRational(rng: Rng): Built | null {
       },
     },
     {
+      move: 1,
       title: { en: "Split off the asymptote", he: "הפרדת האסימפטוטה" },
       body: {
         en: `Long division makes everything easier: $$f(x)=x ${signed(-p)} + \\frac{${m * m}}{x ${signed(p)}}.$$ The fraction tends to $0$ at infinity, so $y = x ${signed(-p)}$ is an oblique asymptote, and $x=${-p}$ is a vertical one.`,
@@ -230,6 +237,7 @@ function familyRational(rng: Rng): Built | null {
       },
     },
     {
+      move: 2,
       title: { en: "Extrema", he: "נקודות קיצון" },
       body: {
         en: `$$f'(x)=1-\\frac{${m * m}}{\\left(x ${signed(p)}\\right)^2}=0 \\iff \\left(x ${signed(p)}\\right)^2 = ${m * m} \\iff x = ${xMax}\\ \\text{or}\\ x = ${xMin}.$$ Substituting back: a maximum at $(${xMax},\\ ${yMax})$ and a minimum at $(${xMin},\\ ${yMin})$ — the usual arrangement for this shape, with the maximum on the left branch.`,
@@ -237,6 +245,7 @@ function familyRational(rng: Rng): Built | null {
       },
     },
     {
+      move: 4,
       title: { en: `Tangent at $x=${x0}$`, he: `משיק ב-$x=${x0}$` },
       body: {
         en: `$x=${x0}$ was chosen so that $x ${signed(p)} = 1$: then $f(${x0})=${y0}$ and $f'(${x0})=1-${m * m}=${slope}$. Point-slope gives $$y = ${coef(slope, "x")} ${signed(intercept)}.$$`,
@@ -347,6 +356,7 @@ function familyRoot(rng: Rng): Built | null {
 
   const steps: SolutionStep[] = [
     {
+      move: 0,
       title: { en: "Domain", he: "תחום הגדרה" },
       body: {
         en: `$\\sqrt{x}$ needs $x\\geq 0$, and nothing else restricts it, so the domain is $x\\geq 0$.`,
@@ -354,6 +364,7 @@ function familyRoot(rng: Rng): Built | null {
       },
     },
     {
+      move: 2,
       title: { en: "Derivative", he: "נגזרת" },
       body: {
         en: `Product rule: $$f'(x)=\\sqrt{x}+\\frac{x-${a}}{2\\sqrt{x}}=\\frac{2x + x - ${a}}{2\\sqrt{x}}=\\frac{3\\left(x-${xMin}\\right)}{2\\sqrt{x}}.$$`,
@@ -361,6 +372,7 @@ function familyRoot(rng: Rng): Built | null {
       },
     },
     {
+      move: 2,
       title: { en: "Extremum", he: "נקודת קיצון" },
       body: {
         en: `On $x>0$ the denominator is positive, so the sign of $f'$ follows $x-${xMin}$: negative then positive, a minimum at $$\\left(${xMin},\\ ${yMin}\\right).$$`,
@@ -368,6 +380,7 @@ function familyRoot(rng: Rng): Built | null {
       },
     },
     {
+      move: 3,
       title: { en: "Asymptotes", he: "אסימפטוטות" },
       body: {
         en: `The function is defined and continuous on all of $[0,\\infty)$, so there is no vertical asymptote. As $x\\to\\infty$ it grows without bound and $\\frac{f(x)}{x}\\to\\infty$, so there is no horizontal or oblique asymptote either.`,
@@ -375,6 +388,7 @@ function familyRoot(rng: Rng): Built | null {
       },
     },
     {
+      move: 4,
       title: { en: `Tangent at $x=${x0}$`, he: `משיק ב-$x=${x0}$` },
       body: {
         en: `$f(${x0})=\\left(${x0}-${a}\\right)\\sqrt{${x0}} = ${y0}$ and $f'(${x0})=\\frac{3\\left(${x0}-${xMin}\\right)}{2\\sqrt{${x0}}}=${slope}$, so $$y = ${coef(slope, "x")} ${signed(intercept)}.$$`,
@@ -438,7 +452,7 @@ function familyRoot(rng: Rng): Built | null {
 
 const FAMILIES = [familyLog, familyRational, familyRoot];
 
-export const functionInvestigation: Template = {
+export const functionInvestigation: TemplateDef = {
   id: "function-investigation",
   topic: "calculus",
   name: {

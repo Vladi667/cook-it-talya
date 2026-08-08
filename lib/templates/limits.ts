@@ -1,4 +1,4 @@
-import type { Pitfall, Problem, Rng, SolutionStep, Template, Text } from "../types";
+import type { Pitfall, Problem, Rng, SolutionStep, TemplateDef, Text } from "../types";
 import { fracLatex, fracPlain } from "./util";
 
 /** The classic error on every a/b family: reading the ratio upside down. */
@@ -51,6 +51,7 @@ const FAMILIES: Family[] = [
     pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
+        move: 0,
         title: { en: "Try substitution", he: "ניסיון הצבה" },
         body: {
           en: `Substituting $x=0$ gives $\\frac{e^{0}-1}{\\sin 0}=\\frac{0}{0}$ — an indeterminate form, so substitution alone is not enough.`,
@@ -58,6 +59,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Use the standard limits", he: "שימוש בגבולות היסודיים" },
         body: {
           en: `Write it so the two standard limits $\\lim_{t\\to0}\\frac{e^{t}-1}{t}=1$ and $\\lim_{t\\to0}\\frac{\\sin t}{t}=1$ appear: $$\\frac{e^{${a}x}-1}{\\sin(${b}x)}=\\frac{e^{${a}x}-1}{${a}x}\\cdot\\frac{${b}x}{\\sin(${b}x)}\\cdot\\frac{${a}}{${b}}.$$`,
@@ -65,6 +67,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Take the limit", he: "חישוב הגבול" },
         body: {
           en: `The first two factors tend to $1$, so the limit is $$${fracLatex(a, b)}.$$ (L'Hopital gives the same in one line: $\\frac{${a}e^{${a}x}}{${b}\\cos(${b}x)}\\to${fracLatex(a, b)}$.)`,
@@ -100,6 +103,7 @@ const FAMILIES: Family[] = [
     pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
+        move: 1,
         title: { en: "Classify the form", he: "זיהוי הצורה" },
         body: {
           en: `At $x=0$: $\\ln(1)=0$ and $e^{0}-1=0$, so this is $\\frac{0}{0}$.`,
@@ -107,6 +111,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Rebuild the standard limits", he: "בניית הגבולות היסודיים" },
         body: {
           en: `$$\\frac{\\ln(1+${a}x)}{e^{${b}x}-1}=\\frac{\\ln(1+${a}x)}{${a}x}\\cdot\\frac{${b}x}{e^{${b}x}-1}\\cdot\\frac{${a}}{${b}},$$ using $\\lim_{t\\to0}\\frac{\\ln(1+t)}{t}=1$ and $\\lim_{t\\to0}\\frac{e^{t}-1}{t}=1$.`,
@@ -114,6 +119,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Result", he: "תוצאה" },
         body: {
           en: `The limit equals $$${fracLatex(a, b)}.$$`,
@@ -160,6 +166,7 @@ const FAMILIES: Family[] = [
           ],
     steps: ([a, b]) => [
       {
+        move: 1,
         title: { en: "Recognise the form", he: "זיהוי הצורה" },
         body: {
           en: `The base tends to $1$ and the exponent to $\\infty$: the indeterminate form $1^{\\infty}$, which is exactly the $e$-limit pattern $\\lim_{t\\to\\infty}\\left(1+\\frac{1}{t}\\right)^{t}=e$.`,
@@ -167,6 +174,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Match the pattern", he: "התאמה לתבנית" },
         body: {
           en: `Substitute $t=\\frac{x}{${a}}$, so $$\\left(1+\\frac{${a}}{x}\\right)^{${b}x}=\\left[\\left(1+\\frac{1}{t}\\right)^{t}\\right]^{${a}\\cdot${b}}.$$`,
@@ -174,6 +182,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Result", he: "תוצאה" },
         body: {
           en: `The bracket tends to $e$, so the limit is $$e^{${a}\\cdot${b}}=${a * b === 1 ? "e" : `e^{${a * b}}`}.$$`,
@@ -217,6 +226,7 @@ const FAMILIES: Family[] = [
     ],
     steps: ([a, b]) => [
       {
+        move: 1,
         title: { en: "Classify", he: "זיהוי" },
         body: {
           en: `Substitution gives $\\frac{0}{0}$.`,
@@ -224,6 +234,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 2,
         title: { en: "Half-angle identity", he: "זהות חצי הזווית" },
         body: {
           en: `Use $1-\\cos\\theta = 2\\sin^{2}\\frac{\\theta}{2}$: $$\\frac{2\\sin^{2}\\left(\\frac{${a}x}{2}\\right)}{${b}x^{2}} = \\frac{2}{${b}}\\left(\\frac{\\sin\\left(\\frac{${a}x}{2}\\right)}{\\frac{${a}x}{2}}\\right)^{2}\\cdot\\frac{${a}^{2}}{4}.$$`,
@@ -231,6 +242,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Result", he: "תוצאה" },
         body: {
           en: `The squared ratio tends to $1$, leaving $$\\frac{${a}^{2}}{2\\cdot${b}}=${fracLatex(a * a, 2 * b)}.$$`,
@@ -274,6 +286,7 @@ const FAMILIES: Family[] = [
     ],
     steps: ([a]) => [
       {
+        move: 1,
         title: { en: "Classify", he: "זיהוי" },
         body: {
           en: `At $x=e$: $\\ln e = 1$, so the numerator is $${a}-${a}=0$ and the denominator is $0$. Indeterminate $\\frac{0}{0}$.`,
@@ -281,6 +294,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Recognise a derivative", he: "זיהוי נגזרת" },
         body: {
           en: `Factor $${a}$ out: $$${a}\\cdot\\frac{\\ln x-\\ln e}{x-e},$$ which is exactly the definition of the derivative of $\\ln x$ at $x=e$.`,
@@ -288,6 +302,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Result", he: "תוצאה" },
         body: {
           en: `Since $(\\ln x)'=\\frac{1}{x}$, the value at $x=e$ is $\\frac{1}{e}$, so the limit is $$${a === 1 ? "\\frac{1}{e}" : `\\frac{${a}}{e}`}.$$`,
@@ -335,6 +350,7 @@ const FAMILIES: Family[] = [
           ],
     steps: ([a, b]) => [
       {
+        move: 2,
         title: { en: "Combine the logarithms", he: "איחוד הלוגריתמים" },
         body: {
           en: `$\\ln(x+${b})-\\ln x=\\ln\\frac{x+${b}}{x}=\\ln\\left(1+\\frac{${b}}{x}\\right)$, so the expression is $${a}x\\ln\\left(1+\\frac{${b}}{x}\\right)$ — the form $\\infty\\cdot 0$.`,
@@ -342,6 +358,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Move the power inside", he: "הכנסת החזקה פנימה" },
         body: {
           en: `$${a}x\\ln\\left(1+\\frac{${b}}{x}\\right)=${a}\\ln\\left(1+\\frac{${b}}{x}\\right)^{x}$, and the inner expression tends to $e^{${b}}$.`,
@@ -349,6 +366,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "Result", he: "תוצאה" },
         body: {
           en: `$${a}\\ln e^{${b}}=${a}\\cdot${b}=${a * b}$, so the limit is $$${a * b}.$$`,
@@ -384,6 +402,7 @@ const FAMILIES: Family[] = [
     pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
+        move: 2,
         title: { en: "Simplify with log rules", he: "פישוט בעזרת חוקי לוגריתמים" },
         body: {
           en: `$\\ln\\left(x^{${a}}\\right)=${a}\\ln x$. At $x=1$ both numerator and denominator vanish, so the form is $\\frac{0}{0}$.`,
@@ -391,6 +410,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 3,
         title: { en: "L'Hopital", he: "כלל לופיטל" },
         body: {
           en: `Differentiate top and bottom: $$\\frac{${a}/x}{${b}x^{${b - 1}}}=\\frac{${a}}{${b}x^{${b}}}.$$`,
@@ -398,6 +418,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 0,
         title: { en: "Substitute", he: "הצבה" },
         body: {
           en: `Now $x=1$ is legal and gives $$${fracLatex(a, b)}.$$`,
@@ -433,6 +454,7 @@ const FAMILIES: Family[] = [
     pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
+        move: 2,
         title: { en: "Cancel $e$ against $\\ln$", he: "צמצום $e$ מול $\\ln$" },
         body: {
           en: `$e^{\\ln u}=u$ whenever $u>0$, so $e^{\\ln(1+${a}x)}=1+${a}x$ near $x=0$. No calculus needed yet.`,
@@ -440,6 +462,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 2,
         title: { en: "Simplify", he: "פישוט" },
         body: {
           en: `The expression collapses to $$\\frac{(1+${a}x)-1}{${b}x}=\\frac{${a}x}{${b}x}=${fracLatex(a, b)}$$ for every $x\\neq0$.`,
@@ -447,6 +470,7 @@ const FAMILIES: Family[] = [
         },
       },
       {
+        move: 0,
         title: { en: "Substitute", he: "הצבה" },
         body: {
           en: `The function is constant away from $0$, so the limit is $$${fracLatex(a, b)}.$$`,
@@ -471,7 +495,7 @@ const FAMILIES: Family[] = [
   },
 ];
 
-export const limits: Template = {
+export const limits: TemplateDef = {
   id: "limits",
   topic: "calculus",
   name: { en: "Limits", he: "גבולות" },

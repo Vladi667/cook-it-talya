@@ -1,4 +1,4 @@
-import type { Problem, Rng, Template } from "../types";
+import type { Problem, Rng, TemplateDef } from "../types";
 import { sample } from "../rng";
 import {
   cross,
@@ -80,7 +80,7 @@ function draw(rng: Rng): Config | null {
   return { A, B, C, b, c, a2, D, Dn };
 }
 
-export const triangleBisector: Template = {
+export const triangleBisector: TemplateDef = {
   id: "triangle-bisector",
   topic: "analytic-geometry",
   name: {
@@ -231,6 +231,7 @@ export const triangleBisector: Template = {
       ],
       steps: [
         {
+          move: 0,
           title: { en: "Side lengths", he: "אורכי הצלעות" },
           body: {
             en: `Distance formula from $A$: $$AB=\\sqrt{(${B[0]}-${paren(A[0])})^2+(${B[1]}-${paren(A[1])})^2}=${c},\\qquad AC=\\sqrt{(${C[0]}-${paren(A[0])})^2+(${C[1]}-${paren(A[1])})^2}=${b}.$$`,
@@ -238,6 +239,7 @@ export const triangleBisector: Template = {
           },
         },
         {
+          move: 2,
           title: { en: "Locate the foot $D$", he: "מציאת הנקודה $D$" },
           body: {
             en: `By the angle bisector theorem $BD:DC=AB:AC=${c}:${b}$, so $D$ is the weighted average $$D=\\frac{${b}\\cdot B+${c}\\cdot C}{${b}+${c}}=\\left(${DxL},\\ ${DyL}\\right).$$`,
@@ -245,6 +247,7 @@ export const triangleBisector: Template = {
           },
         },
         {
+          move: 3,
           title: { en: "Length of the bisector", he: "אורך חוצה הזווית" },
           body: {
             en: `Distance formula again, from $A$ to $D$: $$AD=\\sqrt{\\left(${DxL}-(${A[0]})\\right)^2+\\left(${DyL}-(${A[1]})\\right)^2}=${adLatex}.$$ (Equivalently $AD^2=AB\\cdot AC\\left[1-\\left(\\frac{BC}{AB+AC}\\right)^2\\right]$.)`,

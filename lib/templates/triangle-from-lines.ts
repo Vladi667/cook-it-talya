@@ -1,4 +1,4 @@
-import type { Problem, Rng, Template } from "../types";
+import type { Problem, Rng, TemplateDef } from "../types";
 import { sample } from "../rng";
 import { coef, cross, gcd, paren, signed, signedTerm } from "./util";
 
@@ -87,7 +87,7 @@ function reflect(p: P, [a, b, c]: [number, number, number]): P {
   return [p[0] - 2 * a * d, p[1] - 2 * b * d];
 }
 
-export const triangleFromLines: Template = {
+export const triangleFromLines: TemplateDef = {
   id: "triangle-from-lines",
   topic: "analytic-geometry",
   name: {
@@ -226,6 +226,7 @@ export const triangleFromLines: Template = {
       ],
       steps: [
         {
+          move: 1,
           title: { en: "Reflect $A$ in $\\ell_1$ to get $B$", he: "שיקוף $A$ ביחס ל-$\\ell_1$ לקבלת $B$" },
           body: {
             en: `$\\ell_1$ is the perpendicular bisector of $AB$, so $B$ is the reflection of $A$ in it. The normal direction of $\\ell_1$ is $(${l1[0]},\\ ${l1[1]})$; reflecting $A(${A[0]},\\ ${A[1]})$ gives $$B(${Br[0]},\\ ${Br[1]}).$$ Check: the midpoint of $AB$ is ${mid(A, B)}, and it satisfies $\\ell_1$.`,
@@ -233,6 +234,7 @@ export const triangleFromLines: Template = {
           },
         },
         {
+          move: 1,
           title: { en: "Reflect $A$ in $\\ell_2$ to get $C$", he: "שיקוף $A$ ביחס ל-$\\ell_2$ לקבלת $C$" },
           body: {
             en: `The same reflection in $\\ell_2$, whose normal is $(${l2[0]},\\ ${l2[1]})$, gives $$C(${Cr[0]},\\ ${Cr[1]}),$$ with midpoint of $AC$ at ${mid(A, C)}.`,
@@ -240,6 +242,7 @@ export const triangleFromLines: Template = {
           },
         },
         {
+          move: 2,
           title: { en: "Circumcentre", he: "מרכז המעגל החוסם" },
           body: {
             en: `The circumcentre is equidistant from all three vertices, so it lies on both bisectors. Solving $$\\begin{cases}${l1Tex}\\\\ ${l2Tex}\\end{cases}$$ gives $$O(${O[0]},\\ ${O[1]}).$$`,
@@ -247,6 +250,7 @@ export const triangleFromLines: Template = {
           },
         },
         {
+          move: 3,
           title: { en: "Radius and equation", he: "רדיוס ומשוואה" },
           body: {
             en: `$R = OA = \\sqrt{(${A[0]}-${paren(O[0])})^2+(${A[1]}-${paren(O[1])})^2} = ${rLatex}$, and the circle is $$${circleLatex}.$$ It passes through $B$ and $C$ as well, since $OB=OC=${rLatex}$.`,

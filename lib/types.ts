@@ -77,6 +77,32 @@ export interface SolutionStep {
   title: Text;
   /** May contain inline math delimited by $...$ and display math by $$...$$. */
   body: Text;
+  /**
+   * Index into the template's recipe. This is the pedagogical hinge: it shows
+   * the student that this concrete line is an instance of a general move they
+   * will make again on every question of this type.
+   */
+  move?: number;
+}
+
+/**
+ * What a strong student actually carries into the exam: not worked examples,
+ * but the ability to recognise a question type in seconds and run a rehearsed
+ * sequence of moves. One per template.
+ */
+export interface Pattern {
+  /** Short name for the method itself, e.g. "Section point + distance". */
+  method: Text;
+  /** The 5-second recognition cues. If you see these, it is this pattern. */
+  signature: Text[];
+  /** The reusable sequence. Identical every time — only the numbers change. */
+  recipe: { move: Text; detail: Text }[];
+  /** One paragraph: the reason the recipe is valid, not just that it works. */
+  whyItWorks: Text;
+  /** The shortcut that saves real minutes under exam pressure. */
+  speedTip: Text;
+  /** Check these before you write the final line. */
+  watchOut: Text[];
 }
 
 /**
@@ -165,6 +191,8 @@ export interface Template {
   topic: Topic;
   name: Text;
   blurb: Text;
+  /** The transferable method. Attached in lib/templates/index.ts. */
+  pattern: Pattern;
   /**
    * Must return a fully-solved, non-degenerate problem.
    * Implementations use rejection sampling internally until the validity
@@ -172,6 +200,12 @@ export interface Template {
    */
   generate(rng: Rng): Problem;
 }
+
+/**
+ * What a template file exports. The pattern lives in lib/patterns.ts (the
+ * teaching layer, edited as one piece) and is attached in templates/index.ts.
+ */
+export type TemplateDef = Omit<Template, "pattern">;
 
 /* ------------------------------------------------------------------ */
 /* Progress + attempt records                                          */

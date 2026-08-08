@@ -66,7 +66,7 @@ export default function ProgressPage() {
       </section>
 
       {weakest && (
-        <section className="rounded-xl border border-line bg-raised px-4 py-3">
+        <section className="rounded-xl border border-rule bg-raised px-4 py-3">
           <div className="text-[0.7rem] tracking-wider text-faint uppercase">
             {t("weakest", lang)}
           </div>
@@ -95,7 +95,7 @@ export default function ProgressPage() {
                 </span>
               </div>
 
-              <div className="h-1.5 overflow-hidden rounded-full bg-line/60">
+              <div className="h-1.5 overflow-hidden rounded-full bg-rule/60">
                 <div
                   className="h-full rounded-full bg-accent transition-[width] duration-500"
                   style={{ width: `${Math.max(m * 100, m > 0 ? 3 : 0)}%` }}
@@ -153,7 +153,7 @@ export default function ProgressPage() {
       )}
 
       {total > 0 && (
-        <section className="border-t border-line pt-6">
+        <section className="border-t border-rule pt-6">
           <button
             type="button"
             onClick={() => {
