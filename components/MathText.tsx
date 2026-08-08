@@ -24,6 +24,22 @@ export function splitMath(text: string): Segment[] {
   return out;
 }
 
+/** Renders **bold** runs inside a plain-text segment. */
+function emphasise(text: string) {
+  if (!text.includes("**")) return text;
+  return text
+    .split("**")
+    .map((part, i) =>
+      i % 2 === 1 ? (
+        <strong key={i} className="font-medium">
+          {part}
+        </strong>
+      ) : (
+        <span key={i}>{part}</span>
+      ),
+    );
+}
+
 /**
  * Renders a bilingual string containing $inline$ and $$display$$ math.
  * Math is always isolated LTR so it stays correct inside Hebrew RTL text.
@@ -40,7 +56,7 @@ export function MathText({
   return (
     <div className={className}>
       {segments.map((seg, i) => {
-        if (seg.kind === "text") return <span key={i}>{seg.value}</span>;
+        if (seg.kind === "text") return <span key={i}>{emphasise(seg.value)}</span>;
         if (seg.kind === "inline")
           return (
             <span key={i} className="math-ltr">
