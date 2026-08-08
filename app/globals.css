@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #fbf9f5;
+  --color-raised: #ffffff;
+  --color-ink: #191813;
+  --color-muted: #6f6a60;
+  --color-faint: #96908a;
+  --color-line: #e6e0d6;
+  --color-accent: #1c6b55;
+  --color-accent-ink: #124a3b;
+  --color-accent-soft: #e9f1ee;
+  --color-wrong: #a8402c;
+  --color-wrong-soft: #f8ece9;
+
+  --font-serif: var(--font-question), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "cv05" 1;
+}
+
+/* Math is the primary content: give it room and a comfortable size. */
+.katex {
+  font-size: 1.12em;
+}
+
+.katex-display {
+  margin: 1.15rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+}
+
+.katex-display > .katex {
+  font-size: 1.3em;
+}
+
+@media (max-width: 640px) {
+  .katex-display > .katex {
+    font-size: 1.12em;
+  }
+}
+
+/* Math never flips, even inside a Hebrew RTL paragraph. */
+.math-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Numeric answers read better with lining figures. */
+input[inputmode="text"] {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Thin, unobtrusive scrollbars for the overflowing math lines. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
