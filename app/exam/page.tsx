@@ -8,6 +8,7 @@ import { useApp } from "@/lib/store";
 import { t, tx } from "@/lib/i18n";
 import type { Attempt, ExamState, Problem } from "@/lib/types";
 import { StepReveal } from "@/components/StepReveal";
+import { WhyWrong } from "@/components/WhyWrong";
 import { AnswerFields, Statement, TopicLine } from "@/components/QuestionView";
 
 const QUESTION_COUNT = 6;
@@ -358,6 +359,14 @@ function ExamResults({
               results={g.results}
               onChange={() => {}}
             />
+            {g.score < 1 && (
+              <WhyWrong
+                problem={g.problem}
+                answers={g.answers}
+                results={g.results}
+                lang={lang}
+              />
+            )}
             <div className="border-t border-line pt-5">
               <StepReveal
                 steps={g.problem.steps}

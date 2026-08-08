@@ -160,6 +160,24 @@ export const areaBetweenCurves: Template = {
             placeholder: "e.g. 10/3",
             expected: areaPlain,
             prompt: { en: "Area of the region", he: "שטח התחום" },
+            pitfalls: [
+              {
+                // integrating (curve - line) across the whole interval
+                value: fracPlain(3 * w ** 4 - 2 * j * w ** 3, 6),
+                why: {
+                  en: `You integrated $\\left(\\text{curve}-\\text{line}\\right)$ across the whole interval $[0,${xi}]$. That is wrong on $[0,${p}]$: there the line is **below the $x$-axis**, so subtracting it adds area that is not part of the region. Split at $x=${p}$.`,
+                  he: `חישבתם אינטגרל של $\\left(\\text{עקום}-\\text{ישר}\\right)$ על כל הקטע $[0,${xi}]$. זה שגוי בקטע $[0,${p}]$: שם הישר נמצא **מתחת לציר ה-$x$**, ולכן חיסורו מוסיף שטח שאינו שייך לתחום. פצלו ב-$x=${p}$.`,
+                },
+              },
+              {
+                // area under the curve alone
+                value: fracPlain(2 * j * w ** 3, 3),
+                why: {
+                  en: `That is the area under the curve alone, from $0$ to $${xi}$. You still have to remove the triangle between the line, the $x$-axis and $x=${xi}$, whose area is $${fracPlain(j * j * w * w, 2)}$.`,
+                  he: `זהו השטח שמתחת לעקום בלבד, מ-$0$ עד $${xi}$. עדיין יש להחסיר את המשולש שבין הישר, ציר ה-$x$ ו-$x=${xi}$, ששטחו $${fracPlain(j * j * w * w, 2)}$.`,
+                },
+              },
+            ],
           },
         ],
         hints: [
@@ -302,6 +320,15 @@ export const areaBetweenCurves: Template = {
           placeholder: "e.g. 32/3",
           expected: areaPlain,
           prompt: { en: "Area of the region", he: "שטח התחום" },
+          pitfalls: [
+            {
+              value: fracPlain(areaNum, 6),
+              why: {
+                en: `That is only the left half — the part under $y=${f1}$ up to $x=${xi}$. The region continues under the second curve all the way to $x=${a}$, and by symmetry that half has the same area, so double it.`,
+                he: `זהו רק החצי השמאלי — החלק שמתחת ל-$y=${f1}$ עד $x=${xi}$. התחום ממשיך מתחת לעקום השני עד $x=${a}$, ומסימטריה לחצי הזה אותו שטח, ולכן יש להכפיל ב-2.`,
+              },
+            },
+          ],
         },
       ],
       hints: [

@@ -23,11 +23,9 @@ vectors give integer side lengths, lattice circles give integer circumcentres,
 integration bounds are picked so the irrational parts cancel. Nothing is
 approximated and nothing is guessed.
 
-An LLM is used in exactly one place: the optional *“why was I wrong?”*
-explainer (`app/api/explain/route.ts`). It runs **after** the question, the
-solution and the verdict have all been computed symbolically, and it is handed
-the correct solution — so an approximate answer there is acceptable. Without
-`ANTHROPIC_API_KEY` the route returns 503 and the button hides itself.
+**No LLM is involved anywhere at runtime**, including in the *“why was I
+wrong?”* explainer — see below. The app needs no API key, makes no network
+calls, and costs nothing to run.
 
 ## Templates
 
@@ -56,6 +54,28 @@ validate against the same expected answer.
   `(0,2)∪(2,∞)`
 - constants accept hand-rounded decimals (~3 significant digits)
 
+## “Why was I wrong?”
+
+Deterministic, instant, offline (`lib/diagnose.ts`). Rules are tried
+most-specific first:
+
+1. **Declared pitfalls.** Each template lists the wrong answers students
+   actually produce, with the reason — the midpoint of `BC` instead of the
+   bisector foot (“that is the *median*”), the swapped weights in the section
+   formula, integrating `curve − line` across the whole interval when the line
+   is below the axis, the remainder of the long division instead of `b`,
+   `e^(a+b)` instead of `e^(ab)`, an upside-down ratio, `f(x₀)` used as the
+   `y`-intercept, `x = p` instead of `x = −p`.
+2. **The right answer to a different part** of the same question.
+3. **Shape of the error** from the checker: exact sign flip, factor of two,
+   arithmetic-only slip, wrong number of answers.
+4. **Fallback** pointing at the first solution step.
+
+Two tests keep this honest: no declared pitfall may equal the correct answer
+(a real bug this caught twice — the trap collapses onto the right answer when
+`p=1`, and when `|a|=|b|` an upside-down ratio is the same number), and every
+declared pitfall must actually be diagnosed by name.
+
 ## Adaptive drilling
 
 Spaced repetition keyed on the **template type**, not on individual questions —
@@ -79,7 +99,7 @@ export at the bottom of that file. No auth in v1.
 npm test
 ```
 
-Every template is generated 100 times and each sample is verified
+86 tests. Every template is generated 100 times and each sample is verified
 *independently* of its own algebra — numeric integration for areas and
 integrals, numeric limits for limits, central differences for derivatives, and
 direct geometric checks (is `D` on `BC`? does `AD` bisect the angle? do all
@@ -98,8 +118,5 @@ npm install
 npm run dev
 ```
 
-Optional, to enable the explainer:
-
-```bash
-echo "ANTHROPIC_API_KEY=sk-ant-..." > .env.local
-```
+There is nothing to configure — no API keys, no environment variables, no
+backend. The whole app runs client-side.

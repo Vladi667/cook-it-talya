@@ -45,12 +45,25 @@ export type AnswerType =
   | "equation"
   | "domain";
 
+/**
+ * A wrong answer students actually produce, paired with the reason.
+ * This is what powers the "why was I wrong?" explainer — deterministically,
+ * with no model call and no API key.
+ */
+export interface Pitfall {
+  /** The wrong answer, written in the field's own answer syntax. */
+  value: string;
+  why: Text;
+}
+
 export interface AnswerField {
   id: string;
   prompt: Text;
   type: AnswerType;
   /** Canonical correct answer, in nerdamer-parseable syntax. */
   expected: string;
+  /** Recognised near-misses, checked in order. */
+  pitfalls?: Pitfall[];
   /** Free variables the expression may contain, for the numeric fallback. */
   vars?: string[];
   /** Sampling window for the numeric fallback, when the default (-3..3) is bad. */

@@ -96,6 +96,25 @@ export const reverseIntegral: Template = {
           placeholder: "e.g. 5",
           expected: String(b),
           prompt: { en: "The constant $b$", he: "הקבוע $b$" },
+          pitfalls:
+            kk === 0
+              ? []
+              : [
+                  {
+                    value: String(R),
+                    why: {
+                      en: `You solved for the **remainder** of the division, not for $b$. The $\\ln$ coefficient is $b ${signed(-kk)} = ${R}$, so $b = ${R} ${signed(kk)} = ${b}$.`,
+                      he: `פתרתם עבור **השארית** של החילוק ולא עבור $b$. מקדם ה-$\\ln$ הוא $b ${signed(-kk)} = ${R}$, ולכן $b = ${R} ${signed(kk)} = ${b}$.`,
+                    },
+                  },
+                  {
+                    value: String(b - 2 * kk),
+                    why: {
+                      en: `Sign slip on the division remainder: it is $b ${signed(-kk)}$, so recovering $b$ means **adding** $${kk}$ back, not subtracting it.`,
+                      he: `טעות סימן בשארית החילוק: השארית היא $b ${signed(-kk)}$, ולכן כדי לשחזר את $b$ יש **להוסיף** $${kk}$ ולא לחסר.`,
+                    },
+                  },
+                ],
         },
       ],
       hints: [

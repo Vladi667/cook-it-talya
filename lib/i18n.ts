@@ -31,11 +31,6 @@ export const UI = {
   step: { en: "Step", he: "שלב" },
 
   explainMistake: { en: "Why was I wrong?", he: "למה טעיתי?" },
-  explaining: { en: "Thinking…", he: "חושב…" },
-  explainUnavailable: {
-    en: "The explainer is not configured on this deployment.",
-    he: "מנגנון ההסבר אינו מוגדר בגרסה זו.",
-  },
 
   hintSign: {
     en: "Right size, wrong sign — check a minus somewhere.",

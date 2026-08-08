@@ -791,7 +791,10 @@ export function checkAnswer(
       default: {
         const u = normalizeExpression(raw);
         const e = normalizeExpression(expected);
-        if (!u) return { correct: false, normalizedInput: raw, hint: "parse" };
+        // Reject input the CAS cannot read at all, so the user is told to fix
+        // their notation rather than being told their maths is wrong.
+        if (!u || !parses(u))
+          return { correct: false, normalizedInput: raw, hint: "parse" };
         const correct = symbolicEqual(u, e, opts);
         return {
           correct,
@@ -810,5 +813,14 @@ function pretty(expr: string): string {
     return nerdamer(expr).toString();
   } catch {
     return expr;
+  }
+}
+
+function parses(expr: string): boolean {
+  try {
+    nerdamer(expr);
+    return true;
+  } catch {
+    return false;
   }
 }

@@ -1,5 +1,20 @@
-import type { Problem, Rng, SolutionStep, Template, Text } from "../types";
+import type { Pitfall, Problem, Rng, SolutionStep, Template, Text } from "../types";
 import { fracLatex, fracPlain } from "./util";
+
+/** The classic error on every a/b family: reading the ratio upside down. */
+function invertedRatio(a: number, b: number): Pitfall[] {
+  // a/b and b/a coincide when |a| = |b|, so there would be nothing to catch.
+  if (Math.abs(a) === Math.abs(b) || a === 0 || b === 0) return [];
+  return [
+    {
+      value: fracPlain(b, a),
+      why: {
+        en: `The ratio is upside down. The coefficient from the **numerator** goes on top: the numerator contributes $${a}$ and the denominator $${b}$, so the limit is $${fracLatex(a, b)}$.`,
+        he: `היחס הפוך. המקדם מה**מונה** נמצא למעלה: המונה תורם $${a}$ והמכנה $${b}$, ולכן הגבול הוא $${fracLatex(a, b)}$.`,
+      },
+    },
+  ];
+}
 
 /**
  * Limits that need simplification before substitution: log rules,
@@ -20,6 +35,7 @@ interface Family {
   sample: (rng: Rng) => number[];
   steps: (p: number[]) => SolutionStep[];
   hints: (p: number[]) => [Text, Text, Text];
+  pitfalls?: (p: number[]) => Pitfall[];
 }
 
 const FAMILIES: Family[] = [
@@ -32,6 +48,7 @@ const FAMILIES: Family[] = [
     plain: ([a, b]) => `(e^(${a}*x)-1)/sin(${b}*x)`,
     answerPlain: ([a, b]) => fracPlain(a, b),
     answerLatex: ([a, b]) => fracLatex(a, b),
+    pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
         title: { en: "Try substitution", he: "ניסיון הצבה" },
@@ -80,6 +97,7 @@ const FAMILIES: Family[] = [
     plain: ([a, b]) => `log(1+${a}*x)/(e^(${b}*x)-1)`,
     answerPlain: ([a, b]) => fracPlain(a, b),
     answerLatex: ([a, b]) => fracLatex(a, b),
+    pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
         title: { en: "Classify the form", he: "זיהוי הצורה" },
@@ -128,6 +146,18 @@ const FAMILIES: Family[] = [
     plain: ([a, b]) => `(1+${a}/x)^(${b}*x)`,
     answerPlain: ([a, b]) => (a * b === 0 ? "1" : `e^(${a * b})`),
     answerLatex: ([a, b]) => (a * b === 1 ? "e" : `e^{${a * b}}`),
+    pitfalls: ([a, b]) =>
+      a + b === a * b
+        ? []
+        : [
+            {
+              value: `e^(${a + b})`,
+              why: {
+                en: `The exponents **multiply**, they do not add. Substituting $t=\\frac{x}{${a}}$ turns the power $${b}x$ into $${a}\\cdot${b}\\cdot t$, so the answer is $e^{${a * b}}$.`,
+                he: `המעריכים **מוכפלים** ולא מתחברים. ההצבה $t=\\frac{x}{${a}}$ הופכת את החזקה $${b}x$ ל-$${a}\\cdot${b}\\cdot t$, ולכן התשובה היא $e^{${a * b}}$.`,
+              },
+            },
+          ],
     steps: ([a, b]) => [
       {
         title: { en: "Recognise the form", he: "זיהוי הצורה" },
@@ -176,6 +206,15 @@ const FAMILIES: Family[] = [
     plain: ([a, b]) => `(1-cos(${a}*x))/(${b}*x^2)`,
     answerPlain: ([a, b]) => fracPlain(a * a, 2 * b),
     answerLatex: ([a, b]) => fracLatex(a * a, 2 * b),
+    pitfalls: ([a, b]) => [
+      {
+        value: fracPlain(a * a, b),
+        why: {
+          en: `You lost the factor $\\frac{1}{2}$. The identity is $1-\\cos\\theta = 2\\sin^{2}\\frac{\\theta}{2}$, and the half-angle squares to $\\frac{${a}^2}{4}$ — combining the $2$ and the $\\frac{1}{4}$ leaves $\\frac{${a}^2}{2\\cdot${b}}$.`,
+          he: `איבדתם את הגורם $\\frac{1}{2}$. הזהות היא $1-\\cos\\theta = 2\\sin^{2}\\frac{\\theta}{2}$, וחצי הזווית בריבוע נותן $\\frac{${a}^2}{4}$ — שילוב ה-$2$ עם ה-$\\frac{1}{4}$ משאיר $\\frac{${a}^2}{2\\cdot${b}}$.`,
+        },
+      },
+    ],
     steps: ([a, b]) => [
       {
         title: { en: "Classify", he: "זיהוי" },
@@ -224,6 +263,15 @@ const FAMILIES: Family[] = [
     plain: ([a]) => `(${a}*log(x)-${a})/(x-e)`,
     answerPlain: ([a]) => `${a}/e`,
     answerLatex: ([a]) => (a === 1 ? "\\frac{1}{e}" : `\\frac{${a}}{e}`),
+    pitfalls: ([a]) => [
+      {
+        value: `${a}*e`,
+        why: {
+          en: `The derivative of $\\ln x$ is $\\frac{1}{x}$, not $x$. Evaluated at $x=e$ that is $\\frac{1}{e}$, so the limit is $\\frac{${a}}{e}$ — the $e$ belongs in the denominator.`,
+          he: `הנגזרת של $\\ln x$ היא $\\frac{1}{x}$ ולא $x$. בהצבה $x=e$ מתקבל $\\frac{1}{e}$, ולכן הגבול הוא $\\frac{${a}}{e}$ — ה-$e$ שייך למכנה.`,
+        },
+      },
+    ],
     steps: ([a]) => [
       {
         title: { en: "Classify", he: "זיהוי" },
@@ -273,6 +321,18 @@ const FAMILIES: Family[] = [
     plain: ([a, b]) => `${a}*x*(log(x+${b})-log(x))`,
     answerPlain: ([a, b]) => String(a * b),
     answerLatex: ([a, b]) => String(a * b),
+    pitfalls: ([a, b]) =>
+      a === 1
+        ? []
+        : [
+            {
+              value: String(b),
+              why: {
+                en: `You dropped the outer coefficient. $\\ln\\left(1+\\frac{${b}}{x}\\right)^{x}\\to ${b}$ is right, but the whole expression is $${a}$ times that, giving $${a * b}$.`,
+                he: `השמטתם את המקדם החיצוני. נכון ש-$\\ln\\left(1+\\frac{${b}}{x}\\right)^{x}\\to ${b}$, אך הביטוי כולו הוא פי $${a}$ מכך, ולכן $${a * b}$.`,
+              },
+            },
+          ],
     steps: ([a, b]) => [
       {
         title: { en: "Combine the logarithms", he: "איחוד הלוגריתמים" },
@@ -321,6 +381,7 @@ const FAMILIES: Family[] = [
     plain: ([a, b]) => `log(x^${a})/(x^${b}-1)`,
     answerPlain: ([a, b]) => fracPlain(a, b),
     answerLatex: ([a, b]) => fracLatex(a, b),
+    pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
         title: { en: "Simplify with log rules", he: "פישוט בעזרת חוקי לוגריתמים" },
@@ -369,6 +430,7 @@ const FAMILIES: Family[] = [
     plain: ([a, b]) => `(e^(log(1+${a}*x))-1)/(${b}*x)`,
     answerPlain: ([a, b]) => fracPlain(a, b),
     answerLatex: ([a, b]) => fracLatex(a, b),
+    pitfalls: ([a, b]) => invertedRatio(a, b),
     steps: ([a, b]) => [
       {
         title: { en: "Cancel $e$ against $\\ln$", he: "צמצום $e$ מול $\\ln$" },
@@ -446,10 +508,12 @@ export const limits: Template = {
           placeholder: "e.g. 3/2 or e^2",
           expected: answerPlain,
           prompt: { en: "The limit", he: "הגבול" },
+          pitfalls: family.pitfalls?.(p) ?? [],
         },
       ],
       hints: family.hints(p),
       steps: family.steps(p),
+      // (fields above carry the pitfalls; see the field definition)
       verification: [
         {
           kind: "limit",

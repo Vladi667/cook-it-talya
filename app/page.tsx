@@ -11,7 +11,7 @@ import { t } from "@/lib/i18n";
 import type { Attempt, Problem, TemplateId } from "@/lib/types";
 import { MathText } from "@/components/MathText";
 import { StepReveal } from "@/components/StepReveal";
-import { ExplainButton } from "@/components/ExplainButton";
+import { WhyWrong } from "@/components/WhyWrong";
 import {
   AnswerFields,
   Statement,
@@ -192,7 +192,12 @@ export default function PracticePage() {
           </section>
 
           {!allCorrect && (
-            <ExplainButton problem={problem} answers={answers} lang={lang} />
+            <WhyWrong
+              problem={problem}
+              answers={answers}
+              results={results}
+              lang={lang}
+            />
           )}
 
           <section>

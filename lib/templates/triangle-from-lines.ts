@@ -145,6 +145,15 @@ export const triangleFromLines: Template = {
           placeholder: "(x, y)",
           expected: `(${B[0]},${B[1]})`,
           prompt: { en: "Vertex $B$", he: "הקודקוד $B$" },
+          pitfalls: [
+            {
+              value: `(${(A[0] + B[0]) / 2},${(A[1] + B[1]) / 2})`,
+              why: {
+                en: "That is the foot of the perpendicular on $\\ell_1$ — the **midpoint** of $AB$. You are halfway there: continue the same distance again past the foot to land on $B$.",
+                he: "זו רגל האנך על $\\ell_1$ — **אמצע** $AB$. הגעתם לחצי הדרך: המשיכו את אותו מרחק שוב מעבר לרגל כדי להגיע ל-$B$.",
+              },
+            },
+          ],
         },
         {
           id: "C",
@@ -153,6 +162,22 @@ export const triangleFromLines: Template = {
           placeholder: "(x, y)",
           expected: `(${C[0]},${C[1]})`,
           prompt: { en: "Vertex $C$", he: "הקודקוד $C$" },
+          pitfalls: [
+            {
+              value: `(${(A[0] + C[0]) / 2},${(A[1] + C[1]) / 2})`,
+              why: {
+                en: "That is the **midpoint** of $AC$, i.e. the foot of the perpendicular on $\\ell_2$. Reflecting means going the same distance again beyond the foot.",
+                he: "זהו **אמצע** $AC$, כלומר רגל האנך על $\\ell_2$. שיקוף פירושו להמשיך את אותו מרחק שוב מעבר לרגל.",
+              },
+            },
+            {
+              value: `(${B[0]},${B[1]})`,
+              why: {
+                en: "That is $B$ — you reflected across $\\ell_1$ twice. $C$ comes from reflecting $A$ across the **second** bisector $\\ell_2$.",
+                he: "זהו $B$ — שיקפתם פעמיים ביחס ל-$\\ell_1$. הנקודה $C$ מתקבלת משיקוף $A$ ביחס לאנך ה**שני**, $\\ell_2$.",
+              },
+            },
+          ],
         },
         {
           id: "circle",
@@ -163,6 +188,26 @@ export const triangleFromLines: Template = {
             en: "Equation of the circumscribed circle",
             he: "משוואת המעגל החוסם",
           },
+          pitfalls: [
+            {
+              value: `(x-${paren(O[0])})^2+(y-${paren(O[1])})^2=sqrt(${r2})`,
+              why: {
+                en: `The right-hand side is $R^2$, not $R$. You found $R=${rLatex}$ correctly, so square it: the equation ends in $=${r2}$.`,
+                he: `האגף הימני הוא $R^2$ ולא $R$. מצאתם נכון $R=${rLatex}$, ולכן העלו בריבוע: המשוואה מסתיימת ב-$=${r2}$.`,
+              },
+            },
+            ...(O[0] === 0 && O[1] === 0
+              ? []
+              : [
+                  {
+                    value: `(x+${paren(O[0])})^2+(y+${paren(O[1])})^2=${r2}`,
+                    why: {
+                      en: `Signs are inverted. In $\\left(x-a\\right)^2+\\left(y-b\\right)^2=R^2$ the centre is $(a,b)$, so a centre of $(${O[0]},\\ ${O[1]})$ gives $${circleLatex}$.`,
+                      he: `הסימנים הפוכים. בביטוי $\\left(x-a\\right)^2+\\left(y-b\\right)^2=R^2$ המרכז הוא $(a,b)$, ולכן מרכז $(${O[0]},\\ ${O[1]})$ נותן $${circleLatex}$.`,
+                    },
+                  },
+                ]),
+          ],
         },
       ],
       hints: [

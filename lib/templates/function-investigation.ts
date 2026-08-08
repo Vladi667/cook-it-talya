@@ -1,4 +1,12 @@
-import type { Problem, Rng, SolutionStep, Template, Text, Verification } from "../types";
+import type {
+  Pitfall,
+  Problem,
+  Rng,
+  SolutionStep,
+  Template,
+  Text,
+  Verification,
+} from "../types";
 import { sample } from "../rng";
 import { coef, fracLatex, fracPlain, paren, signed, signedTerm } from "./util";
 
@@ -27,6 +35,27 @@ interface Built {
   hints: [Text, Text, Text];
   extraChecks: Verification[];
   difficulty: number;
+  /** Recognised near-misses, keyed by field id. */
+  traps: Partial<Record<
+    "domain" | "extrema" | "vertical" | "horizontal" | "tangent",
+    Pitfall[]
+  >>;
+}
+
+/**
+ * Using f(x0) as the intercept instead of solving n = f(x0) - m*x0.
+ * When slope*x0 = 0 the mistake produces the correct line, so there is
+ * nothing to catch and the pitfall is dropped.
+ */
+function forgotToShift(slope: number, y0: number, x0: number): Pitfall[] {
+  if (slope * x0 === 0) return [];
+  return [{
+    value: `y=${slope}*x+${paren(y0)}`,
+    why: {
+      en: `You used $f(${x0})=${y0}$ directly as the $y$-intercept. It is the value **at $x=${x0}$**, not at $x=0$: from $y-${y0}=${slope}(x-${x0})$ the intercept is $${y0} - (${slope})(${x0})$.`,
+      he: `השתמשתם ב-$f(${x0})=${y0}$ ישירות כנקודת החיתוך עם ציר ה-$y$. זהו הערך **ב-$x=${x0}$** ולא ב-$x=0$: מתוך $y-${y0}=${slope}(x-${x0})$ נקודת החיתוך היא $${y0} - (${slope})(${x0})$.`,
+    },
+  }];
 }
 
 /* --------------------------- family A: a·ln x / x^k --------------------------- */
@@ -107,6 +136,34 @@ function familyLog(rng: Rng): Built | null {
     tangentExpected: `y=${tangent}`,
     steps,
     difficulty: 2,
+    traps: {
+      domain: [
+        {
+          value: "x!=0",
+          why: {
+            en: "You only excluded the zero of the denominator. $\\ln x$ is undefined for **every** $x\\leq 0$, not just at $0$, so the domain is $x>0$.",
+            he: "פסלתם רק את אפס המכנה. הביטוי $\\ln x$ אינו מוגדר עבור **כל** $x\\leq 0$, לא רק ב-$0$, ולכן תחום ההגדרה הוא $x>0$.",
+          },
+        },
+        {
+          value: "x>=0",
+          why: {
+            en: "$\\ln 0$ is undefined, so $0$ itself must be excluded: the domain is open, $x>0$.",
+            he: "הביטוי $\\ln 0$ אינו מוגדר, ולכן יש לפסול גם את $0$ עצמו: התחום פתוח, $x>0$.",
+          },
+        },
+      ],
+      tangent: forgotToShift(a, 0, 1),
+      horizontal: [
+        {
+          value: "none",
+          why: {
+            en: "There is one. As $x\\to\\infty$ the power in the denominator grows faster than $\\ln x$, so $f(x)\\to 0$ and $y=0$ is a horizontal asymptote.",
+            he: "כן קיימת. כאשר $x\\to\\infty$ החזקה במכנה גדלה מהר יותר מ-$\\ln x$, ולכן $f(x)\\to 0$ ו-$y=0$ היא אסימפטוטה אופקית.",
+          },
+        },
+      ],
+    },
     hints: [
       {
         en: "Start with the domain — the logarithm decides it, not the denominator.",
@@ -205,6 +262,43 @@ function familyRational(rng: Rng): Built | null {
     tangentExpected: `y=${slope}*x+${paren(intercept)}`,
     steps,
     difficulty: 3,
+    traps: {
+      domain: [
+        {
+          value: "all",
+          why: {
+            en: `The denominator $x ${signed(p)}$ vanishes at $x=${-p}$, so that single point must be excluded: $x\\neq ${-p}$.`,
+            he: `המכנה $x ${signed(p)}$ מתאפס ב-$x=${-p}$, ולכן יש לפסול את הנקודה הבודדת הזו: $x\\neq ${-p}$.`,
+          },
+        },
+      ],
+      vertical: [
+        {
+          value: `x=${p}`,
+          why: {
+            en: `Sign slip. The asymptote is where the denominator is zero: solve $x ${signed(p)} = 0$, which gives $x = ${-p}$, not $x = ${p}$.`,
+            he: `טעות סימן. האסימפטוטה היא במקום שבו המכנה מתאפס: פתרו $x ${signed(p)} = 0$, ומתקבל $x = ${-p}$ ולא $x = ${p}$.`,
+          },
+        },
+      ],
+      horizontal: [
+        {
+          value: "y=0",
+          why: {
+            en: "The numerator has the higher degree, so $f$ does not settle to a finite value — there is no horizontal asymptote. Divide first, and the quotient is the **oblique** asymptote.",
+            he: "דרגת המונה גבוהה יותר, ולכן $f$ אינה מתייצבת על ערך סופי — אין אסימפטוטה אופקית. חלקו תחילה, והמנה היא האסימפטוטה ה**משופעת**.",
+          },
+        },
+        {
+          value: "none",
+          why: {
+            en: "There is one, but it is slanted rather than horizontal. Long division splits $f$ into a linear part plus a fraction that dies at infinity — the linear part is the asymptote.",
+            he: "כן קיימת, אך היא משופעת ולא אופקית. חילוק ארוך מפרק את $f$ לחלק לינארי ועוד שבר שמתאפס באינסוף — החלק הלינארי הוא האסימפטוטה.",
+          },
+        },
+      ],
+      tangent: forgotToShift(slope, y0, x0),
+    },
     hints: [
       {
         en: "The numerator has the higher degree — divide before you differentiate. The quotient is the asymptote.",
@@ -303,6 +397,27 @@ function familyRoot(rng: Rng): Built | null {
     tangentExpected: `y=${slope}*x+${paren(intercept)}`,
     steps,
     difficulty: 2,
+    traps: {
+      domain: [
+        {
+          value: "x>0",
+          why: {
+            en: "$\\sqrt{0}=0$ is perfectly well defined, so $x=0$ belongs to the domain. The interval is closed at the left: $x\\geq 0$.",
+            he: "הביטוי $\\sqrt{0}=0$ מוגדר היטב, ולכן $x=0$ שייך לתחום. הקטע סגור משמאל: $x\\geq 0$.",
+          },
+        },
+      ],
+      extrema: [
+        {
+          value: `(${xMin},${-2 * t ** 3 * -1})`,
+          why: {
+            en: `The $x$ is right but the $y$ has the wrong sign. At $x=${xMin}$ the factor $\\left(x-${a}\\right)$ is **negative**, so $f(${xMin})=\\left(${xMin}-${a}\\right)\\cdot${t}=${yMin}$.`,
+            he: `ערך ה-$x$ נכון אך הסימן של $y$ שגוי. ב-$x=${xMin}$ הגורם $\\left(x-${a}\\right)$ הוא **שלילי**, ולכן $f(${xMin})=\\left(${xMin}-${a}\\right)\\cdot${t}=${yMin}$.`,
+          },
+        },
+      ],
+      tangent: forgotToShift(slope, y0, x0),
+    },
     hints: [
       {
         en: "The square root fixes the domain immediately.",
@@ -364,6 +479,7 @@ export const functionInvestigation: Template = {
           placeholder: "e.g. x>0  or  (0,∞)",
           expected: built.domainExpected,
           prompt: { en: "Domain", he: "תחום הגדרה" },
+          pitfalls: built.traps.domain,
         },
         {
           id: "extrema",
@@ -371,6 +487,7 @@ export const functionInvestigation: Template = {
           placeholder: "(x, y)",
           expected: built.extremaExpected,
           prompt: built.extremaPrompt,
+          pitfalls: built.traps.extrema,
         },
         {
           id: "vertical",
@@ -381,6 +498,7 @@ export const functionInvestigation: Template = {
             en: "Vertical asymptote (or “none”)",
             he: "אסימפטוטה אנכית (או ״אין״)",
           },
+          pitfalls: built.traps.vertical,
         },
         {
           id: "horizontal",
@@ -391,6 +509,7 @@ export const functionInvestigation: Template = {
             en: "Horizontal or oblique asymptote (or “none”)",
             he: "אסימפטוטה אופקית או משופעת (או ״אין״)",
           },
+          pitfalls: built.traps.horizontal,
         },
         {
           id: "tangent",
@@ -401,6 +520,7 @@ export const functionInvestigation: Template = {
             en: `Tangent at $x=${built.x0}$`,
             he: `משיק ב-$x=${built.x0}$`,
           },
+          pitfalls: built.traps.tangent,
         },
       ],
       hints: built.hints,
