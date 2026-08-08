@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import type { CheckResult } from "@/lib/checker";
-import { checkAnswer } from "@/lib/checker";
+import { loadChecker, warmChecker } from "@/lib/lazyChecker";
 import {
   generateProblem,
   REGISTERED_TEMPLATE_IDS,
@@ -15,8 +16,15 @@ import { t, tx } from "@/lib/i18n";
 import type { Attempt, Problem, TemplateId } from "@/lib/types";
 import { MathText } from "@/components/MathText";
 import { StepReveal } from "@/components/StepReveal";
-import { WhyWrong } from "@/components/WhyWrong";
 import { PatternCard } from "@/components/PatternCard";
+import { ActionBar } from "@/components/ActionBar";
+
+// Pulls in the diagnoser (and with it the CAS); only ever shown after a wrong
+// answer, so it must not sit in the initial bundle.
+const WhyWrong = dynamic(
+  () => import("@/components/WhyWrong").then((m) => m.WhyWrong),
+  { ssr: false },
+);
 import { AnswerFields, Statement, TopicLine } from "@/components/QuestionView";
 
 /** A second attempt still counts, but not for full mastery credit. */
@@ -63,6 +71,11 @@ export default function PracticePage() {
     if (ready && !problem) nextProblem();
   }, [ready, problem, nextProblem]);
 
+  // Fetch the CAS while the student is still reading, not when they submit.
+  useEffect(() => {
+    warmChecker();
+  }, []);
+
   const record = useCallback(
     (
       p: Problem,
@@ -95,29 +108,29 @@ export default function PracticePage() {
     [answers, hintLevel, recordAttempt],
   );
 
-  const submit = () => {
+  const submit = async () => {
     if (!problem || results || checking) return;
     setChecking(true);
-    setTimeout(() => {
-      const graded: Record<string, CheckResult> = {};
-      for (const field of problem.fields) {
-        graded[field.id] = checkAnswer(
-          answers[field.id] ?? "",
-          field.expected,
-          field.type,
-          { vars: field.vars, sampleRange: field.sampleRange },
-        );
-      }
-      const allCorrect = Object.values(graded).every((r) => r.correct);
-      setResults(graded);
-      setChecking(false);
-      // A first wrong attempt is a teaching moment, not a verdict: nothing is
-      // written down until the student either succeeds or gives up.
-      if (allCorrect || attempt === 2) {
-        record(problem, graded, attempt, allCorrect);
-        if (allCorrect || attempt === 2) setRevealed(allCorrect ? false : true);
-      }
-    }, 0);
+    const { checkAnswer } = await loadChecker();
+
+    const graded: Record<string, CheckResult> = {};
+    for (const field of problem.fields) {
+      graded[field.id] = checkAnswer(
+        answers[field.id] ?? "",
+        field.expected,
+        field.type,
+        { vars: field.vars, sampleRange: field.sampleRange },
+      );
+    }
+    const allCorrect = Object.values(graded).every((r) => r.correct);
+    setResults(graded);
+    setChecking(false);
+    // A first wrong attempt is a teaching moment, not a verdict: nothing is
+    // written down until the student either succeeds or gives up.
+    if (allCorrect || attempt === 2) {
+      record(problem, graded, attempt, allCorrect);
+      setRevealed(!allCorrect);
+    }
   };
 
   const retry = () => {
@@ -181,21 +194,21 @@ export default function PracticePage() {
       </section>
 
       {!graded ? (
-        <section className="flex flex-wrap items-center gap-3">
+        <ActionBar>
           <button
             type="button"
             onClick={submit}
             disabled={checking}
-            className="w-full rounded-lg bg-accent px-6 py-3 text-[0.95rem] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60 sm:w-auto"
+            className="tap flex-1 rounded-lg bg-accent px-6 text-[0.95rem] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60 sm:flex-none sm:py-3"
           >
-            {t("check", lang)}
+            {checking ? "…" : t("check", lang)}
           </button>
 
           {hintLevel < 3 ? (
             <button
               type="button"
               onClick={() => setHintLevel((h) => h + 1)}
-              className="rounded-lg border border-rule px-4 py-2.5 text-[0.87rem] text-muted transition-colors hover:border-accent hover:text-accent"
+              className="tap rounded-lg border border-rule px-4 text-[0.87rem] text-muted transition-colors hover:border-accent hover:text-accent sm:py-2.5"
             >
               {hintLevel === 0 ? t("hint", lang) : t("anotherHint", lang)}
             </button>
@@ -206,11 +219,11 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={nextProblem}
-            className="plate ms-auto text-faint hover:text-muted"
+            className="tap plate ms-auto px-2 text-faint hover:text-muted"
           >
             {t("skip", lang)}
           </button>
-        </section>
+        </ActionBar>
       ) : (
         <div className="space-y-8">
           <section
@@ -241,22 +254,22 @@ export default function PracticePage() {
           )}
 
           {canRetry && (
-            <section className="flex flex-wrap items-center gap-3">
+            <ActionBar>
               <button
                 type="button"
                 onClick={retry}
-                className="rounded-lg bg-accent px-5 py-2.5 text-[0.9rem] font-medium text-paper transition-opacity hover:opacity-90"
+                className="tap flex-1 rounded-lg bg-accent px-5 text-[0.92rem] font-medium text-paper transition-opacity hover:opacity-90 sm:flex-none sm:py-2.5"
               >
                 ↺ {t("tryAgain", lang)}
               </button>
               <button
                 type="button"
                 onClick={giveUp}
-                className="text-[0.85rem] text-muted underline decoration-rule underline-offset-4 hover:text-ink"
+                className="tap px-3 text-[0.85rem] text-muted underline decoration-rule underline-offset-4 hover:text-ink"
               >
                 {t("revealSolution", lang)}
               </button>
-            </section>
+            </ActionBar>
           )}
 
           {finished && (
@@ -285,15 +298,15 @@ export default function PracticePage() {
                 <p className="plate text-faint">{t("patternRecall", lang)}</p>
               </section>
 
-              <section>
+              <ActionBar>
                 <button
                   type="button"
                   onClick={nextProblem}
-                  className="w-full rounded-lg bg-ink px-6 py-3 text-[0.95rem] font-medium text-paper transition-opacity hover:opacity-90 sm:w-auto"
+                  className="tap w-full rounded-lg bg-ink px-6 text-[0.95rem] font-medium text-paper transition-opacity hover:opacity-90 sm:w-auto sm:py-3"
                 >
                   {t("next", lang)} →
                 </button>
-              </section>
+              </ActionBar>
             </>
           )}
         </div>

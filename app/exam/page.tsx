@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { checkAnswer, type CheckResult } from "@/lib/checker";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+import type { CheckResult } from "@/lib/checker";
+import { loadChecker, warmChecker } from "@/lib/lazyChecker";
 import { generateProblem, REGISTERED_TEMPLATE_IDS, TEMPLATES } from "@/lib/templates";
 import { randomSeed } from "@/lib/rng";
 import { useApp } from "@/lib/store";
 import { t, tx } from "@/lib/i18n";
 import type { Attempt, ExamState, Problem } from "@/lib/types";
 import { StepReveal } from "@/components/StepReveal";
-import { WhyWrong } from "@/components/WhyWrong";
+
+const WhyWrong = dynamic(
+  () => import("@/components/WhyWrong").then((m) => m.WhyWrong),
+  { ssr: false },
+);
 import { AnswerFields, Statement, TopicLine } from "@/components/QuestionView";
+import { ActionBar } from "@/components/ActionBar";
 
 const QUESTION_COUNT = 6;
 const DURATION_SECONDS = 90 * 60;
@@ -48,9 +55,10 @@ export default function ExamPage() {
     return () => clearInterval(id);
   }, [running]);
 
-  const finish = useMemo(
-    () => () => {
+  const finish = useCallback(
+    async () => {
       if (!exam || exam.finishedAt !== null) return;
+      const { checkAnswer } = await loadChecker();
       const at = Date.now();
       const perQuestion = Math.round(
         (at - exam.startedAt) / 1000 / exam.questions.length,
@@ -90,8 +98,12 @@ export default function ExamPage() {
 
   // Hard stop when the clock runs out.
   useEffect(() => {
-    if (running && remaining === 0) finish();
+    if (running && remaining === 0) void finish();
   }, [running, remaining, finish]);
+
+  useEffect(() => {
+    warmChecker();
+  }, []);
 
   if (!ready) return <p className="text-sm text-faint">{t("loading", lang)}</p>;
 
@@ -148,9 +160,9 @@ export default function ExamPage() {
               key={i}
               type="button"
               onClick={() => gotoExamQuestion(i)}
-              className={`h-8 w-8 rounded-lg border text-[0.8rem] transition-colors ${
+              className={`tap flex items-center justify-center rounded-lg border text-[0.85rem] transition-colors sm:h-9 sm:min-h-0 sm:w-9 sm:min-w-0 ${
                 i === exam.index
-                  ? "border-accent bg-accent text-white"
+                  ? "border-accent bg-accent text-paper"
                   : done
                     ? "border-accent/40 bg-accent-soft text-accent"
                     : "border-rule text-muted hover:border-accent"
@@ -177,33 +189,33 @@ export default function ExamPage() {
         }
       />
 
-      <div className="flex flex-wrap items-center gap-3 border-t border-rule pt-5">
+      <ActionBar>
         <button
           type="button"
           disabled={exam.index === 0}
           onClick={() => gotoExamQuestion(exam.index - 1)}
-          className="rounded-full border border-rule px-4 py-2 text-[0.85rem] text-muted disabled:opacity-40"
+          className="tap rounded-lg border border-rule px-4 text-[0.85rem] text-muted disabled:opacity-40 sm:py-2"
         >
-          ← {t("prev", lang)}
+          ←
         </button>
         <button
           type="button"
           disabled={exam.index === exam.questions.length - 1}
           onClick={() => gotoExamQuestion(exam.index + 1)}
-          className="rounded-full border border-rule px-4 py-2 text-[0.85rem] text-muted disabled:opacity-40"
+          className="tap flex-1 rounded-lg border border-rule px-4 text-[0.85rem] text-muted disabled:opacity-40 sm:flex-none sm:py-2"
         >
           {t("next", lang)} →
         </button>
         <button
           type="button"
           onClick={() => {
-            if (window.confirm(t("confirmFinish", lang))) finish();
+            if (window.confirm(t("confirmFinish", lang))) void finish();
           }}
-          className="ms-auto rounded-full bg-ink px-5 py-2.5 text-[0.88rem] font-medium text-paper"
+          className="tap ms-auto rounded-lg bg-ink px-5 text-[0.88rem] font-medium text-paper sm:py-2.5"
         >
           {t("submitExam", lang)}
         </button>
-      </div>
+      </ActionBar>
     </div>
   );
 }
@@ -278,30 +290,49 @@ function ExamResults({
 }) {
   const lang = useApp((s) => s.lang);
 
-  const graded = useMemo(
-    () =>
-      exam.questions.map((q, i) => {
-        const problem = problems[i];
-        const results: Record<string, CheckResult> = {};
-        for (const f of problem.fields) {
-          results[f.id] = checkAnswer(
-            q.answers[f.id] ?? "",
-            f.expected,
-            f.type,
-            { vars: f.vars, sampleRange: f.sampleRange },
-          );
-        }
-        const correct = problem.fields.filter((f) => results[f.id].correct)
-          .length;
-        return {
-          problem,
-          answers: q.answers,
-          results,
-          score: correct / problem.fields.length,
-        };
-      }),
-    [exam, problems],
-  );
+  type Graded = {
+    problem: Problem;
+    answers: Record<string, string>;
+    results: Record<string, CheckResult>;
+    score: number;
+  };
+  const [graded, setGraded] = useState<Graded[] | null>(null);
+
+  // Grading needs the CAS, which is loaded on demand.
+  useEffect(() => {
+    let cancelled = false;
+    void loadChecker().then(({ checkAnswer }) => {
+      if (cancelled) return;
+      setGraded(
+        exam.questions.map((q, i) => {
+          const problem = problems[i];
+          const results: Record<string, CheckResult> = {};
+          for (const f of problem.fields) {
+            results[f.id] = checkAnswer(
+              q.answers[f.id] ?? "",
+              f.expected,
+              f.type,
+              { vars: f.vars, sampleRange: f.sampleRange },
+            );
+          }
+          const correct = problem.fields.filter(
+            (f) => results[f.id].correct,
+          ).length;
+          return {
+            problem,
+            answers: q.answers,
+            results,
+            score: correct / problem.fields.length,
+          };
+        }),
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [exam, problems]);
+
+  if (!graded) return <p className="plate text-faint">{t("loading", lang)}</p>;
 
   const overall = Math.round(
     (graded.reduce((sum, g) => sum + g.score, 0) / graded.length) * 100,

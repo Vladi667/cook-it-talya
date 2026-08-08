@@ -32,6 +32,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Long formulas scroll inside their own box; the page itself never does. */
+  overflow-x: clip;
 }
 
 body {
@@ -39,6 +41,32 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-synthesis-weight: none;
+  overflow-x: clip;
+  /* Kill the 300ms tap delay and the grey flash on touch. */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * iOS zooms the viewport when a focused input has a font-size under 16px, and
+ * never zooms back out. Every text field in this app is drilled on a phone, so
+ * this is non-negotiable.
+ */
+input,
+textarea,
+select {
+  font-size: max(16px, 1em);
+}
+
+/* Comfortable minimum touch target — Apple and Google both say 44px. */
+.tap {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Sticky action bar that clears the home indicator. */
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
 /* Paper grain: a single inline turbulence, fixed so it never scrolls. */

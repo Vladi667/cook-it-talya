@@ -4,18 +4,23 @@ import { useRef } from "react";
 import type { AnswerField, Lang } from "@/lib/types";
 import { MathText } from "./MathText";
 
-/** Small insert-at-cursor palette. `move` backs the caret up into the parens. */
+/**
+ * Insert-at-cursor palette. `move` backs the caret up into the parentheses.
+ *
+ * Ordered by how often it is actually needed while drilling, because on a
+ * phone the first six keys are the ones reachable without thinking.
+ */
 const TOOLS: { label: string; insert: string; move?: number }[] = [
   { label: "√", insert: "sqrt()", move: -1 },
-  { label: "a/b", insert: "/" },
-  { label: "x²", insert: "^2" },
   { label: "xⁿ", insert: "^" },
+  { label: "x²", insert: "^2" },
+  { label: "( )", insert: "()", move: -1 },
   { label: "ln", insert: "ln()", move: -1 },
   { label: "e", insert: "e" },
-  { label: "∫", insert: "∫" },
   { label: "π", insert: "pi" },
   { label: "∞", insert: "infinity" },
-  { label: "( )", insert: "()", move: -1 },
+  { label: "/", insert: "/" },
+  { label: "∫", insert: "∫" },
   { label: "≠", insert: "!=" },
   { label: "∪", insert: "U" },
 ];
@@ -66,7 +71,7 @@ export function AnswerInput({
     <div>
       <label
         htmlFor={`field-${field.id}`}
-        className="mb-2 flex items-baseline gap-2 text-[0.9rem] text-muted"
+        className="mb-2 flex items-baseline gap-2 text-[0.92rem] text-muted"
       >
         <MathText text={field.prompt[lang]} className="inline" />
       </label>
@@ -87,6 +92,7 @@ export function AnswerInput({
           ref={ref}
           type="text"
           inputMode="text"
+          enterKeyHint="done"
           dir="ltr"
           autoComplete="off"
           autoCapitalize="off"
@@ -100,22 +106,26 @@ export function AnswerInput({
           onKeyDown={(e) => {
             if (e.key === "Enter" && onSubmit) {
               e.preventDefault();
+              (e.currentTarget as HTMLInputElement).blur();
               onSubmit();
             }
           }}
-          className="w-full bg-transparent px-3.5 py-3 font-serif text-[1.05rem] outline-none placeholder:text-faint/70 disabled:text-muted"
+          className="w-full bg-transparent px-3.5 py-3.5 font-serif text-[1.05rem] outline-none placeholder:text-faint/70 disabled:text-muted"
         />
       </div>
 
       {!disabled && (
-        <div className="-mx-1 mt-2 flex gap-1 overflow-x-auto pb-1">
+        // A grid, not a scrolling strip: every key stays visible and reachable
+        // on a 360px screen instead of hiding past the right edge.
+        <div className="mt-2 grid grid-cols-6 gap-1.5 sm:flex sm:flex-wrap">
           {TOOLS.map((tool) => (
             <button
               key={tool.label}
               type="button"
               tabIndex={-1}
               onClick={() => insert(tool)}
-              className="math-ltr shrink-0 rounded-lg border border-rule bg-raised px-2.5 py-1.5 font-serif text-[0.85rem] text-muted transition-colors hover:border-accent hover:text-accent active:bg-accent-soft"
+              aria-label={`insert ${tool.label}`}
+              className="math-ltr tap flex items-center justify-center rounded-lg border border-rule bg-raised font-serif text-[1rem] text-muted transition-colors select-none hover:border-accent hover:text-accent active:bg-accent-soft active:scale-95 sm:min-h-0 sm:min-w-0 sm:px-3 sm:py-2 sm:text-[0.9rem]"
             >
               {tool.label}
             </button>
