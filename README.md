@@ -61,6 +61,28 @@ validate against the same expected answer.
 - constants accept hand-rounded decimals, but never a neighbouring integer:
   `3.33` passes for `10/3`, `1025` never passes for `1024`
 
+## Recognition: the "spot the pattern" drill
+
+Recognition is a separate skill from solving, and it is the one that makes a
+student fast — in the exam you should never spend minutes working out which
+tool to reach for. `/spot` shows a question stem with **no answer fields and no
+figure** and asks only: which method is this? Ten seconds each, twenty in three
+minutes.
+
+- **Distractors are confusable by construction** (`CONFUSABLE` in `lib/spot.ts`),
+  never random. "Is this a limit or a triangle?" teaches nothing; "is this a
+  circle tangent or a function tangent?" is where recognition actually fails.
+- **Cues are highlighted in the real wording** once answered. Each pattern
+  declares literal `triggers` that occur in its own statements, and a test
+  asserts every generated statement contains at least one — and that no
+  pattern's triggers fire on every other pattern. That second test immediately
+  caught `"bisector of"`, which also matches "the **perpendicular** bisector
+  of AB" and would have trained a misread.
+- **Recognition is stored separately from solving mastery**, so the two can be
+  read apart: knowing every method but being slow to identify them is a
+  completely different problem from the reverse, and needs different practice.
+- Selection is weighted toward the types you misread.
+
 ## The teaching layer
 
 The app is built on one claim: **Bagrut questions are rehearsed forms, not
@@ -146,7 +168,7 @@ export at the bottom of that file. No auth in v1.
 npm test
 ```
 
-178 tests. Every template is generated 100 times and each sample is verified
+204 tests. Every template is generated 100 times and each sample is verified
 *independently* of its own algebra — numeric integration for areas and
 integrals, numeric limits for limits, central differences for derivatives, and
 direct geometric checks (is `D` on `BC`? does `AD` bisect the angle? do all

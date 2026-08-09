@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useApp } from "@/lib/store";
+import { recognitionAccuracy } from "@/lib/spot";
 import { t, tx } from "@/lib/i18n";
 import { TEMPLATE_LIST } from "@/lib/templates";
 import { mastery, statsFor } from "@/lib/mastery";
@@ -17,6 +19,11 @@ export default function PatternsPage() {
   const stats = useApp((s) => s.stats);
   const ready = useApp((s) => s.ready);
   const [openId, setOpenId] = useState<string | null>(TEMPLATE_LIST[0].id);
+  const recognition = useApp((s) => s.recognition);
+  const overall = useMemo(
+    () => recognitionAccuracy(recognition),
+    [recognition],
+  );
   const now = Date.now();
 
   return (
@@ -27,6 +34,30 @@ export default function PatternsPage() {
           {t("patternsIntro", lang)}
         </p>
       </header>
+
+      <Link
+        href="/spot"
+        className="group flex items-center gap-4 rounded-xl border border-pattern/30 bg-pattern-soft/40 px-5 py-4 transition-colors hover:border-pattern/60"
+      >
+        <div className="min-w-0">
+          <div className="plate text-pattern">{t("spot", lang)}</div>
+          <p className="mt-1 font-serif text-[1rem] leading-snug">
+            {t("spotHint", lang)}
+          </p>
+          {overall.seen > 0 && (
+            <p className="plate mt-1.5 text-faint tabular-nums">
+              {Math.round(overall.accuracy * 100)}% ·{" "}
+              {(overall.medianMs / 1000).toFixed(1)}s {t("perItem", lang)}
+            </p>
+          )}
+        </div>
+        <span
+          aria-hidden
+          className="ms-auto text-pattern transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+        >
+          →
+        </span>
+      </Link>
 
       <div className="rule-cap" />
 

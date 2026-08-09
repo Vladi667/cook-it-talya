@@ -10,6 +10,34 @@ export const UI = {
   exam: { en: "Exam", he: "מבחן" },
   progress: { en: "Progress", he: "התקדמות" },
 
+  spot: { en: "Spot it", he: "זיהוי תבנית" },
+
+  // Short forms — five nav items do not fit across a 375px screen in English.
+  navPractice: { en: "Solve", he: "תרגול" },
+  navSpot: { en: "Spot", he: "זיהוי" },
+  navPatterns: { en: "Learn", he: "תבניות" },
+  navExam: { en: "Exam", he: "מבחן" },
+  navProgress: { en: "Stats", he: "נתונים" },
+
+  spotTitle: { en: "Spot the pattern", he: "זיהוי התבנית" },
+  spotIntro: {
+    en: "No solving. Read the question and name the method — ten seconds each. This is the skill that makes you fast: in the exam you should never spend minutes working out which tool to reach for.",
+    he: "בלי לפתור. קראו את השאלה ונקבו בשיטה — עשר שניות לכל אחת. זו המיומנות שהופכת אתכם למהירים: במבחן אסור לבזבז דקות על ההחלטה באיזה כלי להשתמש.",
+  },
+  startRound: { en: "Start a round", he: "התחלת סבב" },
+  whichPattern: { en: "Which pattern is this?", he: "איזו תבנית זו?" },
+  theCues: { en: "The cues", he: "הסימנים" },
+  itWas: { en: "It was", he: "התשובה" },
+  roundDone: { en: "Round complete", he: "הסבב הושלם" },
+  againRound: { en: "Another round", he: "סבב נוסף" },
+  perItem: { en: "per question", he: "לשאלה" },
+  recognition: { en: "Recognition", he: "זיהוי" },
+  toPractice: { en: "Go and solve some", he: "עברו לפתור" },
+  spotHint: {
+    en: "Scan for the trigger words, not the numbers.",
+    he: "סרקו את מילות המפתח, לא את המספרים.",
+  },
+
   thePattern: { en: "The pattern", he: "התבנית" },
   patternsTitle: { en: "Patterns", he: "תבניות" },
   patternsIntro: {

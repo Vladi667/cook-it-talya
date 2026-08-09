@@ -15,6 +15,12 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       en: "Ratio on the opposite side, then one distance",
       he: "יחס על הצלע הנגדית, ואז מרחק אחד",
     },
+    triggers: {
+      // "bisector of" alone also matches "the PERPENDICULAR bisector of AB",
+      // which is a different pattern entirely — the cue has to discriminate.
+      en: ["is the bisector of", "vertices are"],
+      he: ["חוצה הזווית", "נתונים הקודקודים"],
+    },
     signature: [
       {
         en: "Three vertices given as **coordinates**",
@@ -93,6 +99,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       en: "Read each bisector as a mirror",
       he: "קראו כל אנך אמצעי כמראה",
     },
+    triggers: {
+      en: ["perpendicular bisector", "circumscribing"],
+      he: ["האנך האמצעי", "המעגל החוסם"],
+    },
     signature: [
       {
         en: "One vertex given, plus **perpendicular bisectors** as line equations",
@@ -160,6 +170,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
     method: {
       en: "Complete the square, then let the radius do the work",
       he: "השלימו לריבוע, ואז תנו לרדיוס לעבוד",
+    },
+    triggers: {
+      en: ["lies on it", "tangent segment", "external point"],
+      he: ["נמצאת עליו", "קטע המשיק", "החיצונית"],
     },
     signature: [
       {
@@ -245,6 +259,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       en: "Domain, simplify, differentiate, read the signs",
       he: "תחום, פישוט, גזירה, קריאת סימנים",
     },
+    triggers: {
+      en: ["Find its domain", "extremum points", "asymptotes"],
+      he: ["תחום ההגדרה", "נקודות הקיצון", "אסימפטוטות"],
+    },
     signature: [
       {
         en: "A single $f(x)$ followed by a **shopping list**: domain, extrema, asymptotes, tangent",
@@ -320,6 +338,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       en: "Sketch, split, integrate each piece",
       he: "שרטוט, פיצול, אינטגרל לכל חלק",
     },
+    triggers: {
+      en: ["Sketch the region", "its area"],
+      he: ["שרטטו", "שטחו"],
+    },
     signature: [
       {
         en: "Two graphs, or a graph and a line, plus the words **“bounded region”**",
@@ -393,6 +415,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
     method: {
       en: "Integrate with the unknown along for the ride",
       he: "אנטגרלו כשהנעלם נוסע יחד",
+    },
+    triggers: {
+      en: ["The constant", "satisfies"],
+      he: ["הקבוע", "מקיים"],
     },
     signature: [
       {
@@ -468,6 +494,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
     method: {
       en: "One variable, one function, then differentiate",
       he: "משתנה אחד, פונקציה אחת, ואז גזירה",
+    },
+    triggers: {
+      en: ["maximises", "maximum volume", "largest area"],
+      he: ["מרבי", "המרבי"],
     },
     signature: [
       {
@@ -553,6 +583,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       en: "Substitute, name the form, simplify, then substitute again",
       he: "הציבו, זהו את הצורה, פשטו, והציבו שוב",
     },
+    triggers: {
+      en: ["Evaluate the limit", "Simplify first"],
+      he: ["את הגבול", "פשטו תחילה"],
+    },
     signature: [
       {
         en: "Substitution gives $\\frac{0}{0}$, $\\frac{\\infty}{\\infty}$, $1^{\\infty}$ or $\\infty\\cdot 0$",
@@ -627,6 +661,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       en: "Count the steps, then walk back to the first term",
       he: "ספרו את הצעדים, ואז חזרו אל האיבר הראשון",
     },
+    triggers: {
+      en: ["sequence", "the first term"],
+      he: ["בסדרה", "האיבר הראשון"],
+    },
     signature: [
       {
         en: "Two terms are given by their **index**, like $a_3$ and $a_7$",
@@ -694,6 +732,10 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
     method: {
       en: "Two readings fix the model; logarithms invert it",
       he: "שתי מדידות קובעות את המודל; לוגריתמים הופכים אותו",
+    },
+    triggers: {
+      en: ["changes exponentially", "factor", "reaches"],
+      he: ["באופן מעריכי", "מקדם ה", "מגיע ל"],
     },
     signature: [
       {

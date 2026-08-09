@@ -14,7 +14,14 @@ export interface StorageAdapter {
 export const STORAGE_KEY = "cook-it-talya:v1";
 
 export function emptyData(): AppData {
-  return { version: 1, lang: "en", stats: {}, history: [], exam: null };
+  return {
+    version: 1,
+    lang: "en",
+    stats: {},
+    recognition: {},
+    history: [],
+    exam: null,
+  };
 }
 
 export class LocalStorageAdapter implements StorageAdapter {

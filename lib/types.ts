@@ -99,6 +99,13 @@ export interface Pattern {
   method: Text;
   /** The 5-second recognition cues. If you see these, it is this pattern. */
   signature: Text[];
+  /**
+   * Literal phrases that actually occur in this template's statements — the
+   * words a student should be scanning for. Highlighted after a recognition
+   * drill so the cue is learned from the real wording, not a paraphrase.
+   * A test asserts every generated statement contains at least one.
+   */
+  triggers: Record<Lang, string[]>;
   /** The reusable sequence. Identical every time — only the numbers change. */
   recipe: { move: Text; detail: Text }[];
   /** One paragraph: the reason the recipe is valid, not just that it works. */
@@ -270,10 +277,24 @@ export interface ExamState {
   finishedAt: number | null;
 }
 
+/**
+ * Recognition is tracked separately from solving. A student can know every
+ * method and still be slow because they cannot tell at a glance which one to
+ * reach for — blending the two into a single mastery number hides that.
+ */
+export interface RecognitionStats {
+  templateId: TemplateId;
+  seen: number;
+  correct: number;
+  /** Total milliseconds spent deciding, for the median-time readout. */
+  totalMs: number;
+}
+
 export interface AppData {
   version: 1;
   lang: Lang;
   stats: Record<string, TemplateStats>;
+  recognition: Record<string, RecognitionStats>;
   history: Attempt[];
   exam: ExamState | null;
 }

@@ -3,10 +3,12 @@
 import { create } from "zustand";
 import { storage, emptyData } from "./storage";
 import { applyAttempt, statsFor } from "./mastery";
+import { emptyRecognition } from "./spot";
 import type {
   Attempt,
   ExamState,
   Lang,
+  RecognitionStats,
   TemplateStats,
   TemplateId,
 } from "./types";
@@ -17,12 +19,18 @@ interface AppStore {
   ready: boolean;
   lang: Lang;
   stats: Record<string, TemplateStats>;
+  recognition: Record<string, RecognitionStats>;
   history: Attempt[];
   exam: ExamState | null;
 
   hydrate: () => Promise<void>;
   setLang: (lang: Lang) => void;
   recordAttempt: (attempt: Attempt) => void;
+  recordRecognition: (
+    templateId: TemplateId,
+    correct: boolean,
+    ms: number,
+  ) => void;
   resetAll: () => void;
 
   setExam: (exam: ExamState | null) => void;
@@ -31,11 +39,12 @@ interface AppStore {
 }
 
 function persist(get: () => AppStore) {
-  const { lang, stats, history, exam } = get();
+  const { lang, stats, recognition, history, exam } = get();
   void storage.save({
     version: 1,
     lang,
     stats,
+    recognition,
     history: history.slice(0, HISTORY_CAP),
     exam,
   });
@@ -70,6 +79,19 @@ export const useApp = create<AppStore>((set, get) => ({
       },
     );
     set({ stats, history: [attempt, ...get().history].slice(0, HISTORY_CAP) });
+    persist(get);
+  },
+
+  recordRecognition(templateId, correct, ms) {
+    const recognition = { ...get().recognition };
+    const prev = recognition[templateId] ?? emptyRecognition(templateId);
+    recognition[templateId] = {
+      ...prev,
+      seen: prev.seen + 1,
+      correct: prev.correct + (correct ? 1 : 0),
+      totalMs: prev.totalMs + ms,
+    };
+    set({ recognition });
     persist(get);
   },
 
