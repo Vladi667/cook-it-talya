@@ -95,15 +95,31 @@ function FieldVerdict({
 }) {
   const hintKey = result.hint ? HINT_KEY_MAP[result.hint] : undefined;
 
+  const followThrough = (result as { followThrough?: boolean }).followThrough;
+
   return (
     <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[0.85rem]">
       <span
-        className={result.correct ? "font-medium text-accent" : "font-medium text-wrong"}
+        className={
+          result.correct
+            ? "font-medium text-accent"
+            : followThrough
+              ? "font-medium text-pattern"
+              : "font-medium text-wrong"
+        }
       >
-        {result.correct ? `✓ ${t("correct", lang)}` : `✗ ${t("incorrect", lang)}`}
+        {result.correct
+          ? `✓ ${t("correct", lang)}`
+          : followThrough
+            ? `~ ${t("followThrough", lang)}`
+            : `✗ ${t("incorrect", lang)}`}
       </span>
 
-      {!result.correct && (
+      {followThrough && (
+        <span className="text-muted">{t("followThroughNote", lang)}</span>
+      )}
+
+      {!result.correct && !followThrough && (
         <>
           <span className="text-muted">
             {t("expected", lang)}:{" "}

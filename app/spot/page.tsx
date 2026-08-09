@@ -87,6 +87,22 @@ export default function SpotPage() {
           </div>
         )}
 
+        <Link
+          href="/quick"
+          className="flex items-center gap-4 rounded-xl border border-rule bg-raised px-5 py-4 transition-colors hover:border-accent"
+        >
+          <div className="min-w-0">
+            <div className="plate text-accent">{t("quick", lang)}</div>
+            <p className="mt-1 font-serif text-[0.98rem] leading-snug text-muted">
+              {t("quickIntro", lang).split(".")[1]?.trim() ??
+                t("quick", lang)}
+            </p>
+          </div>
+          <span aria-hidden className="ms-auto text-accent">
+            →
+          </span>
+        </Link>
+
         <ActionBar>
           <button
             type="button"

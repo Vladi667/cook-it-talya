@@ -24,6 +24,8 @@ export interface Diagnosis {
   fieldId: string;
   kind: DiagnosisKind;
   text: Text;
+  /** Set when a named pitfall matched, so repeat offences can be counted. */
+  trapId?: string;
 }
 
 export function diagnoseField(
@@ -33,10 +35,15 @@ export function diagnoseField(
   result: CheckResult,
 ): Diagnosis | null {
   if (result.correct) return null;
-  const make = (kind: DiagnosisKind, text: Text): Diagnosis => ({
+  const make = (
+    kind: DiagnosisKind,
+    text: Text,
+    trapId?: string,
+  ): Diagnosis => ({
     fieldId: field.id,
     kind,
     text,
+    trapId,
   });
 
   const trimmed = (input ?? "").trim();
@@ -55,7 +62,8 @@ export function diagnoseField(
 
   // 1. A mistake this template knows about by name.
   for (const pitfall of field.pitfalls ?? []) {
-    if (matches(trimmed, pitfall.value, field)) return make("pitfall", pitfall.why);
+    if (matches(trimmed, pitfall.value, field))
+      return make("pitfall", pitfall.why, pitfall.id);
   }
 
   // 2. The right answer — to a different part of the question.

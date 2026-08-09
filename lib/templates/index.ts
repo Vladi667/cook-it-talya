@@ -1,6 +1,7 @@
 import type { Problem, Template, TemplateDef, TemplateId } from "../types";
 import { makeRng } from "../rng";
 import { PATTERNS } from "../patterns";
+import { BUDGET_SECONDS } from "../budgets";
 import { triangleBisector } from "./triangle-bisector";
 import { triangleFromLines } from "./triangle-from-lines";
 import { circleTangent } from "./circle-tangent";
@@ -30,6 +31,7 @@ const DEFS: TemplateDef[] = [
 export const TEMPLATE_LIST: Template[] = DEFS.map((def) => ({
   ...def,
   pattern: PATTERNS[def.id],
+  budgetSeconds: BUDGET_SECONDS[def.id],
 }));
 
 export const TEMPLATES = Object.fromEntries(

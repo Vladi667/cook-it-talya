@@ -176,6 +176,7 @@ export const triangleBisector: TemplateDef = {
           pitfalls: [
             {
               value: `(${fracPlain(B[0] + C[0], 2)},${fracPlain(B[1] + C[1], 2)})`,
+              id: "bisector-midpoint",
               why: {
                 en: `That is the midpoint of $BC$ — the foot of the **median**, not the bisector. The bisector only hits the midpoint when $AB=AC$, and here $AB=${c}$ while $AC=${b}$.`,
                 he: `זו נקודת האמצע של $BC$ — רגל ה**תיכון**, לא חוצה הזווית. חוצה הזווית פוגע באמצע רק כאשר $AB=AC$, וכאן $AB=${c}$ ואילו $AC=${b}$.`,
@@ -183,6 +184,7 @@ export const triangleBisector: TemplateDef = {
             },
             {
               value: `(${fracPlain(c * B[0] + b * C[0], s)},${fracPlain(c * B[1] + b * C[1], s)})`,
+              id: "bisector-weights-swapped",
               why: {
                 en: `The two weights are swapped. From $BD:DC=AB:AC=${c}:${b}$, the point closer to $B$ carries the weight of the **opposite** side, so $D=\\frac{${b}\\cdot B+${c}\\cdot C}{${s}}$ — the $AC$ length multiplies $B$.`,
                 he: `שני המשקלים הוחלפו. מתוך $BD:DC=AB:AC=${c}:${b}$, הנקודה הקרובה ל-$B$ נושאת את משקל הצלע **הנגדית**, ולכן $D=\\frac{${b}\\cdot B+${c}\\cdot C}{${s}}$ — אורך $AC$ מוכפל ב-$B$.`,
@@ -197,9 +199,19 @@ export const triangleBisector: TemplateDef = {
           placeholder: "e.g. 3sqrt(5)/2",
           expected: adPlain,
           prompt: { en: "Length $AD$", he: "אורך $AD$" },
+          // Measuring correctly from your own wrong D still shows the method.
+          followsFrom: {
+            fields: ["D"],
+            expected: (prior) => {
+              const d = prior.D;
+              if (!d || d.length !== 2) return null;
+              return `sqrt((${d[0]}-${paren(A[0])})^2+(${d[1]}-${paren(A[1])})^2)`;
+            },
+          },
           pitfalls: [
             {
               value: `sqrt((${fracPlain(B[0] + C[0], 2)}-${paren(A[0])})^2+(${fracPlain(B[1] + C[1], 2)}-${paren(A[1])})^2)`,
+              id: "bisector-median-length",
               why: {
                 en: `You measured to the midpoint of $BC$, so this is the length of the **median**, not the bisector. Locate $D$ by the ratio $${c}:${b}$ first, then apply the distance formula.`,
                 he: `מדדתם עד אמצע $BC$, ולכן זהו אורך ה**תיכון** ולא חוצה הזווית. מצאו קודם את $D$ לפי היחס $${c}:${b}$, ורק אז הפעילו את נוסחת המרחק.`,
@@ -207,6 +219,7 @@ export const triangleBisector: TemplateDef = {
             },
             {
               value: String(radicand) + `/${s * s}`,
+              id: "bisector-forgot-sqrt",
               why: {
                 en: "That is $AD^2$, not $AD$ — you stopped one step early. Take the square root.",
                 he: "זהו $AD^2$ ולא $AD$ — עצרתם שלב אחד מוקדם מדי. הוציאו שורש.",

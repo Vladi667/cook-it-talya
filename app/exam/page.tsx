@@ -58,35 +58,32 @@ export default function ExamPage() {
   const finish = useCallback(
     async () => {
       if (!exam || exam.finishedAt !== null) return;
-      const { checkAnswer } = await loadChecker();
+      await loadChecker();
+      const { gradeProblem, totalCredit } = await import("@/lib/grade");
       const at = Date.now();
       const perQuestion = Math.round(
         (at - exam.startedAt) / 1000 / exam.questions.length,
       );
       exam.questions.forEach((q, i) => {
         const problem = problems[i];
-        const results = problem.fields.map((f) =>
-          checkAnswer(q.answers[f.id] ?? "", f.expected, f.type, {
-            vars: f.vars,
-            sampleRange: f.sampleRange,
-          }),
-        );
-        const correctCount = results.filter((r) => r.correct).length;
+        // Marked with follow-through, as the real paper is.
+        const graded = gradeProblem(problem, q.answers);
         const attempt: Attempt = {
           id: `${problem.id}@${at}#${i}`,
           templateId: q.templateId,
           seed: q.seed,
           at,
           seconds: perQuestion,
-          correct: correctCount === problem.fields.length,
-          score: correctCount / problem.fields.length,
+          correct: problem.fields.every((f) => graded[f.id].correct),
+          score: totalCredit(graded),
+          attemptNo: 1,
           hintsUsed: 0,
           mode: "exam",
-          fields: problem.fields.map((f, k) => ({
+          fields: problem.fields.map((f) => ({
             fieldId: f.id,
-            correct: results[k].correct,
+            correct: graded[f.id].correct,
             input: q.answers[f.id] ?? "",
-            normalizedInput: results[k].normalizedInput,
+            normalizedInput: graded[f.id].normalizedInput,
           })),
         };
         recordAttempt(attempt);
@@ -301,32 +298,23 @@ function ExamResults({
   // Grading needs the CAS, which is loaded on demand.
   useEffect(() => {
     let cancelled = false;
-    void loadChecker().then(({ checkAnswer }) => {
+    void (async () => {
+      await loadChecker();
+      const { gradeProblem, totalCredit } = await import("@/lib/grade");
       if (cancelled) return;
       setGraded(
         exam.questions.map((q, i) => {
           const problem = problems[i];
-          const results: Record<string, CheckResult> = {};
-          for (const f of problem.fields) {
-            results[f.id] = checkAnswer(
-              q.answers[f.id] ?? "",
-              f.expected,
-              f.type,
-              { vars: f.vars, sampleRange: f.sampleRange },
-            );
-          }
-          const correct = problem.fields.filter(
-            (f) => results[f.id].correct,
-          ).length;
+          const results = gradeProblem(problem, q.answers);
           return {
             problem,
             answers: q.answers,
             results,
-            score: correct / problem.fields.length,
+            score: totalCredit(results),
           };
         }),
       );
-    });
+    })();
     return () => {
       cancelled = true;
     };

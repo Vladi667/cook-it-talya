@@ -102,6 +102,7 @@ export const reverseIntegral: TemplateDef = {
               : [
                   {
                     value: String(R),
+                    id: "integral-remainder-not-b",
                     why: {
                       en: `You solved for the **remainder** of the division, not for $b$. The $\\ln$ coefficient is $b ${signed(-kk)} = ${R}$, so $b = ${R} ${signed(kk)} = ${b}$.`,
                       he: `פתרתם עבור **השארית** של החילוק ולא עבור $b$. מקדם ה-$\\ln$ הוא $b ${signed(-kk)} = ${R}$, ולכן $b = ${R} ${signed(kk)} = ${b}$.`,
@@ -109,6 +110,7 @@ export const reverseIntegral: TemplateDef = {
                   },
                   {
                     value: String(b - 2 * kk),
+                    id: "integral-remainder-sign",
                     why: {
                       en: `Sign slip on the division remainder: it is $b ${signed(-kk)}$, so recovering $b$ means **adding** $${kk}$ back, not subtracting it.`,
                       he: `טעות סימן בשארית החילוק: השארית היא $b ${signed(-kk)}$, ולכן כדי לשחזר את $b$ יש **להוסיף** $${kk}$ ולא לחסר.`,

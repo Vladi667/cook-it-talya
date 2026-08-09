@@ -108,6 +108,43 @@ together. `/patterns` is the study view of all ten.
 Ochre is used for pattern content and for nothing else, so the colour itself
 comes to mean “this is the transferable part”.
 
+## Three skills, measured apart
+
+The exam tests three things that fail independently, and a single blended
+"mastery" number cannot tell you which is costing marks:
+
+| Skill | Where it is trained | Where it is measured |
+| --- | --- | --- |
+| **Recognition** — which method is this? | `/spot` | recognition % |
+| **Pace** — can you do it in the exam's time? | `/quick` + budgets | × of budget |
+| **Accuracy** — right *first* time? | `/` practice | first-attempt % |
+
+Progress reports all three and names the weakest one in a sentence:
+*"Accurate, but over the exam allocation. You would not finish the paper."*
+`lib/budgets.ts` holds a realistic allocation per question type, which is what
+turns "slow" from a feeling into a number.
+
+### Spot the pattern (`/spot`)
+
+A question stem with no answer fields and no figure, and one question: which
+method is this? Ten seconds each, twenty in three minutes. Distractors are
+drawn from a confusability map (`lib/spot.ts`) — "is this a limit or a
+triangle?" teaches nothing, so the near-misses are the ones that share a
+surface feature: the word *tangent*, the word *bisector*, a ratio to recover.
+
+Answer, and the **actual trigger words are highlighted in the real question**.
+A test asserts every trigger genuinely occurs in that template's statements,
+and that no template's triggers fire on every other template — which caught a
+real cue bug, since `"bisector of"` also matches *"the **perpendicular**
+bisector of AB"*.
+
+### Quick fire (`/quick`)
+
+Every full question takes minutes, which is the wrong grain for building
+speed. `lib/micro.ts` drills the atoms the methods are made of — distance
+formula, completing the square, long division, differentiating, solving
+`qⁿ = k`, sequence steps, log simplification. Ten at a time, about a minute.
+
 ## Getting it wrong is the lesson
 
 A first wrong answer is a teaching moment, not a verdict:
@@ -120,6 +157,21 @@ A first wrong answer is a teaching moment, not a verdict:
    the help you needed.
 
 Only when you give up does the worked solution appear.
+
+### Follow-through marking
+
+Real graders award marks for work that is consistent with your *own* earlier
+wrong answer. `lib/grade.ts` does the same: if part (א) is wrong but part (ב)
+is worked correctly from that wrong value, (ב) earns 70%. One early sign slip
+no longer wipes out a perfect second half — which is both the honest score and
+the right lesson.
+
+### Your traps
+
+Every named mistake has a stable id (`lib/traps.ts`), so repeat offences are
+counted across questions: *"Section-formula weights swapped ×4"*. An open trap
+raises the selection weight of its question type, so the thing you keep
+getting wrong comes back sooner. Avoid it three times and it clears.
 
 ## “Why was I wrong?”
 
@@ -168,7 +220,7 @@ export at the bottom of that file. No auth in v1.
 npm test
 ```
 
-204 tests. Every template is generated 100 times and each sample is verified
+259 tests. Every template is generated 100 times and each sample is verified
 *independently* of its own algebra — numeric integration for areas and
 integrals, numeric limits for limits, central differences for derivatives, and
 direct geometric checks (is `D` on `BC`? does `AD` bisect the angle? do all

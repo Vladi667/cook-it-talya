@@ -8,6 +8,7 @@ function invertedRatio(a: number, b: number): Pitfall[] {
   return [
     {
       value: fracPlain(b, a),
+      id: "limit-ratio-inverted",
       why: {
         en: `The ratio is upside down. The coefficient from the **numerator** goes on top: the numerator contributes $${a}$ and the denominator $${b}$, so the limit is $${fracLatex(a, b)}$.`,
         he: `היחס הפוך. המקדם מה**מונה** נמצא למעלה: המונה תורם $${a}$ והמכנה $${b}$, ולכן הגבול הוא $${fracLatex(a, b)}$.`,
@@ -158,6 +159,7 @@ const FAMILIES: Family[] = [
         : [
             {
               value: `e^(${a + b})`,
+              id: "limit-exponents-added",
               why: {
                 en: `The exponents **multiply**, they do not add. Substituting $t=\\frac{x}{${a}}$ turns the power $${b}x$ into $${a}\\cdot${b}\\cdot t$, so the answer is $e^{${a * b}}$.`,
                 he: `המעריכים **מוכפלים** ולא מתחברים. ההצבה $t=\\frac{x}{${a}}$ הופכת את החזקה $${b}x$ ל-$${a}\\cdot${b}\\cdot t$, ולכן התשובה היא $e^{${a * b}}$.`,
@@ -218,6 +220,7 @@ const FAMILIES: Family[] = [
     pitfalls: ([a, b]) => [
       {
         value: fracPlain(a * a, b),
+        id: "limit-lost-half",
         why: {
           en: `You lost the factor $\\frac{1}{2}$. The identity is $1-\\cos\\theta = 2\\sin^{2}\\frac{\\theta}{2}$, and the half-angle squares to $\\frac{${a}^2}{4}$ — combining the $2$ and the $\\frac{1}{4}$ leaves $\\frac{${a}^2}{2\\cdot${b}}$.`,
           he: `איבדתם את הגורם $\\frac{1}{2}$. הזהות היא $1-\\cos\\theta = 2\\sin^{2}\\frac{\\theta}{2}$, וחצי הזווית בריבוע נותן $\\frac{${a}^2}{4}$ — שילוב ה-$2$ עם ה-$\\frac{1}{4}$ משאיר $\\frac{${a}^2}{2\\cdot${b}}$.`,
@@ -278,6 +281,7 @@ const FAMILIES: Family[] = [
     pitfalls: ([a]) => [
       {
         value: `${a}*e`,
+        id: "limit-e-in-numerator",
         why: {
           en: `The derivative of $\\ln x$ is $\\frac{1}{x}$, not $x$. Evaluated at $x=e$ that is $\\frac{1}{e}$, so the limit is $\\frac{${a}}{e}$ — the $e$ belongs in the denominator.`,
           he: `הנגזרת של $\\ln x$ היא $\\frac{1}{x}$ ולא $x$. בהצבה $x=e$ מתקבל $\\frac{1}{e}$, ולכן הגבול הוא $\\frac{${a}}{e}$ — ה-$e$ שייך למכנה.`,
@@ -342,6 +346,7 @@ const FAMILIES: Family[] = [
         : [
             {
               value: String(b),
+              id: "limit-dropped-coefficient",
               why: {
                 en: `You dropped the outer coefficient. $\\ln\\left(1+\\frac{${b}}{x}\\right)^{x}\\to ${b}$ is right, but the whole expression is $${a}$ times that, giving $${a * b}$.`,
                 he: `השמטתם את המקדם החיצוני. נכון ש-$\\ln\\left(1+\\frac{${b}}{x}\\right)^{x}\\to ${b}$, אך הביטוי כולו הוא פי $${a}$ מכך, ולכן $${a * b}$.`,

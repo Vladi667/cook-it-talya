@@ -144,6 +144,48 @@ export const UI = {
   discardExam: { en: "Discard", he: "ביטול" },
   answered: { en: "answered", he: "נענו" },
 
+  followThrough: { en: "Method credit", he: "ניקוד על הדרך" },
+  followThroughNote: {
+    en: "Correct from your own earlier answer — a marker would give you most of these marks.",
+    he: "נכון ביחס לתשובתכם הקודמת — בודק היה מעניק לכם את רוב הנקודות.",
+  },
+
+  quick: { en: "Quick fire", he: "אימון מהיר" },
+  quickTitle: { en: "Quick fire", he: "אימון מהיר" },
+  quickIntro: {
+    en: "Every full question takes minutes, which is the wrong grain for building speed. These are the atoms the methods are made of — ten at a time, about a minute. When these cost nothing, the whole question gets fast.",
+    he: "כל שאלה מלאה לוקחת דקות, וזה אינו הגודל הנכון לבניית מהירות. אלה אבני הבניין שמהן מורכבות השיטות — עשר בכל פעם, כדקה. כשאלה לא עולות מאמץ, כל השאלה נעשית מהירה.",
+  },
+  changeAtom: { en: "Different skill", he: "מיומנות אחרת" },
+
+  yourTraps: { en: "Your traps", he: "המלכודות שלך" },
+  trapsHint: {
+    en: "Red is still open. Avoid a trap three times and it clears.",
+    he: "אדום — עדיין פתוחה. הימנעו ממלכודת שלוש פעמים והיא נסגרת.",
+  },
+
+  pace: { en: "Pace", he: "קצב" },
+  firstTime: { en: "Right first time", he: "נכון בניסיון ראשון" },
+  ofBudget: { en: "of exam time", he: "מזמן המבחן" },
+  focusRecognition: {
+    en: "You know the methods — the time is going on deciding which one to use. Drill recognition.",
+    he: "אתם מכירים את השיטות — הזמן הולך על ההחלטה באיזו להשתמש. תרגלו זיהוי.",
+  },
+  focusPace: {
+    en: "Accurate, but over the exam allocation. You would not finish the paper. Work on speed.",
+    he: "מדויק, אך מעבר להקצאת הזמן במבחן. לא הייתם מספיקים את השאלון. עבדו על מהירות.",
+  },
+  focusAccuracy: {
+    en: "Fast and you know the methods — the marks are going on slips. Look at your traps below.",
+    he: "מהירים ומכירים את השיטות — הנקודות הולכות על טעויות קטנות. בדקו את המלכודות שלמטה.",
+  },
+  allGood: {
+    en: "Recognition, pace and accuracy are all in good shape. Keep the rotation going.",
+    he: "זיהוי, קצב ודיוק — כולם במצב טוב. המשיכו בסבב.",
+  },
+  noEvidence: { en: "—", he: "—" },
+  perType: { en: "By question type", he: "לפי סוג שאלה" },
+
   mastery: { en: "Mastery", he: "שליטה" },
   accuracy: { en: "Accuracy", he: "אחוז הצלחה" },
   attempts: { en: "Attempts", he: "ניסיונות" },

@@ -128,6 +128,7 @@ export const circleTangent: TemplateDef = {
           pitfalls: [
             {
               value: `(${-p},${-q})`,
+              id: "circle-centre-signs",
               why: {
                 en: `Sign slip. From $x^2 ${signed(D)}x$ the centre coordinate is $-\\frac{${D}}{2} = ${p}$ — you negated it twice.`,
                 he: `טעות סימן. מתוך $x^2 ${signed(D)}x$ שיעור המרכז הוא $-\\frac{${D}}{2} = ${p}$ — הפכתם את הסימן פעמיים.`,
@@ -145,6 +146,7 @@ export const circleTangent: TemplateDef = {
           pitfalls: [
             {
               value: String(R2),
+              id: "circle-radius-squared",
               why: {
                 en: `That is $R^2$. Completing the square leaves $R^2 = ${R2}$ on the right, so the radius itself is $\\sqrt{${R2}} = ${R}$.`,
                 he: `זהו $R^2$. השלמה לריבוע משאירה $R^2 = ${R2}$ באגף ימין, ולכן הרדיוס עצמו הוא $\\sqrt{${R2}} = ${R}$.`,
@@ -161,6 +163,7 @@ export const circleTangent: TemplateDef = {
           pitfalls: [
             {
               value: `${v}*x+${paren(-u)}*y=${v * A[0] - u * A[1]}`,
+              id: "circle-tangent-parallel",
               why: {
                 en: "That line passes through $A$ but is **parallel** to the radius, not perpendicular to it. The radius vector is the tangent's normal — use it as the coefficients, not as the direction.",
                 he: "הישר הזה עובר דרך $A$ אך **מקביל** לרדיוס ולא מאונך לו. וקטור הרדיוס הוא הנורמל של המשיק — השתמשו בו כמקדמים, לא ככיוון.",
@@ -181,6 +184,7 @@ export const circleTangent: TemplateDef = {
           pitfalls: [
             {
               value: String(Math.round(Math.sqrt(PO2))),
+              id: "circle-length-to-centre",
               why: {
                 en: `That is $PO$, the distance to the **centre**. The tangent is a leg of the right triangle $POT$, so $PT=\\sqrt{PO^2-R^2}=\\sqrt{${PO2}-${R2}}=${tangentLength}$.`,
                 he: `זהו $PO$, המרחק אל ה**מרכז**. המשיק הוא ניצב במשולש ישר הזווית $POT$, ולכן $PT=\\sqrt{PO^2-R^2}=\\sqrt{${PO2}-${R2}}=${tangentLength}$.`,
@@ -188,6 +192,7 @@ export const circleTangent: TemplateDef = {
             },
             {
               value: String(PO2 - R2),
+              id: "circle-length-squared",
               why: {
                 en: `That is $PT^2$. One square root short — $PT=${tangentLength}$.`,
                 he: `זהו $PT^2$. חסר שורש אחד — $PT=${tangentLength}$.`,

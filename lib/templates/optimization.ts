@@ -73,6 +73,7 @@ export const optimization: TemplateDef = {
             pitfalls: [
               {
                 value: String(3 * m),
+                id: "opt-degenerate-root",
                 why: {
                   en: `$V'(x)=(${a}-2x)(${a}-6x)$ has two roots. The root $x=${3 * m}$ comes from $${a}-2x=0$, where the base has shrunk to nothing and the volume is **zero** — it is the minimum, not the maximum. The one you want is $${a}-6x=0$.`,
                   he: `לנגזרת $V'(x)=(${a}-2x)(${a}-6x)$ יש שני שורשים. השורש $x=${3 * m}$ מגיע מ-$${a}-2x=0$, שם הבסיס מתאפס והנפח **אפס** — זהו המינימום ולא המקסימום. הדרוש הוא $${a}-6x=0$.`,
@@ -90,11 +91,21 @@ export const optimization: TemplateDef = {
               en: "Maximum volume (cm³)",
               he: "הנפח המרבי (סמ״ק)",
             },
+            // V(x) evaluated at your own x is the method, done correctly.
+            followsFrom: {
+              fields: ["x"],
+              expected: (prior) => {
+                const x = prior.x?.[0];
+                if (x === undefined) return null;
+                return `(${x})*(${a}-2*(${x}))^2`;
+              },
+            },
             // For m = 1 the base area happens to equal the volume, so there
             // would be nothing to catch.
             pitfalls: base * base === V ? [] : [
               {
                 value: String(base * base),
+                id: "opt-base-area-not-volume",
                 why: {
                   en: `That is the **area** of the base, $\\left(${a}-2x\\right)^2$. The volume still needs the height, which is the cut $x=${x}$.`,
                   he: `זהו **שטח** הבסיס, $\\left(${a}-2x\\right)^2$. לנפח חסר עדיין הגובה, שהוא הגזירה $x=${x}$.`,
@@ -267,6 +278,7 @@ export const optimization: TemplateDef = {
           pitfalls: [
             {
               value: `(${halfWidth},${height})`,
+              id: "opt-width-is-2x",
               why: {
                 en: `The rectangle is symmetric about the $y$-axis, so its width is $2x = ${2 * halfWidth}$, not $x$. This is the single most common slip in this question type.`,
                 he: `המלבן סימטרי ביחס לציר ה-$y$, ולכן רוחבו $2x = ${2 * halfWidth}$ ולא $x$. זו הטעות הנפוצה ביותר בשאלות מסוג זה.`,
@@ -284,6 +296,7 @@ export const optimization: TemplateDef = {
           pitfalls: [
             {
               value: String(halfWidth * height),
+              id: "opt-area-width-is-2x",
               why: {
                 en: `You used $x$ as the width instead of $2x$. The area is $2x\\cdot y = ${2 * halfWidth}\\cdot${height}=${area}$.`,
                 he: `השתמשתם ב-$x$ כרוחב במקום ב-$2x$. השטח הוא $2x\\cdot y = ${2 * halfWidth}\\cdot${height}=${area}$.`,

@@ -121,6 +121,7 @@ export const growthDecay: TemplateDef = {
           pitfalls: [
             {
               value: fracPlain(N1n, N0 * qd ** t1),
+              id: "growth-factor-whole-period",
               why: {
                 en: `That is $q^{${t1}}$ — the factor over the whole $${t1}$ ${unitEn}, not per ${unit === "years" ? "year" : "hour"}. Take the ${t1 === 2 ? "square" : "cube"} root.`,
                 he: `זהו $q^{${t1}}$ — המקדם עבור כל $${t1}$ ה${unitHe}, ולא ל${unit === "years" ? "שנה" : "שעה"}. הוציאו שורש ${t1 === 2 ? "ריבועי" : "שלישי"}.`,
@@ -128,6 +129,7 @@ export const growthDecay: TemplateDef = {
             },
             {
               value: fracPlain(qd, qn),
+              id: "growth-factor-inverted",
               why: {
                 en: `That is $\\frac{1}{q}$ — the factor upside down. Check the direction: the quantity ${decay ? "falls, so $q<1$" : "rises, so $q>1$"}.`,
                 he: `זהו $\\frac{1}{q}$ — המקדם הפוך. בדקו את הכיוון: הגודל ${decay ? "יורד, ולכן $q<1$" : "עולה, ולכן $q>1$"}.`,
@@ -159,6 +161,7 @@ export const growthDecay: TemplateDef = {
           pitfalls: [
             {
               value: `log(${oddTarget})/log(${N0})`,
+              id: "growth-log-quotient",
               why: {
                 en: "$\\ln$ of a quotient is a **difference** of logs, not a quotient of logs: $\\ln\\frac{A}{B}=\\ln A-\\ln B$, which is not $\\frac{\\ln A}{\\ln B}$.",
                 he: "$\\ln$ של מנה הוא **הפרש** לוגריתמים ולא מנה של לוגריתמים: $\\ln\\frac{A}{B}=\\ln A-\\ln B$, וזה אינו $\\frac{\\ln A}{\\ln B}$.",

@@ -131,6 +131,7 @@ export const sequences: TemplateDef = {
             pitfalls: [
               {
                 value: fracPlain(an - am, n - m + 1),
+                id: "seq-steps-not-terms",
                 why: {
                   en: `There are $${n} - ${m} = ${n - m}$ **steps** between $a_{${m}}$ and $a_{${n}}$, not $${n - m + 1}$. Count the gaps, not the terms.`,
                   he: `יש $${n} - ${m} = ${n - m}$ **צעדים** בין $a_{${m}}$ ל-$a_{${n}}$, ולא $${n - m + 1}$. ספרו את המרווחים, לא את האיברים.`,
@@ -145,9 +146,19 @@ export const sequences: TemplateDef = {
             expected: String(a1),
             placeholder: "e.g. -3",
             prompt: { en: "First term $a_1$", he: "האיבר הראשון $a_1$" },
+            // Walking back correctly from your own d still shows the method.
+            followsFrom: {
+              fields: ["d"],
+              expected: (prior) => {
+                const theirD = prior.d?.[0];
+                if (theirD === undefined) return null;
+                return `${am}-${m - 1}*(${theirD})`;
+              },
+            },
             pitfalls: [
               {
                 value: String(am - m * d),
+                id: "seq-off-by-one",
                 why: {
                   en: `Off by one step. $a_{${m}} = a_1 + (${m}-1)d$, so you subtract $${m - 1}d$, not $${m}d$.`,
                   he: `סטייה של צעד אחד. מתקיים $a_{${m}} = a_1 + (${m}-1)d$, ולכן מחסרים $${m - 1}d$ ולא $${m}d$.`,
@@ -165,9 +176,19 @@ export const sequences: TemplateDef = {
               en: `Sum of the first $${k}$ terms`,
               he: `סכום $${k}$ האיברים הראשונים`,
             },
+            followsFrom: {
+              fields: ["a1", "d"],
+              expected: (prior) => {
+                const theirA1 = prior.a1?.[0];
+                const theirD = prior.d?.[0];
+                if (theirA1 === undefined || theirD === undefined) return null;
+                return `${k}/2*(2*(${theirA1})+(${k}-1)*(${theirD}))`;
+              },
+            },
             pitfalls: [
               {
                 value: String(k * (2 * a1 + k * d) / 2),
+                id: "seq-sum-last-term",
                 why: {
                   en: `The last term of the sum is $a_{${k}} = a_1 + (${k}-1)d$, so the bracket is $2a_1 + (${k}-1)d$ — one $d$ fewer than you used.`,
                   he: `האיבר האחרון בסכום הוא $a_{${k}} = a_1 + (${k}-1)d$, ולכן בסוגריים $2a_1 + (${k}-1)d$ — $d$ אחד פחות ממה שהשתמשתם.`,
@@ -278,6 +299,7 @@ export const sequences: TemplateDef = {
       ? [
           {
             value: fracPlain(a1 * qd, qd + qn),
+            id: "seq-infinite-sign",
             why: {
               en: `The formula is $S_\\infty=\\frac{a_1}{1-q}$, not $\\frac{a_1}{1+q}$. With $q=${qLatex}$ the denominator is $1-${qLatex}$.`,
               he: `הנוסחה היא $S_\\infty=\\frac{a_1}{1-q}$ ולא $\\frac{a_1}{1+q}$. עבור $q=${qLatex}$ המכנה הוא $1-${qLatex}$.`,
@@ -319,6 +341,7 @@ export const sequences: TemplateDef = {
             {
               // q^gap: the ratio between the two given terms, mistaken for q
               value: fracPlain(qn ** gap, qd ** gap),
+              id: "seq-ratio-is-power",
               why: {
                 en: `That is $q^{${gap}}$, the ratio between the two given terms — not $q$ itself. There are $${gap}$ steps between them, so take the ${gap === 2 ? "square" : "cube"} root.`,
                 he: `זהו $q^{${gap}}$, היחס בין שני האיברים הנתונים — לא $q$ עצמו. יש ביניהם $${gap}$ צעדים, ולכן יש להוציא שורש ${gap === 2 ? "ריבועי" : "שלישי"}.`,

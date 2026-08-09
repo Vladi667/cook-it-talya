@@ -10,6 +10,7 @@ import {
   TEMPLATES,
 } from "@/lib/templates";
 import { pickNextTemplate } from "@/lib/mastery";
+import { trapPressure } from "@/lib/traps";
 import { randomSeed } from "@/lib/rng";
 import { useApp } from "@/lib/store";
 import { t, tx } from "@/lib/i18n";
@@ -35,6 +36,8 @@ export default function PracticePage() {
   const lang = useApp((s) => s.lang);
   const stats = useApp((s) => s.stats);
   const recordAttempt = useApp((s) => s.recordAttempt);
+  const recordTraps = useApp((s) => s.recordTraps);
+  const traps = useApp((s) => s.traps);
 
   const [problem, setProblem] = useState<Problem | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -54,6 +57,7 @@ export default function PracticePage() {
     const templateId = pickNextTemplate(stats, Date.now(), {
       avoid: lastTemplate.current,
       available: REGISTERED_TEMPLATE_IDS,
+      trapPressure: (id) => trapPressure(traps, id),
     });
     lastTemplate.current = templateId;
     setProblem(generateProblem(templateId, randomSeed()));
@@ -85,8 +89,13 @@ export default function PracticePage() {
     ) => {
       if (recorded.current) return;
       recorded.current = true;
-      const correctCount = Object.values(graded).filter((r) => r.correct).length;
-      const ratio = correctCount / p.fields.length;
+      // Follow-through answers carry partial credit, exactly as they would
+      // from a real marker.
+      const ratio =
+        Object.values(graded).reduce(
+          (sum, g) => sum + ((g as { credit?: number }).credit ?? (g.correct ? 1 : 0)),
+          0,
+        ) / p.fields.length;
       recordAttempt({
         id: `${p.id}@${Date.now()}`,
         templateId: p.templateId,
@@ -95,6 +104,7 @@ export default function PracticePage() {
         seconds: Math.round((Date.now() - startedAt.current) / 1000),
         correct: allCorrect,
         score: attemptNo === 1 ? ratio : ratio * RETRY_CREDIT,
+        attemptNo,
         hintsUsed: hintLevel,
         mode: "practice",
         fields: p.fields.map((f) => ({
@@ -111,20 +121,24 @@ export default function PracticePage() {
   const submit = async () => {
     if (!problem || results || checking) return;
     setChecking(true);
-    const { checkAnswer } = await loadChecker();
-
-    const graded: Record<string, CheckResult> = {};
-    for (const field of problem.fields) {
-      graded[field.id] = checkAnswer(
-        answers[field.id] ?? "",
-        field.expected,
-        field.type,
-        { vars: field.vars, sampleRange: field.sampleRange },
-      );
-    }
+    await loadChecker();
+    const { gradeProblem } = await import("@/lib/grade");
+    const graded = gradeProblem(problem, answers);
     const allCorrect = Object.values(graded).every((r) => r.correct);
     setResults(graded);
     setChecking(false);
+
+    // Which named traps fired, and which were sidestepped on fields answered
+    // correctly — both are needed to know whether a trap is still open.
+    const { diagnose } = await import("@/lib/diagnose");
+    const fired = diagnose(problem, answers, graded)
+      .map((d) => d.trapId)
+      .filter((id): id is string => !!id);
+    const avoided = problem.fields
+      .filter((f) => graded[f.id]?.correct)
+      .flatMap((f) => (f.pitfalls ?? []).map((p) => p.id));
+    recordTraps(problem.templateId, fired, avoided);
+
     // A first wrong attempt is a teaching moment, not a verdict: nothing is
     // written down until the student either succeeds or gives up.
     if (allCorrect || attempt === 2) {

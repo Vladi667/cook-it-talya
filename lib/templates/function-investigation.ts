@@ -51,6 +51,7 @@ function forgotToShift(slope: number, y0: number, x0: number): Pitfall[] {
   if (slope * x0 === 0) return [];
   return [{
     value: `y=${slope}*x+${paren(y0)}`,
+    id: "tangent-intercept-unshifted",
     why: {
       en: `You used $f(${x0})=${y0}$ directly as the $y$-intercept. It is the value **at $x=${x0}$**, not at $x=0$: from $y-${y0}=${slope}(x-${x0})$ the intercept is $${y0} - (${slope})(${x0})$.`,
       he: `השתמשתם ב-$f(${x0})=${y0}$ ישירות כנקודת החיתוך עם ציר ה-$y$. זהו הערך **ב-$x=${x0}$** ולא ב-$x=0$: מתוך $y-${y0}=${slope}(x-${x0})$ נקודת החיתוך היא $${y0} - (${slope})(${x0})$.`,
@@ -145,6 +146,7 @@ function familyLog(rng: Rng): Built | null {
       domain: [
         {
           value: "x!=0",
+          id: "domain-log-nonzero",
           why: {
             en: "You only excluded the zero of the denominator. $\\ln x$ is undefined for **every** $x\\leq 0$, not just at $0$, so the domain is $x>0$.",
             he: "פסלתם רק את אפס המכנה. הביטוי $\\ln x$ אינו מוגדר עבור **כל** $x\\leq 0$, לא רק ב-$0$, ולכן תחום ההגדרה הוא $x>0$.",
@@ -152,6 +154,7 @@ function familyLog(rng: Rng): Built | null {
         },
         {
           value: "x>=0",
+          id: "domain-log-closed",
           why: {
             en: "$\\ln 0$ is undefined, so $0$ itself must be excluded: the domain is open, $x>0$.",
             he: "הביטוי $\\ln 0$ אינו מוגדר, ולכן יש לפסול גם את $0$ עצמו: התחום פתוח, $x>0$.",
@@ -162,6 +165,7 @@ function familyLog(rng: Rng): Built | null {
       horizontal: [
         {
           value: "none",
+          id: "asymptote-log-none",
           why: {
             en: "There is one. As $x\\to\\infty$ the power in the denominator grows faster than $\\ln x$, so $f(x)\\to 0$ and $y=0$ is a horizontal asymptote.",
             he: "כן קיימת. כאשר $x\\to\\infty$ החזקה במכנה גדלה מהר יותר מ-$\\ln x$, ולכן $f(x)\\to 0$ ו-$y=0$ היא אסימפטוטה אופקית.",
@@ -275,6 +279,7 @@ function familyRational(rng: Rng): Built | null {
       domain: [
         {
           value: "all",
+          id: "domain-rational-all",
           why: {
             en: `The denominator $x ${signed(p)}$ vanishes at $x=${-p}$, so that single point must be excluded: $x\\neq ${-p}$.`,
             he: `המכנה $x ${signed(p)}$ מתאפס ב-$x=${-p}$, ולכן יש לפסול את הנקודה הבודדת הזו: $x\\neq ${-p}$.`,
@@ -284,6 +289,7 @@ function familyRational(rng: Rng): Built | null {
       vertical: [
         {
           value: `x=${p}`,
+          id: "asymptote-vertical-sign",
           why: {
             en: `Sign slip. The asymptote is where the denominator is zero: solve $x ${signed(p)} = 0$, which gives $x = ${-p}$, not $x = ${p}$.`,
             he: `טעות סימן. האסימפטוטה היא במקום שבו המכנה מתאפס: פתרו $x ${signed(p)} = 0$, ומתקבל $x = ${-p}$ ולא $x = ${p}$.`,
@@ -293,6 +299,7 @@ function familyRational(rng: Rng): Built | null {
       horizontal: [
         {
           value: "y=0",
+          id: "asymptote-rational-horizontal",
           why: {
             en: "The numerator has the higher degree, so $f$ does not settle to a finite value — there is no horizontal asymptote. Divide first, and the quotient is the **oblique** asymptote.",
             he: "דרגת המונה גבוהה יותר, ולכן $f$ אינה מתייצבת על ערך סופי — אין אסימפטוטה אופקית. חלקו תחילה, והמנה היא האסימפטוטה ה**משופעת**.",
@@ -300,6 +307,7 @@ function familyRational(rng: Rng): Built | null {
         },
         {
           value: "none",
+          id: "asymptote-rational-none",
           why: {
             en: "There is one, but it is slanted rather than horizontal. Long division splits $f$ into a linear part plus a fraction that dies at infinity — the linear part is the asymptote.",
             he: "כן קיימת, אך היא משופעת ולא אופקית. חילוק ארוך מפרק את $f$ לחלק לינארי ועוד שבר שמתאפס באינסוף — החלק הלינארי הוא האסימפטוטה.",
@@ -415,6 +423,7 @@ function familyRoot(rng: Rng): Built | null {
       domain: [
         {
           value: "x>0",
+          id: "domain-root-open",
           why: {
             en: "$\\sqrt{0}=0$ is perfectly well defined, so $x=0$ belongs to the domain. The interval is closed at the left: $x\\geq 0$.",
             he: "הביטוי $\\sqrt{0}=0$ מוגדר היטב, ולכן $x=0$ שייך לתחום. הקטע סגור משמאל: $x\\geq 0$.",
@@ -424,6 +433,7 @@ function familyRoot(rng: Rng): Built | null {
       extrema: [
         {
           value: `(${xMin},${-2 * t ** 3 * -1})`,
+          id: "extremum-sign",
           why: {
             en: `The $x$ is right but the $y$ has the wrong sign. At $x=${xMin}$ the factor $\\left(x-${a}\\right)$ is **negative**, so $f(${xMin})=\\left(${xMin}-${a}\\right)\\cdot${t}=${yMin}$.`,
             he: `ערך ה-$x$ נכון אך הסימן של $y$ שגוי. ב-$x=${xMin}$ הגורם $\\left(x-${a}\\right)$ הוא **שלילי**, ולכן $f(${xMin})=\\left(${xMin}-${a}\\right)\\cdot${t}=${yMin}$.`,

@@ -19,6 +19,7 @@ export function emptyData(): AppData {
     lang: "en",
     stats: {},
     recognition: {},
+    traps: {},
     history: [],
     exam: null,
   };

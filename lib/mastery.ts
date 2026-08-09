@@ -82,12 +82,21 @@ export function pickNextTemplate(
     random?: () => number;
     avoid?: TemplateId;
     available?: readonly TemplateId[];
+    /** Extra weight per template from unresolved traps, see lib/traps.ts. */
+    trapPressure?: (id: TemplateId) => number;
   } = {},
 ): TemplateId {
-  const { random = Math.random, avoid, available = TEMPLATE_IDS } = opts;
+  const {
+    random = Math.random,
+    avoid,
+    available = TEMPLATE_IDS,
+    trapPressure,
+  } = opts;
 
   const weights: NextPick[] = available.map((id) => {
     let w = selectionWeight(statsFor(stats, id), now);
+    // A trap you keep falling for should bring its question type back sooner.
+    if (trapPressure) w += 1.2 * trapPressure(id);
     if (id === avoid && available.length > 1) w *= 0.25;
     return { templateId: id, weight: w };
   });

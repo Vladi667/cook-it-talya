@@ -57,7 +57,19 @@ export type AnswerType =
 export interface Pitfall {
   /** The wrong answer, written in the field's own answer syntax. */
   value: string;
+  /** Stable slug, so repeat offences can be counted across questions. */
+  id: string;
   why: Text;
+}
+
+/** How often a specific trap has caught this student. */
+export interface TrapStats {
+  id: string;
+  templateId: TemplateId;
+  hits: number;
+  lastAt: number;
+  /** Correct answers on this field since the last time the trap fired. */
+  clearedSince: number;
 }
 
 export interface AnswerField {
@@ -68,6 +80,20 @@ export interface AnswerField {
   expected: string;
   /** Recognised near-misses, checked in order. */
   pitfalls?: Pitfall[];
+  /**
+   * Follow-through marking, as a real Bagrut grader does it: if an earlier
+   * part was wrong but this part is worked correctly *from that wrong value*,
+   * the method still earns marks.
+   *
+   * Receives the student's own earlier answers already evaluated to numbers
+   * (a point arrives as two), and returns what this field should then be, or
+   * null when the answer cannot be salvaged. Templates stay CAS-free — the
+   * grading layer does the evaluating.
+   */
+  followsFrom?: {
+    fields: string[];
+    expected: (prior: Record<string, number[]>) => string | null;
+  };
   /** Free variables the expression may contain, for the numeric fallback. */
   vars?: string[];
   /** Sampling window for the numeric fallback, when the default (-3..3) is bad. */
@@ -205,6 +231,11 @@ export interface Template {
   /** The transferable method. Attached in lib/templates/index.ts. */
   pattern: Pattern;
   /**
+   * Realistic exam allocation for one question of this type, in seconds.
+   * Speed is a trained variable: without a budget "fast" has no meaning.
+   */
+  budgetSeconds: number;
+  /**
    * Must return a fully-solved, non-degenerate problem.
    * Implementations use rejection sampling internally until the validity
    * check passes, so this never returns a degenerate case.
@@ -216,7 +247,7 @@ export interface Template {
  * What a template file exports. The pattern lives in lib/patterns.ts (the
  * teaching layer, edited as one piece) and is attached in templates/index.ts.
  */
-export type TemplateDef = Omit<Template, "pattern">;
+export type TemplateDef = Omit<Template, "pattern" | "budgetSeconds">;
 
 /* ------------------------------------------------------------------ */
 /* Progress + attempt records                                          */
@@ -241,6 +272,8 @@ export interface Attempt {
   correct: boolean;
   /** Fraction of fields correct, 0..1. */
   score: number;
+  /** 1 or 2. First-attempt accuracy is the number the exam actually tests. */
+  attemptNo: number;
   hintsUsed: number;
   mode: "practice" | "exam";
   fields: FieldResult[];
@@ -295,6 +328,7 @@ export interface AppData {
   lang: Lang;
   stats: Record<string, TemplateStats>;
   recognition: Record<string, RecognitionStats>;
+  traps: Record<string, TrapStats>;
   history: Attempt[];
   exam: ExamState | null;
 }
