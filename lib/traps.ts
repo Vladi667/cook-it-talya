@@ -282,6 +282,57 @@ export const TRAPS: Record<string, TrapMeta> = {
     short: { en: "Gave $q^n$ instead of $q$", he: "נתתם $q^n$ במקום $q$" },
   },
 
+  /* ---- probability ---- */
+  "prob-unweighted-average": {
+    templateId: "probability",
+    short: { en: "Averaged instead of weighting", he: "מיצעתם במקום לשקלל" },
+  },
+  "prob-conditional-inverted": {
+    templateId: "probability",
+    short: { en: "Conditioned the wrong way round", he: "התניתם בכיוון ההפוך" },
+  },
+  "prob-ignored-evidence": {
+    templateId: "probability",
+    short: { en: "Ignored the evidence given", he: "התעלמתם מהראיה שניתנה" },
+  },
+  "prob-missing-coefficient": {
+    templateId: "probability",
+    short: { en: "Forgot $\\binom{n}{k}$", he: "שכחתם את $\\binom{n}{k}$" },
+  },
+  "prob-at-least-one-complement": {
+    templateId: "probability",
+    short: {
+      en: "Complement of “at least one” is no successes",
+      he: "המשלים של ״לפחות אחת״ הוא אפס הצלחות",
+    },
+  },
+
+  /* ---- trigonometry ---- */
+  "trig-used-pythagoras": {
+    templateId: "trigonometry",
+    short: { en: "Used Pythagoras, not the cosine rule", he: "פיתגורס במקום קוסינוסים" },
+  },
+  "trig-cosine-sign": {
+    templateId: "trigonometry",
+    short: { en: "Sign of $\\cos C$ flipped", he: "סימן $\\cos C$ הפוך" },
+  },
+  "trig-side-squared": {
+    templateId: "trigonometry",
+    short: { en: "Gave $BC^2$ instead of $BC$", he: "נתתם $BC^2$ במקום $BC$" },
+  },
+  "trig-area-no-sine": {
+    templateId: "trigonometry",
+    short: { en: "Area without $\\sin C$", he: "שטח ללא $\\sin C$" },
+  },
+  "trig-circumradius-no-half": {
+    templateId: "trigonometry",
+    short: { en: "Sine rule gives $2R$, not $R$", he: "משפט הסינוסים נותן $2R$ ולא $R$" },
+  },
+  "trig-one-solution-only": {
+    templateId: "trigonometry",
+    short: { en: "Gave only one solution", he: "נתתם פתרון אחד בלבד" },
+  },
+
   /* ---- growth-decay ---- */
   "growth-factor-whole-period": {
     templateId: "growth-decay",

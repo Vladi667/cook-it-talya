@@ -283,14 +283,19 @@ function close(a: number, b: number): boolean {
  * absolute (two or three decimal places), not proportional.
  */
 const DECIMAL_SLACK = 5e-3;
+/** Rounding never moves a value by more than a couple of percent of itself. */
+const RELATIVE_CEILING = 0.02;
 
 function closeLoose(a: number, b: number): boolean {
   if (a === b) return true;
   if (!Number.isFinite(a) || !Number.isFinite(b)) return false;
   const diff = Math.abs(a - b);
-  // "5.83" for 5.830951... — but never 1025 for 1024.
-  if (diff <= DECIMAL_SLACK) return true;
-  return diff <= 1e-6 * Math.max(1, Math.abs(a), Math.abs(b));
+  const scale = Math.max(Math.abs(a), Math.abs(b));
+  // "3.33" for 10/3 — but the absolute slack alone would also accept 3/4096
+  // for 9/2048, since small probabilities live well inside it. Rounding has
+  // to be small in absolute *and* relative terms to count as rounding.
+  if (diff <= DECIMAL_SLACK && diff <= RELATIVE_CEILING * scale) return true;
+  return diff <= 1e-6 * Math.max(1, scale);
 }
 
 /** True when two expressions are equal as functions. */

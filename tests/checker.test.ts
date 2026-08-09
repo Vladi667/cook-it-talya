@@ -75,6 +75,11 @@ describe("symbolic equivalence, never string comparison", () => {
     expect(checkAnswer("1025", "1024", "number").correct).toBe(false);
     expect(checkAnswer("1024", "1024", "number").correct).toBe(true);
     expect(checkAnswer("7", "6", "number").correct).toBe(false);
+    // ...and small probabilities live inside the absolute slack, so the
+    // relative check has to catch them: 3/4096 is not 9/2048.
+    expect(checkAnswer("3/4096", "9/2048", "number").correct).toBe(false);
+    expect(checkAnswer("9/2048", "9/2048", "number").correct).toBe(true);
+    expect(checkAnswer("0.004", "9/2048", "number").correct).toBe(false);
   });
 
   it("flags sign slips and factor-of-two slips", () => {

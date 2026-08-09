@@ -22,6 +22,8 @@ export const BUDGET_SECONDS: Record<TemplateId, number> = {
   limits: 180,
   sequences: 300,
   "growth-decay": 360,
+  probability: 420,
+  trigonometry: 420,
 };
 
 /** Under 1 means faster than the exam allocation. */

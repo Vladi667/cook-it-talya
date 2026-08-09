@@ -14,6 +14,8 @@ import { optimization } from "./optimization";
 import { limits } from "./limits";
 import { sequences } from "./sequences";
 import { growthDecay } from "./growth-decay";
+import { probability } from "./probability";
+import { trigonometry } from "./trigonometry";
 
 /** Order here is the order shown on the Progress and Patterns screens. */
 const DEFS: TemplateDef[] = [
@@ -29,6 +31,8 @@ const DEFS: TemplateDef[] = [
   limits,
   sequences,
   growthDecay,
+  probability,
+  trigonometry,
 ];
 
 /** Each template carries its transferable method alongside its generator. */

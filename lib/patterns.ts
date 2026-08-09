@@ -963,4 +963,186 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       },
     ],
   },
+
+  probability: {
+    method: {
+      en: "Draw the tree; multiply along, add across",
+      he: "שרטטו את העץ; הכפילו לאורך, חברו לרוחב",
+    },
+    triggers: {
+      en: ["at random", "given that", "probability that", "independently"],
+      he: ["באקראי", "בהינתן", "ההסתברות ש", "בלתי תלוי"],
+    },
+    signature: [
+      {
+        en: "A **two-stage** experiment: choose, then draw — or a trial repeated $n$ times",
+        he: "ניסוי **דו-שלבי**: בוחרים ואז מוציאים — או ניסוי החוזר $n$ פעמים",
+      },
+      {
+        en: "The words **given that** — that is a conditional, and it reverses the tree",
+        he: "המילים **בהינתן ש** — זו הסתברות מותנית, והיא הופכת את העץ",
+      },
+      {
+        en: "“At least one” — almost always easier through the complement",
+        he: "״לפחות אחד״ — כמעט תמיד קל יותר דרך המשלים",
+      },
+    ],
+    recipe: [
+      {
+        move: { en: "Draw the tree before computing", he: "שרטטו את העץ לפני החישוב" },
+        detail: {
+          en: "One branch per choice at each stage, with its probability on the branch. Almost every error in this topic is an error of bookkeeping, and the tree is the bookkeeping.",
+          he: "ענף אחד לכל בחירה בכל שלב, עם ההסתברות שלו על הענף. כמעט כל טעות בנושא הזה היא טעות ברישום, והעץ הוא הרישום.",
+        },
+      },
+      {
+        move: {
+          en: "Multiply along a path, add across paths",
+          he: "הכפילו לאורך מסלול, חברו בין מסלולים",
+        },
+        detail: {
+          en: "A path's probability is the product of its branches; an event's probability is the sum over every path that reaches it. That single sentence is the law of total probability.",
+          he: "הסתברות מסלול היא מכפלת ענפיו; הסתברות מאורע היא הסכום על כל מסלול שמגיע אליו. המשפט הזה הוא נוסחת ההסתברות השלמה.",
+        },
+      },
+      {
+        move: {
+          en: "For **given that**, divide by what you were given",
+          he: "עבור **בהינתן ש**, חלקו במה שניתן",
+        },
+        detail: {
+          en: "$P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)}$. Being told $B$ happened shrinks the world to the $B$ paths, and you ask what share of them are also $A$. Note the order: what you are *given* goes underneath.",
+          he: "$P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)}$. הידיעה ש-$B$ קרה מצמצמת את העולם למסלולי $B$, ושואלים איזה חלק מהם גם $A$. שימו לב לסדר: מה ש*ניתן* נמצא במכנה.",
+        },
+      },
+      {
+        move: {
+          en: "For repeated trials, use the binomial",
+          he: "בניסויים חוזרים, השתמשו בבינומית",
+        },
+        detail: {
+          en: "$P(\\text{exactly }k)=\\binom{n}{k}p^k(1-p)^{n-k}$. The coefficient counts the orders the successes could come in — forgetting it computes one specific sequence instead of the event.",
+          he: "$P(\\text{בדיוק }k)=\\binom{n}{k}p^k(1-p)^{n-k}$. המקדם סופר את הסדרים האפשריים של ההצלחות — שכחתו מחשבת סדר מסוים אחד במקום את המאורע.",
+        },
+      },
+      {
+        move: { en: "Check every answer is in $[0,1]$", he: "ודאו שכל תשובה בתחום $[0,1]$" },
+        detail: {
+          en: "A probability above 1 or below 0 is a guaranteed arithmetic error, and it costs nothing to notice. Conditional probabilities over the same evidence should also add to 1.",
+          he: "הסתברות מעל 1 או מתחת ל-0 היא טעות חשבונית ודאית, וזיהויה אינו עולה דבר. גם הסתברויות מותנות על אותה ראיה צריכות להסתכם ל-1.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "A tree is not a drawing aid — it is the sample space. Every leaf is one complete outcome, the leaf probabilities multiply because the stages are sequential, and they sum to 1 because something must happen. Conditioning is then just restriction: you cross out the leaves that did not occur and rescale what remains so it still sums to 1. Bayes' rule is that rescaling written as a formula, which is why it never needs memorising if you can see the tree.",
+      he: "העץ אינו עזר ציורי — הוא מרחב המדגם. כל עלה הוא תוצאה שלמה אחת, הסתברויות העלים מוכפלות כי השלבים עוקבים, והן מסתכמות ל-1 כי משהו חייב לקרות. התניה היא אז פשוט צמצום: מוחקים את העלים שלא התרחשו ומנרמלים מחדש את הנותר כך שיסתכם שוב ל-1. נוסחת בייס היא הנרמול הזה בכתב, ולכן אין צורך לשנן אותה אם רואים את העץ.",
+    },
+    speedTip: {
+      en: "Whenever a question says **at least one**, compute the complement instead: $1-P(\\text{none})$. One product replaces a sum of several cases, and the saving grows with $n$. The same instinct applies to “at least two” when $n$ is small — subtract the few cases you do not want.",
+      he: "בכל פעם ששאלה אומרת **לפחות אחד**, חשבו את המשלים: $1-P(\\text{אף אחד})$. מכפלה אחת מחליפה סכום של כמה מקרים, והחיסכון גדל עם $n$. אותה אינטואיציה תקפה ל״לפחות שניים״ כאשר $n$ קטן — חסרו את המקרים הבודדים שאינכם רוצים.",
+    },
+    watchOut: [
+      {
+        en: "$P(A\\mid B)$ and $P(B\\mid A)$ are different numbers.",
+        he: "$P(A\\mid B)$ ו-$P(B\\mid A)$ הם מספרים שונים.",
+      },
+      {
+        en: "Weight each branch by how often you take it — do not average.",
+        he: "שקללו כל ענף לפי תדירות המעבר בו — אל תמצעו.",
+      },
+    ],
+  },
+
+  trigonometry: {
+    method: {
+      en: "Cosine rule for the side; quadratic in sin or cos for the equation",
+      he: "קוסינוסים לצלע; ריבועית ב-sin או cos למשוואה",
+    },
+    triggers: {
+      // "circumscribing" is deliberately absent: triangle-from-lines uses the
+      // same word, so it identifies nothing.
+      en: ["the angle between them", "Solve the equation"],
+      he: ["הזווית ביניהן", "פתרו את המשוואה"],
+    },
+    signature: [
+      {
+        en: "Two sides and the angle **between** them — the cosine rule setup",
+        he: "שתי צלעות והזווית **שביניהן** — המצב של משפט הקוסינוסים",
+      },
+      {
+        en: "Or a $\\sin^2$ / $\\cos^2$ equation to solve over a stated range",
+        he: "או משוואה עם $\\sin^2$ / $\\cos^2$ לפתרון בתחום נתון",
+      },
+    ],
+    recipe: [
+      {
+        move: {
+          en: "Sine rule or cosine rule? Count what you have",
+          he: "סינוסים או קוסינוסים? ספרו מה יש לכם",
+        },
+        detail: {
+          en: "The sine rule needs a side **opposite** a known angle. If all you have is two sides and the angle between them, it cannot start — that is the cosine rule's job, and it is the only tool that can.",
+          he: "משפט הסינוסים דורש צלע **מול** זווית ידועה. אם יש רק שתי צלעות והזווית שביניהן, הוא אינו יכול להתחיל — זו עבודתו של משפט הקוסינוסים, והכלי היחיד שמתאים.",
+        },
+      },
+      {
+        move: {
+          en: "Substitute, and remember the rule gives $c^2$",
+          he: "הציבו, וזכרו שהמשפט נותן $c^2$",
+        },
+        detail: {
+          en: "$c^2=a^2+b^2-2ab\\cos C$. At $60^\\circ$ and $120^\\circ$ the cosine is $\\pm\\frac12$, so the whole term collapses to $\\mp ab$ — which is why those two angles appear so often. Then take the root.",
+          he: "$c^2=a^2+b^2-2ab\\cos C$. ב-$60^\\circ$ וב-$120^\\circ$ הקוסינוס הוא $\\pm\\frac12$, ולכן כל האיבר מצטמצם ל-$\\mp ab$ — ולכן שתי הזוויות הללו מופיעות כה הרבה. לאחר מכן הוציאו שורש.",
+        },
+      },
+      {
+        move: {
+          en: "Area from two sides and the angle between",
+          he: "שטח משתי צלעות והזווית שביניהן",
+        },
+        detail: {
+          en: "$S=\\frac12ab\\sin C$ — the same two sides and the same angle you already used. The circumradius comes from the sine rule in the form $\\frac{a}{\\sin A}=2R$; note the 2.",
+          he: "$S=\\frac12ab\\sin C$ — אותן שתי צלעות ואותה זווית שכבר השתמשתם בהן. רדיוס המעגל החוסם מתקבל ממשפט הסינוסים בצורה $\\frac{a}{\\sin A}=2R$; שימו לב ל-2.",
+        },
+      },
+      {
+        move: {
+          en: "For an equation, reduce to one function, then factor",
+          he: "במשוואה, צמצמו לפונקציה אחת ואז פרקו",
+        },
+        detail: {
+          en: "If $\\sin$ and $\\cos$ both appear, use $\\sin^2x+\\cos^2x=1$ to eliminate one. What is left is an ordinary quadratic in $\\sin x$ or $\\cos x$ — substitute $t$ for it if that makes the factoring clearer.",
+          he: "אם מופיעים גם $\\sin$ וגם $\\cos$, השתמשו ב-$\\sin^2x+\\cos^2x=1$ כדי לסלק אחד מהם. הנותר הוא משוואה ריבועית רגילה ב-$\\sin x$ או ב-$\\cos x$ — הציבו $t$ במקומה אם זה מבהיר את הפירוק.",
+        },
+      },
+      {
+        move: {
+          en: "Find **every** angle in the range",
+          he: "מצאו את **כל** הזוויות בתחום",
+        },
+        detail: {
+          en: "Solving for the ratio is half the work. Each value of $\\sin$ or $\\cos$ is hit twice per revolution — once in each of two quadrants — except at $\\pm1$. And discard any root outside $[-1,1]$: no angle produces it.",
+          he: "פתרון היחס הוא חצי מהעבודה. כל ערך של $\\sin$ או $\\cos$ מתקבל פעמיים בסיבוב — פעם בכל אחת משתי רבעים — פרט ל-$\\pm1$. ופסלו כל שורש מחוץ ל-$[-1,1]$: אין זווית שמייצרת אותו.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "The cosine rule is Pythagoras with a correction term: when $C=90^\\circ$ the cosine vanishes and it *is* Pythagoras; as the angle opens past a right angle the cosine turns negative and the opposite side grows. Seeing it that way means you never have to recall the sign — you can reason it out from whether the angle is acute or obtuse. Trigonometric equations are just as ordinary: $\\sin$ and $\\cos$ are only awkward because one ratio corresponds to two angles, which is a fact about the circle, not about algebra.",
+      he: "משפט הקוסינוסים הוא פיתגורס עם איבר תיקון: כאשר $C=90^\\circ$ הקוסינוס מתאפס וזהו *בדיוק* פיתגורס; ככל שהזווית נפתחת מעבר לישרה הקוסינוס הופך שלילי והצלע הנגדית גדלה. הבנה כזו מייתרת את הצורך לזכור את הסימן — אפשר להסיק אותו מכך שהזווית חדה או קהה. משוואות טריגונומטריות רגילות באותה מידה: $\\sin$ ו-$\\cos$ מסובכות רק משום שיחס אחד מתאים לשתי זוויות, וזו עובדה על המעגל ולא על האלגברה.",
+    },
+    speedTip: {
+      en: "When the angle is $60^\\circ$ or $120^\\circ$, do not reach for a calculator: $\\cos=\\pm\\frac12$ makes $2ab\\cos C$ collapse to $\\pm ab$, and $\\sin=\\frac{\\sqrt3}{2}$ keeps the area exact as a multiple of $\\sqrt3$. An answer that comes out whole is the signal you substituted correctly.",
+      he: "כאשר הזווית היא $60^\\circ$ או $120^\\circ$, אל תפנו למחשבון: $\\cos=\\pm\\frac12$ גורם ל-$2ab\\cos C$ להצטמצם ל-$\\pm ab$, ו-$\\sin=\\frac{\\sqrt3}{2}$ שומר על שטח מדויק ככפולה של $\\sqrt3$. תשובה שיוצאת שלמה היא הסימן שהצבתם נכון.",
+    },
+    watchOut: [
+      {
+        en: "The cosine rule returns $c^2$. Take the square root.",
+        he: "משפט הקוסינוסים מחזיר $c^2$. הוציאו שורש.",
+      },
+      {
+        en: "One ratio, two angles. Do not stop at the first solution.",
+        he: "יחס אחד, שתי זוויות. אל תעצרו בפתרון הראשון.",
+      },
+    ],
+  },
 };

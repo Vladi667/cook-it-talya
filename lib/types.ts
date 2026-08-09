@@ -25,11 +25,18 @@ export const TEMPLATE_IDS = [
   "limits",
   "sequences",
   "growth-decay",
+  "probability",
+  "trigonometry",
 ] as const;
 
 export type TemplateId = (typeof TEMPLATE_IDS)[number];
 
-export type Topic = "analytic-geometry" | "calculus" | "algebra";
+export type Topic =
+  | "analytic-geometry"
+  | "calculus"
+  | "algebra"
+  | "probability"
+  | "trigonometry";
 
 /**
  * How an answer field is compared. Never string equality — see lib/checker.ts.

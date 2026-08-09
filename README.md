@@ -29,7 +29,7 @@ calls, and costs nothing to run.
 
 ## Templates
 
-Twelve types, covering both papers.
+Fourteen types, covering both papers.
 
 | id | topic | what it drills |
 | --- | --- | --- |
@@ -45,6 +45,8 @@ Twelve types, covering both papers.
 | `limits` | calculus | 8 families needing simplification before substitution |
 | `sequences` | algebra | arithmetic and geometric, including sums to infinity |
 | `growth-decay` | algebra | exponential models inverted with logarithms |
+| `probability` | probability | two-stage trees, total probability, Bayes, binomial |
+| `trigonometry` | trigonometry | cosine rule (integer third side) and trig equations |
 
 ## Answer checking
 
@@ -60,8 +62,10 @@ validate against the same expected answer.
   `x^2+y^2-4x+2y-20=0` matches `(x-2)^2+(y+1)^2=25`
 - domains parsed into canonical interval unions, so `x>0, x≠2` matches
   `(0,2)∪(2,∞)`
-- constants accept hand-rounded decimals, but never a neighbouring integer:
-  `3.33` passes for `10/3`, `1025` never passes for `1024`
+- constants accept hand-rounded decimals, but never a different answer:
+  `3.33` passes for `10/3`; `1025` never passes for `1024`, and `3/4096`
+  never passes for `9/2048` (rounding must be small in absolute *and*
+  relative terms, or small probabilities all look alike)
 
 ## Recognition: the "spot the pattern" drill
 
@@ -105,7 +109,7 @@ of learning here is not the worked example — it is the *pattern*.
 Every solution step carries a `move` index into its recipe, so when the worked
 solution is revealed each line is labelled *“Move 3 · name the upper and lower
 boundary”*. The concrete instance and the general method are always shown
-together. `/patterns` is the study view of all twelve.
+together. `/patterns` is the study view of all fourteen.
 
 Ochre is used for pattern content and for nothing else, so the colour itself
 comes to mean “this is the transferable part”.
@@ -208,7 +212,7 @@ export at the bottom of that file. No auth in v1.
 npm test
 ```
 
-293 tests. Every template is generated 100 times and each sample is verified
+327 tests. Every template is generated 100 times and each sample is verified
 *independently* of its own algebra — numeric integration for areas and
 integrals, numeric limits for limits, central differences for derivatives, and
 direct geometric checks (is `D` on `BC`? does `AD` bisect the angle? do all

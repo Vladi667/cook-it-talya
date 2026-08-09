@@ -37,7 +37,10 @@ export const CONFUSABLE: Record<TemplateId, TemplateId[]> = {
   limits: ["reverse-integral", "growth-decay"],
   // both: recover a ratio from two readings, then use it
   sequences: ["growth-decay", "limits"],
-  "growth-decay": ["sequences", "limits"],
+  "growth-decay": ["sequences", "probability"],
+  // both are "compute a fraction from a described situation"
+  probability: ["growth-decay", "sequences"],
+  trigonometry: ["circle-tangent", "triangle-bisector"],
 };
 
 export interface SpotItem {
