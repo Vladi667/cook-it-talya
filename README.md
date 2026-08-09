@@ -29,7 +29,7 @@ calls, and costs nothing to run.
 
 ## Templates
 
-Ten types, covering both papers.
+Twelve types, covering both papers.
 
 | id | topic | what it drills |
 | --- | --- | --- |
@@ -37,7 +37,9 @@ Ten types, covering both papers.
 | `triangle-from-lines` | analytic geometry | vertices from two perpendicular bisectors + circumscribed circle |
 | `circle-tangent` | analytic geometry | completing the square, tangent at a point, tangent length |
 | `function-investigation` | calculus | domain, extrema, asymptotes, tangent (`ln` / rational / root families) |
+| `polynomial-investigation` | calculus | roots, extrema, inflection and monotonicity of a cubic |
 | `area-between-curves` | calculus | bounded area with a split point where the boundary changes |
+| `volume-revolution` | calculus | disc and washer method, about either axis |
 | `reverse-integral` | calculus | recover a constant from a definite integral |
 | `optimization` | calculus | extremal problems (open box, largest inscribed rectangle) |
 | `limits` | calculus | 8 families needing simplification before substitution |
@@ -103,7 +105,7 @@ of learning here is not the worked example — it is the *pattern*.
 Every solution step carries a `move` index into its recipe, so when the worked
 solution is revealed each line is labelled *“Move 3 · name the upper and lower
 boundary”*. The concrete instance and the general method are always shown
-together. `/patterns` is the study view of all ten.
+together. `/patterns` is the study view of all twelve.
 
 Ochre is used for pattern content and for nothing else, so the colour itself
 comes to mean “this is the transferable part”.
@@ -123,20 +125,6 @@ Progress reports all three and names the weakest one in a sentence:
 *"Accurate, but over the exam allocation. You would not finish the paper."*
 `lib/budgets.ts` holds a realistic allocation per question type, which is what
 turns "slow" from a feeling into a number.
-
-### Spot the pattern (`/spot`)
-
-A question stem with no answer fields and no figure, and one question: which
-method is this? Ten seconds each, twenty in three minutes. Distractors are
-drawn from a confusability map (`lib/spot.ts`) — "is this a limit or a
-triangle?" teaches nothing, so the near-misses are the ones that share a
-surface feature: the word *tangent*, the word *bisector*, a ratio to recover.
-
-Answer, and the **actual trigger words are highlighted in the real question**.
-A test asserts every trigger genuinely occurs in that template's statements,
-and that no template's triggers fire on every other template — which caught a
-real cue bug, since `"bisector of"` also matches *"the **perpendicular**
-bisector of AB"*.
 
 ### Quick fire (`/quick`)
 
@@ -220,7 +208,7 @@ export at the bottom of that file. No auth in v1.
 npm test
 ```
 
-259 tests. Every template is generated 100 times and each sample is verified
+293 tests. Every template is generated 100 times and each sample is verified
 *independently* of its own algebra — numeric integration for areas and
 integrals, numeric limits for limits, central differences for derivatives, and
 direct geometric checks (is `D` on `BC`? does `AD` bisect the angle? do all

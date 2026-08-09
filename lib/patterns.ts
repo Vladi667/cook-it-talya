@@ -333,6 +333,98 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
     ],
   },
 
+  "polynomial-investigation": {
+    method: {
+      en: "Factor for the roots, differentiate for the shape",
+      he: "פירוק לגורמים לשורשים, גזירה לצורה",
+    },
+    triggers: {
+      en: ["Find its intersections", "point of inflection", "increasing"],
+      he: ["נקודות החיתוך", "נקודת הפיתול", "תחומי העלייה"],
+    },
+    signature: [
+      {
+        en: "A **polynomial**, usually cubic, often already factored",
+        he: "**פולינום**, לרוב ממעלה שלישית, לרוב כבר מפורק",
+      },
+      {
+        en: "Asks for intersections, extrema, inflection and where it rises",
+        he: "נדרשים חיתוכים, קיצון, פיתול ותחומי עלייה",
+      },
+      {
+        en: "No fraction, no root, no $\\ln$ — so no domain restriction at all",
+        he: "אין שבר, אין שורש ואין $\\ln$ — ולכן אין כל הגבלה על התחום",
+      },
+    ],
+    recipe: [
+      {
+        move: {
+          en: "Read the roots off the factors",
+          he: "קראו את השורשים מהגורמים",
+        },
+        detail: {
+          en: "A factored polynomial hands you the $x$-intercepts for free. A **squared** bracket is a double root: the graph touches the axis there and turns back, rather than crossing.",
+          he: "פולינום מפורק נותן את נקודות החיתוך עם ציר ה-$x$ בחינם. סוגר **בריבוע** הוא שורש כפול: שם הגרף משיק לציר ומתהפך, במקום לחצות אותו.",
+        },
+      },
+      {
+        move: {
+          en: "Differentiate — but factor, do not expand",
+          he: "גזרו — אך פרקו, אל תפתחו",
+        },
+        detail: {
+          en: "Use the product rule and pull out the common bracket. You end with $f'$ as a product of two linear factors, which shows both critical points at a glance. Expanding first turns this into a quadratic formula exercise for no reason.",
+          he: "השתמשו בכלל המכפלה והוציאו את הסוגר המשותף. מתקבלת $f'$ כמכפלת שני גורמים לינאריים, שמראה מיד את שתי נקודות הקיצון. פתיחת סוגריים תחילה הופכת זאת לתרגיל בנוסחת השורשים ללא כל צורך.",
+        },
+      },
+      {
+        move: {
+          en: "Decide max or min from the **sign** of $f'$",
+          he: "קבעו מקסימום או מינימום לפי **סימן** $f'$",
+        },
+        detail: {
+          en: "A product of two linear factors is positive outside its roots and negative between them. So a cubic with positive leading coefficient always goes up, down, up: maximum first, minimum second. Substitute back for the $y$ values.",
+          he: "מכפלת שני גורמים לינאריים חיובית מחוץ לשורשיה ושלילית ביניהם. לכן פולינום ממעלה שלישית עם מקדם מוביל חיובי תמיד עולה, יורד, עולה: קודם מקסימום ואז מינימום. הציבו חזרה כדי לקבל את ערכי ה-$y$.",
+        },
+      },
+      {
+        move: { en: "Inflection from $f''$", he: "פיתול מתוך $f''$" },
+        detail: {
+          en: "For a cubic $f''$ is linear, so there is exactly one inflection point — and it sits precisely halfway between the two extrema. That is a free check on your work.",
+          he: "בפולינום ממעלה שלישית $f''$ לינארית, ולכן יש בדיוק נקודת פיתול אחת — והיא נמצאת בדיוק באמצע בין שתי נקודות הקיצון. זו בדיקה חינם על העבודה שלכם.",
+        },
+      },
+      {
+        move: {
+          en: "Read the monotonic intervals off the same signs",
+          he: "קראו את תחומי המונוטוניות מאותם סימנים",
+        },
+        detail: {
+          en: "You already know where $f'>0$ from move 3 — increasing outside the critical points, decreasing between them. No new work.",
+          he: "כבר ידוע היכן $f'>0$ ממהלך 3 — עולה מחוץ לנקודות הקיצון, יורדת ביניהן. אין עבודה נוספת.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "A polynomial is defined everywhere and differentiable everywhere, so none of the usual complications apply: there is no domain to find, no asymptote to chase, no point to exclude. Everything the question asks is decided by two facts — where $f$ is zero, and where $f'$ changes sign. That is why these questions look long but contain very little.",
+      he: "פולינום מוגדר בכל מקום וגזיר בכל מקום, ולכן אף אחד מהסיבוכים הרגילים אינו רלוונטי: אין תחום למצוא, אין אסימפטוטה לרדוף אחריה, אין נקודה לפסול. כל מה שהשאלה מבקשת נקבע על ידי שתי עובדות — היכן $f$ מתאפסת, והיכן $f'$ מחליפה סימן. לכן שאלות אלה נראות ארוכות אך מכילות מעט מאוד.",
+    },
+    speedTip: {
+      en: "Never expand a factored polynomial. Differentiate it as a product, take out the common bracket, and $f'$ arrives already factored — both critical points readable without solving anything. And use the halfway rule: the inflection of a cubic is the midpoint of its two extrema, so you can write it down without touching $f''$.",
+      he: "לעולם אל תפתחו פולינום מפורק. גזרו אותו כמכפלה, הוציאו את הסוגר המשותף, ו-$f'$ מתקבלת כבר מפורקת — שתי נקודות הקיצון ניתנות לקריאה בלי לפתור דבר. והשתמשו בכלל האמצע: נקודת הפיתול של פולינום ממעלה שלישית היא אמצע שתי נקודות הקיצון, כך שאפשר לרשום אותה בלי לגעת ב-$f''$.",
+    },
+    watchOut: [
+      {
+        en: "A double root is a **turning point on the axis**, not a crossing.",
+        he: "שורש כפול הוא **נקודת מפנה על הציר**, לא חצייה.",
+      },
+      {
+        en: "A point needs both coordinates — substitute the $x$ back into $f$.",
+        he: "לנקודה דרושים שני שיעורים — הציבו את ה-$x$ חזרה ב-$f$.",
+      },
+    ],
+  },
+
   "area-between-curves": {
     method: {
       en: "Sketch, split, integrate each piece",
@@ -407,6 +499,81 @@ export const PATTERNS: Record<TemplateId, Pattern> = {
       {
         en: "An area is positive. A negative result means the boundaries were the wrong way round.",
         he: "שטח הוא חיובי. תוצאה שלילית פירושה שהגבולות הוחלפו.",
+      },
+    ],
+  },
+
+  "volume-revolution": {
+    method: {
+      en: "Slice into discs, square the radius, multiply by π",
+      he: "חתכו לדיסקות, העלו את הרדיוס בריבוע, כפלו ב-π",
+    },
+    triggers: {
+      en: ["rotated about", "solid of revolution", "volume of the solid"],
+      he: ["מסובב סביב", "גוף סיבוב", "נפח גוף"],
+    },
+    signature: [
+      {
+        en: "The words **rotated about** an axis",
+        he: "המילים **מסובב סביב** ציר",
+      },
+      {
+        en: "A bounded region is described first, then spun",
+        he: "מתואר תחילה תחום חסום, ולאחר מכן הוא מסובב",
+      },
+    ],
+    recipe: [
+      {
+        move: {
+          en: "Name the axis — it chooses your variable",
+          he: "זהו את הציר — הוא בוחר את המשתנה",
+        },
+        detail: {
+          en: "About the $x$-axis you slice perpendicular to $x$ and integrate $dx$; about the $y$-axis you slice perpendicular to $y$ and integrate $dy$. Getting this backwards is the one mistake that cannot be recovered later.",
+          he: "סביב ציר ה-$x$ חותכים בניצב ל-$x$ ומאנטגרלים $dx$; סביב ציר ה-$y$ חותכים בניצב ל-$y$ ומאנטגרלים $dy$. היפוך כאן הוא הטעות היחידה שאי אפשר לתקן בהמשך.",
+        },
+      },
+      {
+        move: { en: "Square the radius", he: "העלו את הרדיוס בריבוע" },
+        detail: {
+          en: "Each slice is a disc of area $\\pi r^2$, and the radius is the distance from the axis to the curve. Squaring almost always destroys the root that made the function look hard.",
+          he: "כל פרוסה היא דיסקה ששטחה $\\pi r^2$, והרדיוס הוא המרחק מהציר אל העקום. ההעלאה בריבוע כמעט תמיד מחסלת את השורש שגרם לפונקציה להיראות קשה.",
+        },
+      },
+      {
+        move: {
+          en: "If there are two curves, subtract the **squares**",
+          he: "אם יש שני עקומים, חסרו את ה**ריבועים**",
+        },
+        detail: {
+          en: "A region between two curves sweeps out washers, not discs: area $\\pi\\left(R^2-r^2\\right)$. That is not $\\pi(R-r)^2$ — subtract the squares, never square the subtraction.",
+          he: "תחום שבין שני עקומים יוצר טבעות ולא דיסקות: שטח $\\pi\\left(R^2-r^2\\right)$. זה אינו $\\pi(R-r)^2$ — חסרו את הריבועים, לעולם אל תעלו את ההפרש בריבוע.",
+        },
+      },
+      {
+        move: { en: "Integrate, and keep π outside", he: "אנטגרלו, וה-π נשאר בחוץ" },
+        detail: {
+          en: "$\\pi$ is a constant: pull it out at the start and it cannot be lost. The commonest wrong answer in this topic is a perfectly correct integral with no $\\pi$ on it.",
+          he: "$\\pi$ הוא קבוע: הוציאו אותו בהתחלה ולא תוכלו לאבד אותו. התשובה השגויה הנפוצה ביותר בנושא הזה היא אינטגרל נכון לחלוטין בלי $\\pi$.",
+        },
+      },
+    ],
+    whyItWorks: {
+      en: "Rotating a thin vertical strip of height $y$ and width $dx$ about the $x$-axis sweeps out a disc of radius $y$ and thickness $dx$, whose volume is $\\pi y^2\\,dx$. Adding those up is the integral. Once you see the strip becoming a disc, there is nothing to memorise — the formula is a description of the picture, and it tells you immediately why the radius gets squared and why the slicing direction has to match the axis.",
+      he: "סיבוב רצועה אנכית דקה בגובה $y$ וברוחב $dx$ סביב ציר ה-$x$ יוצר דיסקה ברדיוס $y$ ובעובי $dx$, שנפחה $\\pi y^2\\,dx$. סכימת אלה היא האינטגרל. ברגע שרואים את הרצועה הופכת לדיסקה אין מה לשנן — הנוסחה היא תיאור של התמונה, והיא מסבירה מיד מדוע הרדיוס מועלה בריבוע ומדוע כיוון החיתוך חייב להתאים לציר.",
+    },
+    speedTip: {
+      en: "Square before you do anything else. $\\left(\\sqrt{kx}\\right)^2=kx$ turns a root into a straight line, and $y=x^2$ rotated about the $y$-axis gives $x^2=y$ with no rearranging at all. Students who try to invert the function first are solving a problem that squaring was about to delete.",
+      he: "העלו בריבוע לפני כל דבר אחר. $\\left(\\sqrt{kx}\\right)^2=kx$ הופך שורש לישר, ו-$y=x^2$ המסובב סביב ציר ה-$y$ נותן $x^2=y$ ללא סידור מחדש כלל. מי שמנסה קודם להפוך את הפונקציה פותר בעיה שההעלאה בריבוע עמדה למחוק.",
+    },
+    watchOut: [
+      {
+        en: "The $\\pi$ belongs in the answer. Check it is still there.",
+        he: "ה-$\\pi$ שייך לתשובה. ודאו שהוא עדיין שם.",
+      },
+      {
+        en: "$\\pi\\left(R^2-r^2\\right)$, never $\\pi(R-r)^2$.",
+        he: "$\\pi\\left(R^2-r^2\\right)$, לעולם לא $\\pi(R-r)^2$.",
       },
     ],
   },

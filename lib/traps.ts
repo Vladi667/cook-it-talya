@@ -144,6 +144,58 @@ export const TRAPS: Record<string, TrapMeta> = {
     short: { en: "Extremum $y$ sign wrong", he: "סימן ה-$y$ בקיצון שגוי" },
   },
 
+  /* ---- polynomial-investigation ---- */
+  "poly-roots-are-criticals": {
+    templateId: "polynomial-investigation",
+    short: { en: "Gave the extrema, not the roots", he: "נתתם קיצון ולא שורשים" },
+  },
+  "poly-y-intercept-sign": {
+    templateId: "polynomial-investigation",
+    short: { en: "$f(0)$ sign flipped", he: "סימן $f(0)$ הפוך" },
+  },
+  "poly-min-is-max": {
+    templateId: "polynomial-investigation",
+    short: { en: "Gave the maximum as the minimum", he: "נתתם מקסימום במקום מינימום" },
+  },
+  "poly-min-not-substituted": {
+    templateId: "polynomial-investigation",
+    short: { en: "Minimum: did not substitute back", he: "מינימום: לא הצבתם חזרה" },
+  },
+  "poly-inflection-not-substituted": {
+    templateId: "polynomial-investigation",
+    short: { en: "Inflection: did not substitute back", he: "פיתול: לא הצבתם חזרה" },
+  },
+  "poly-increasing-flipped": {
+    templateId: "polynomial-investigation",
+    short: { en: "Gave the decreasing interval", he: "נתתם את תחום הירידה" },
+  },
+
+  /* ---- volume-revolution ---- */
+  "vol-missing-pi": {
+    templateId: "volume-revolution",
+    short: { en: "Dropped the $\\pi$", he: "השמטתם את ה-$\\pi$" },
+  },
+  "vol-treated-as-cylinder": {
+    templateId: "volume-revolution",
+    short: { en: "Treated the solid as a cylinder", he: "התייחסתם לגוף כאל גליל" },
+  },
+  "vol-between-missing-pi": {
+    templateId: "volume-revolution",
+    short: { en: "Dropped the $\\pi$", he: "השמטתם את ה-$\\pi$" },
+  },
+  "vol-difference-squared": {
+    templateId: "volume-revolution",
+    short: { en: "$(R-r)^2$ instead of $R^2-r^2$", he: "$(R-r)^2$ במקום $R^2-r^2$" },
+  },
+  "vol-yaxis-missing-pi": {
+    templateId: "volume-revolution",
+    short: { en: "Dropped the $\\pi$", he: "השמטתם את ה-$\\pi$" },
+  },
+  "vol-wrong-variable": {
+    templateId: "volume-revolution",
+    short: { en: "Integrated $dx$ for a $y$-axis spin", he: "אינטגרל $dx$ בסיבוב סביב ציר $y$" },
+  },
+
   /* ---- area-between-curves ---- */
   "area-no-split": {
     templateId: "area-between-curves",

@@ -6,7 +6,9 @@ import { triangleBisector } from "./triangle-bisector";
 import { triangleFromLines } from "./triangle-from-lines";
 import { circleTangent } from "./circle-tangent";
 import { functionInvestigation } from "./function-investigation";
+import { polynomialInvestigation } from "./polynomial-investigation";
 import { areaBetweenCurves } from "./area-between-curves";
+import { volumeRevolution } from "./volume-revolution";
 import { reverseIntegral } from "./reverse-integral";
 import { optimization } from "./optimization";
 import { limits } from "./limits";
@@ -19,7 +21,9 @@ const DEFS: TemplateDef[] = [
   triangleFromLines,
   circleTangent,
   functionInvestigation,
+  polynomialInvestigation,
   areaBetweenCurves,
+  volumeRevolution,
   reverseIntegral,
   optimization,
   limits,

@@ -63,14 +63,17 @@ export function runVerification(v: Verification): VerifyOutcome {
         // cannot serve as the independent check here.
         const f = compile(v.expr, v.variable);
         const at = evalConst(v.at);
-        const h = 1e-5 * Math.max(1, Math.abs(at));
         const order = v.order ?? 1;
+        // A second difference divides by h^2, so rounding noise scales as
+        // eps/h^2: 1e-5 is fine for f' but leaves ~1e-4 of noise on f''.
+        // The optimum for a second difference is around eps^(1/4).
+        const h = (order === 1 ? 1e-5 : 1e-4) * Math.max(1, Math.abs(at));
         const actual =
           order === 1
             ? (f(at + h) - f(at - h)) / (2 * h)
             : (f(at + h) - 2 * f(at) + f(at - h)) / (h * h);
         const expected = evalConst(v.expected);
-        const ok = relClose(actual, expected, 1e-5);
+        const ok = relClose(actual, expected, order === 1 ? 1e-5 : 1e-4);
         return {
           ok,
           detail: `${v.label}: numeric f${"'".repeat(order)}(${at}) = ${actual}, closed form ${expected}`,

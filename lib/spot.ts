@@ -26,10 +26,14 @@ export const CONFUSABLE: Record<TemplateId, TemplateId[]> = {
   "triangle-from-lines": ["triangle-bisector", "circle-tangent"],
   // both talk about a "tangent"
   "circle-tangent": ["function-investigation", "triangle-from-lines"],
-  "function-investigation": ["circle-tangent", "optimization"],
-  "area-between-curves": ["reverse-integral", "function-investigation"],
+  // both are "investigate this function": the giveaway is domain vs roots
+  "function-investigation": ["polynomial-investigation", "circle-tangent"],
+  "polynomial-investigation": ["function-investigation", "optimization"],
+  // both integrate a region; one asks for area, the other spins it
+  "area-between-curves": ["volume-revolution", "reverse-integral"],
+  "volume-revolution": ["area-between-curves", "reverse-integral"],
   "reverse-integral": ["area-between-curves", "limits"],
-  optimization: ["function-investigation", "area-between-curves"],
+  optimization: ["polynomial-investigation", "area-between-curves"],
   limits: ["reverse-integral", "growth-decay"],
   // both: recover a ratio from two readings, then use it
   sequences: ["growth-decay", "limits"],
